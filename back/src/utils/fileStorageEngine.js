@@ -4,6 +4,10 @@ const setDestinationUserImage = (req, file, cb) => {
     cb(null, "./src/static/images");
 }
 
+const setDestinationAuditFiles = (req, file, cb) => {
+    cb(null, "./src/static/files");
+}
+
 const setFileName = (req, file, cb) => {
     const date = new Date();
     const day = date.getDate().toString().padStart(2, '0');
@@ -18,9 +22,17 @@ const storageUserImage = multer.diskStorage({
     filename: setFileName
 });
 
+const storageAuditFiles = multer.diskStorage({
+    destination: setDestinationAuditFiles ,
+    filename: setFileName
+});
 
-uploadUserImage = multer({
+
+const uploadUserImage = multer({
     storage: storageUserImage
-  });
+});
+const uploadAuditFiles = multer({
+    storage: storageAuditFiles
+});
 
-module.exports = uploadUserImage
+module.exports = { uploadUserImage, uploadAuditFiles }

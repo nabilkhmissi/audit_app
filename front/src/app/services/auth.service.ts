@@ -45,10 +45,10 @@ export class AuthService {
         this.isAuthenticated.next(true);
         this.authenticatedUser.next(response.data);
         this._loading.hideLoading();
+        this._router.navigate(['/main'])
         const role = response.data.role;
         switch (role) {
           case "ADMIN":
-            this._router.navigate(['/main'])
             break;
           // case "AUDITOR":
           //   this._router.navigate(['/auditor'])

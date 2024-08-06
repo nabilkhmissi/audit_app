@@ -4,6 +4,8 @@ const { UserController } = require('../controllers');
 const { Image_upload } = require('../utils');
 
 router.get('/findAll', UserController.findAll);
+router.get('/findAllAuditors', UserController.findAllAuditors);
+router.get('/findAllClients', UserController.findAllClients);
 router.get('/findById/:id', UserController.findById);
 router.patch('/enable/:id', UserController.enableUser);
 router.get('/findByEmail', UserController.findByEmail);

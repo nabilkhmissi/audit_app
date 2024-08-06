@@ -1,4 +1,4 @@
-const { User } = require("../models");
+const { User, Role } = require("../models");
 const { ApiError } = require("../utils/index")
 
 //find all users
@@ -8,6 +8,24 @@ module.exports.findAll = async function (req, res, next) {
     return res.status(200).send(users);
   } catch (error) {
     next(Error("Error while getting enabled users"))
+  }
+}
+//find all auditors
+module.exports.findAllAuditors = async function (req, res, next) {
+  try {
+    const auditors = await User.find({ isDeleted : false, role : Role.Auditor })
+    return res.status(200).send(auditors);
+  } catch (error) {
+    next(Error("Error while getting auditors"))
+  }
+}
+//find all clients
+module.exports.findAllClients = async function (req, res, next) {
+  try {
+    const client = await User.find({ isDeleted : false, role : Role.Client })
+    return res.status(200).send(client);
+  } catch (error) {
+    next(Error("Error while getting client"))
   }
 }
 //find user by id
