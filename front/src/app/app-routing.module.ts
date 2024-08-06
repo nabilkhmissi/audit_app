@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import { NotfoundComponent } from './demo/components/notfound/notfound.component';
 import { AppLayoutComponent } from "./layout/app.layout.component";
 import { AuthGuard } from './guards/auth.guard';
+import { AuditorGuard } from './guards/auditor.guard';
+import { AdminGuard } from './guards/admin.guard';
 
 @NgModule({
     imports: [
@@ -18,10 +20,11 @@ import { AuthGuard } from './guards/auth.guard';
             },
             {
                 path: 'main', component: AppLayoutComponent,
+                canActivate : [AuthGuard],
                 children: [
                     {
                         path : 'admin',
-                        canActivate : [AuthGuard],
+                        canActivate : [AuthGuard, AdminGuard],
                         children : [
                             {
                                 path : '',
@@ -47,7 +50,7 @@ import { AuthGuard } from './guards/auth.guard';
                     },
                     {
                         path : 'auditor',
-                        canActivate : [AuthGuard],
+                        canActivate : [AuthGuard, AuditorGuard],
                         children : [
                             {
                                 path : '',
@@ -62,6 +65,7 @@ import { AuthGuard } from './guards/auth.guard';
                             },
                         ]
                     },
+                    { path : 'unauthorized', loadComponent : ()=>import('./pages/other/not-authorized/not-authorized.component').then((c)=>c.NotAuthorizedComponent) },
                     { path: '', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
                     { path: 'uikit', loadChildren: () => import('./demo/components/uikit/uikit.module').then(m => m.UIkitModule) },
                     { path: 'utilities', loadChildren: () => import('./demo/components/utilities/utilities.module').then(m => m.UtilitiesModule) },
@@ -75,7 +79,7 @@ import { AuthGuard } from './guards/auth.guard';
             },
             { path: 'auth', loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule) },
             { path: 'notfound', component: NotfoundComponent },
-            // { path: '**', redirectTo: '/notfound' },
+            { path: '**', redirectTo: '/notfound' },
         ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled', onSameUrlNavigation: 'reload' })
     ],
     exports: [RouterModule]
