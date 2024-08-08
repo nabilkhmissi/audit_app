@@ -68,13 +68,6 @@ export class AppMenuComponent implements OnInit {
                 ],
                 roles : ["AUDITOR"]
             },
-            // {
-            //     label: 'Home',
-            //     items: [
-            //         { label: 'Dashboard', icon: 'pi pi-fw pi-home', routerLink: ['/layout'] }
-            //     ],
-            //     roles : ["ADMIN, AUDITOR, CLIENT"]
-            // },
             {
                 label: 'UI Components',
                 items: [

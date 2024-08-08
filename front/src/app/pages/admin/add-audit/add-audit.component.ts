@@ -1,48 +1,25 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { SelectItem } from 'primeng/api';
-import { AutoCompleteModule } from 'primeng/autocomplete';
-import { ButtonModule } from 'primeng/button';
-import { CalendarModule } from 'primeng/calendar';
-import { CascadeSelectModule } from 'primeng/cascadeselect';
-import { CheckboxModule } from 'primeng/checkbox';
-import { ChipModule } from 'primeng/chip';
-import { ChipsModule } from 'primeng/chips';
-import { ColorPickerModule } from 'primeng/colorpicker';
-import { DropdownModule } from 'primeng/dropdown';
-import { InputGroupModule } from 'primeng/inputgroup';
-import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { InputMaskModule } from 'primeng/inputmask';
-import { InputNumberModule } from 'primeng/inputnumber';
-import { InputSwitchModule } from 'primeng/inputswitch';
-import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
-import { KnobModule } from 'primeng/knob';
-import { ListboxModule } from 'primeng/listbox';
-import { MultiSelectModule } from 'primeng/multiselect';
-import { RadioButtonModule } from 'primeng/radiobutton';
-import { RatingModule } from 'primeng/rating';
-import { SelectButtonModule } from 'primeng/selectbutton';
-import { SliderModule } from 'primeng/slider';
-import { ToggleButtonModule } from 'primeng/togglebutton';
-import { CountryService } from 'src/app/demo/service/country.service';
+import { UserService } from 'src/app/services/user.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
   selector: 'app-add-audit',
   standalone: true,
-  imports: [SharedModule],
+  imports: [SharedModule, ReactiveFormsModule],
   templateUrl: './add-audit.component.html',
   styleUrl: './add-audit.component.scss'
 })
 export class AddAuditComponent  implements OnInit {
    
   countries: any[] = [];
+  auditors: any[] = [];
 
   submitted = false;
+  createAuditForm : FormGroup;
 
-  filteredCountries: any[] = [];
+  filteredAuditors: any[] = [];
 
   selectedCountryAdvanced: any[] = [];
 
@@ -50,19 +27,7 @@ export class AddAuditComponent  implements OnInit {
 
   valColor = '#424242';
 
-  selectedAuditor : any;
-
-  auditors = [
-    {
-      name : "aaa",
-    },
-    {
-      name : "bbbb",
-    },
-    {
-      name : "ccc",
-    },
-  ]
+  selectedAuditor = [];
 
   valRadio: string = '';
 
@@ -90,42 +55,51 @@ export class AddAuditComponent  implements OnInit {
 
   valueKnob = 20;
 
-  constructor(private countryService: CountryService) { }
+  constructor(
+    private _user : UserService, 
+    private _formBuilder : FormBuilder
+) { }
 
-  ngOnInit() {
-      this.countryService.getCountries().then(countries => {
-          this.countries = countries;
-      });
-
-      this.cities = [
-          { label: 'New York', value: { id: 1, name: 'New York', code: 'NY' } },
-          { label: 'Rome', value: { id: 2, name: 'Rome', code: 'RM' } },
-          { label: 'London', value: { id: 3, name: 'London', code: 'LDN' } },
-          { label: 'Istanbul', value: { id: 4, name: 'Istanbul', code: 'IST' } },
-          { label: 'Paris', value: { id: 5, name: 'Paris', code: 'PRS' } }
-      ];
-
-      this.paymentOptions = [
-          { name: 'Option 1', value: 1 },
-          { name: 'Option 2', value: 2 },
-          { name: 'Option 3', value: 3 }
-      ];
+  fetchAuditors(){
+    this._user.findAllAuditors().subscribe(
+        (res : any) => {
+            this.filteredAuditors = res.data
+        }
+    )
   }
 
-  filterCountry(event: any) {
+  ngOnInit() {
+    this.fetchAuditors();
+    this.createAuditForm =  this._formBuilder.group({
+        auditors : [...this.selectedAuditor],
+        organisationName : [''],
+        contactNumber : [''],
+        phoneNumber : [''],
+        website : [''],
+        employeesNumber : [''],
+        employeesInPerimeter : [''],
+        contactName : [''],
+        contactEmail : [''],
+    })
+  }
+
+  filterAuditors(event: any) {
       const filtered: any[] = [];
       const query = event.query;
-      for (let i = 0; i < this.countries.length; i++) {
-          const country = this.countries[i];
-          if (country.name.toLowerCase().indexOf(query.toLowerCase()) == 0) {
-              filtered.push(country);
+      for (let i = 0; i < this.auditors.length; i++) {
+          const auditor = this.auditors[i];
+          if (auditor.firstName.toLowerCase().indexOf(query.toLowerCase()) == 0) {
+              filtered.push(auditor);
           }
       }
-
-      this.filteredCountries = filtered;
+      this.filteredAuditors = filtered;
   }
 
   load(){
     this.submitted = !this.submitted
+  }
+
+  handleSubmit(){
+    console.log(this.createAuditForm.value)
   }
 }
