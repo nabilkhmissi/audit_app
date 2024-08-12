@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { SelectItem } from 'primeng/api';
+import { catchError, of, tap } from 'rxjs';
 import { AuditService } from 'src/app/services/audit.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { UserService } from 'src/app/services/user.service';
@@ -15,51 +16,15 @@ import { SharedModule } from 'src/app/shared/shared.module';
 })
 export class AddAuditComponent  implements OnInit {
    
-  countries: any[] = [];
   submitted = false;
   auditors: any[] = [];
-
-  brands: any[] = []; 
-  selectedBrands: any[] = [];
 
   createAuditForm : FormGroup;
 
   filteredAuditors: any[] = [];
   selectedAuditors: any[] = [];
 
-  selectedCountryAdvanced: any[] = [];
-
-  valSlider = 50;
-
-  valColor = '#424242';
-
   selectedAuditor = [];
-
-  valRadio: string = '';
-
-  valCheck: string[] = [];
-
-  valCheck2: boolean = false;
-
-  valSwitch: boolean = false;
-
-  cities: SelectItem[] = [];
-
-  selectedList: SelectItem = { value: '' };
-
-  selectedDrop: SelectItem = { value: '' };
-
-  selectedMulti: any[] = [];
-
-  valToggle = false;
-
-  paymentOptions: any[] = [];
-
-  valSelect1: string = "";
-
-  valSelect2: string = "";
-
-  valueKnob = 20;
 
   constructor(
     private _user : UserService, 
@@ -79,15 +44,15 @@ export class AddAuditComponent  implements OnInit {
   ngOnInit() {
     this.fetchAuditors();
     this.createAuditForm =  this._formBuilder.group({
-        auditors : this.selectedAuditor.map(e=>e._id),
-        organisationName : [''],
-        contactNumber : [''],
-        phoneNumber : [''],
-        website : [''],
-        employeesNumber : [''],
-        employeesInPerimeter : [''],
-        contactName : [''],
-        contactEmail : [''],
+        auditors : [this.selectedAuditor.map(e=>e._id), [ Validators.required, Validators.minLength(1) ]],
+        organisationName : ['', Validators.required],
+        contactNumber : ['', Validators.required],
+        phoneNumber : ['', Validators.required],
+        website : ['', Validators.required],
+        employeesNumber : ['', Validators.required],
+        employeesInPerimeter : ['', Validators.required],
+        contactName : ['', Validators.required],
+        contactEmail : ['', Validators.required],
     })
   }
   filterAuditors(event: any) {
@@ -109,10 +74,14 @@ export class AddAuditComponent  implements OnInit {
       return;
     }
     this.submitted = true;
-    this._audit.createAudit(this.createAuditForm.value).subscribe(
-      res => {
+    this._audit.createAudit(this.createAuditForm.value).pipe(
+      tap(r => {
         this.submitted = false;
-      }
-    );
+      }),
+      catchError(err => {
+        this.submitted = false;
+        return of(err)
+      })
+    ).subscribe();
   }
 }

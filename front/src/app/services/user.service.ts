@@ -25,21 +25,24 @@ export class UserService {
         this._http.get(`${this.baseUrl}/findById/${id}`);
     }
     enableUser(id : string){
-        this._http.patch(`${this.baseUrl}/enable/${id}`, {});
+        return this._http.patch(`${this.baseUrl}/enable/${id}`, {});
+    }
+    findEnabled(enabled : boolean, role : string){
+        return this._http.get(`${this.baseUrl}/findEnabled?enabled=${enabled}&role=${role}`);
     }
     updateDetails(id : string, data : any){
-        this._http.patch(`${this.baseUrl}/updateDetails/${id}`, data);
+        return this._http.patch(`${this.baseUrl}/updateDetails/${id}`, data);
     }
     changePassword(id : string, data : any){
-        this._http.patch(`${this.baseUrl}/changePassword/${id}`, data);
+        return this._http.patch(`${this.baseUrl}/changePassword/${id}`, data);
     }
     updateImage(id : string, data : any){
-        this._http.patch(`${this.baseUrl}/updateImage/${id}`, data);
+        return this._http.patch(`${this.baseUrl}/updateImage/${id}`, data);
     }
     createUser(data : any){
-        this._http.post(`${this.baseUrl}/createUser`, data);
+        return this._http.post(`${this.baseUrl}/createUser`, data);
     }
     delete(id : string){
-        this._http.delete(`${this.baseUrl}/delete/${id}`);
+        return this._http.delete(`${this.baseUrl}/delete/${id}`);
     }
 }

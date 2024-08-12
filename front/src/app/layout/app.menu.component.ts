@@ -55,6 +55,7 @@ export class AppMenuComponent implements OnInit {
                         ]
                     },
                     { label: 'Audits', icon: 'pi pi-database', routerLink: ['admin/audits'] },
+                    { label: 'Signup requests', icon: 'pi pi-users', routerLink: ['admin/signup-requests'] },
                 ],
                 roles : ["ADMIN"]
             },

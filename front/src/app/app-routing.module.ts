@@ -52,6 +52,9 @@ import { AdminGuard } from './guards/admin.guard';
                             {   
                                 path : 'add-client', loadComponent : ()=>import('./pages/admin/add-client/add-client.component').then((c)=>c.AddClientComponent)
                             },
+                            {   
+                                path : 'signup-requests', loadComponent : ()=>import('./pages/admin/signup-request/signup-request.component').then((c)=>c.SignupRequestsComponent)
+                            },
                         ]
                     },
                     {

@@ -17,7 +17,8 @@ module.exports = initAdmin = async ()=> {
       adresse : "",
       salt : new_salt,
       role : Role.Admin,
-      gender : "Male"
+      gender : "Male",
+      isEnabled : true
     });
   console.log("---------- ADMIN ACCOUNT INITAILIZED ----------")
 }

@@ -1,8 +1,90 @@
-<div class="grid">
+<div class="grid p-fluid">
     <div class="col-12">
         <div class="card">
-            <h4>Add client</h4>
-            <p>This is your empty page template to start building beautiful applications.</p>
+            <h5>Add Client</h5>
+            <form [formGroup]="newClientForm" (ngSubmit)="handleSubmit()">
+                <div class="p-fluid p-formgrid grid">
+                    <div class="field col-12">
+                        <label>Select role</label>
+                        <p-dropdown [options]="roles" formControlName="role" placeholder="Select a role" />
+                        <small
+                            *ngIf="newClientForm.get('role').touched && newClientForm.get('role').errors?.['required']"
+                            class="p-error">Role field is required</small>
+                    </div>
+
+                    <div class="field col-12">
+
+                        <h5>Gender</h5>
+                        <div class="grid formgrid">
+                            <div class="col-12 md:col-4">
+                                <div class="field-radiobutton">
+                                    <p-radioButton name="gender" value="Male" formControlName="gender"></p-radioButton>
+                                    <label>Male</label>
+                                </div>
+                            </div>
+                            <div class="col-12 md:col-4">
+                                <div class="field-radiobutton">
+                                    <p-radioButton name="gender" value="Female" formControlName="gender"></p-radioButton>
+                                    <label>Female</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <label>First name</label>
+                        <input pInputText type="text" formControlName="firstName" />
+                        <small
+                            *ngIf="newClientForm.get('firstName').touched && newClientForm.get('firstName').errors?.['required']"
+                            class="p-error">first name is required</small>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <label>Last name</label>
+                        <input pInputText type="text" formControlName="lastName" />
+                        <small
+                            *ngIf="newClientForm.get('lastName').touched && newClientForm.get('lastName').errors?.['required']"
+                            class="p-error">Last name is required</small>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <label>Email</label>
+                        <input pInputText type="text" formControlName="email" />
+                        <small
+                            *ngIf="newClientForm.get('email').touched && newClientForm.get('email').errors?.['required']"
+                            class="p-error">Email is required</small>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <label>Password</label>
+                        <p-password formControlName="password" promptLabel="Choose a password" weakLabel="Too simple"
+                            mediumLabel="Average complexity" strongLabel="Complex password" [toggleMask]="true" />
+                        <small
+                            *ngIf="newClientForm.get('password').touched && newClientForm.get('password').errors?.['required']"
+                            class="p-error">Password is required</small>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <label>Phone number</label>
+                        <input pInputTextarea rows="4" formControlName="phone" />
+                        <small
+                            *ngIf="newClientForm.get('phone').touched && newClientForm.get('phone').errors?.['required']"
+                            class="p-error">Phone number is required</small>
+                    </div>
+                    <div class="field col-12 md:col-6">
+                        <label>Company</label>
+                        <input pInputText type="text" formControlName="company" />
+                        <small
+                            *ngIf="newClientForm.get('company').touched && newClientForm.get('company').errors?.['required']"
+                            class="p-error">Company is required</small>
+                    </div>
+                    <div class="field col-12">
+                        <label>Adresse</label>
+                        <input pInputText type="text" formControlName="adresse" />
+                        <!-- <small *ngIf="newClientForm.get('adresse').touched && newClientForm.get('adresse').errors?.['required']" class="p-error">Adresse is required</small> -->
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <p-button label="Submit" [loading]="submitted" [disabled]="!newClientForm.valid"
+                        (onClick)="handleSubmit()"></p-button>
+                </div>
+            </form>
         </div>
+
     </div>
 </div>

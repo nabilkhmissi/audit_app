@@ -21,7 +21,8 @@ const UserSchema = new Schema({
   image: { type: String ,default: default_image},
   salt: { type: String, required: true },
   isEnabled : { type : Boolean , default : false },
-  isDeleted : { type : Boolean , default : false }
+  isDeleted : { type : Boolean , default : false },
+  company : { type : String }
 },
 {
   timestamps: true
@@ -32,7 +33,7 @@ UserSchema.methods.toJSON = function () {
   delete obj.password;
   delete obj.salt;
   delete obj.__v;
-  delete obj.createdAt;
+  // delete obj.createdAt;
   delete obj.updatedAt;
   return obj;
 }

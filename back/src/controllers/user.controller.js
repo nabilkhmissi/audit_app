@@ -1,5 +1,6 @@
 const { User, Role } = require("../models");
-const { ApiError } = require("../utils/index")
+const { ApiError } = require("../utils/index");
+const { genSalt, hashPassword } = require("../utils/password-utility");
 
 //find all users
 module.exports.findAll = async function (req, res, next) {
@@ -14,18 +15,37 @@ module.exports.findAll = async function (req, res, next) {
 module.exports.findAllAuditors = async function (req, res, next) {
   try {
     const auditors = await User.find({ isDeleted : false, role : Role.Auditor, isEnabled : true })
-    return res.status(200).send(auditors);
+    return res.status(200).send({message :  "Auditors retrieved successfully", data : auditors});
   } catch (error) {
     next(Error("Error while getting auditors"))
   }
 }
+// Find users by isEnabled and role fields
+module.exports.findEnabled = async function (req, res, next) {
+  try {
+    const query = { isDeleted: false };
+    
+    if (req.query.enabled) {
+      query.isEnabled = req.query.enabled === 'true';
+    }
+    
+    if (req.query.role) {
+      query.role = req.query.role;
+    }
+    const data = await User.find(query);
+
+    return res.status(200).send({ message: "Users retrieved successfully", data: data });
+  } catch (error) {
+    next(new Error("Error while getting users"));
+  }
+};
 //find all clients
 module.exports.findAllClients = async function (req, res, next) {
   try {
     const client = await User.find({ isDeleted : false, role : Role.Client, isEnabled : true })
-    return res.status(200).send(client);
+    return res.status(200).send({message : "Clients retrieved successfully", data : client});
   } catch (error) {
-    next(Error("Error while getting client"))
+    next(Error("Error while getting clients"))
   }
 }
 //find user by id
@@ -66,8 +86,8 @@ module.exports.deleteUser = async function (req, res, next) {
   try {
     const user = await User.findById(req.params.id);
     user.isDeleted = !user.isDeleted;
-    await user.save();
-    return res.status(200).json({ message: "User deleted/restored successfully" });
+    const deleted =  await user.save();
+    return res.status(200).json({ message: "User deleted/restored successfully", data : deleted });
   } catch (error) {
     next(new Error("Error while deleting/restoring user"))
   }
@@ -116,7 +136,7 @@ module.exports.changePassword = async function (req,res,next){
     user.password = hashed_pwd;
     user.salt = new_salt;
     await user.save();
-    return res.status(200).send({message : "Pazssword updated successfully"});
+    return res.status(200).send({message : "Password updated successfully"});
   } catch (error) {
     next(new Error(error));
   }

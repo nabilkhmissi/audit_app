@@ -4,6 +4,7 @@ const { UserController } = require('../controllers');
 const { uploader } = require('../utils');
 
 router.get('/findAll', UserController.findAll);
+router.get('/findEnabled', UserController.findEnabled);
 router.get('/findAllAuditors', UserController.findAllAuditors);
 router.get('/findAllClients', UserController.findAllClients);
 router.get('/findById/:id', UserController.findById);
@@ -13,7 +14,7 @@ router.patch('/updateDetails/:id', UserController.UpdateUserDetails);
 router.patch('/changePassword/:id', UserController.changePassword);
 router.patch('/updateImage/:id', uploader.uploadUserImage.single("image"), UserController.UpdateUserImage);
 router.post('/createUser', uploader.uploadUserImage.single("image"), UserController.createUser);
-router.delete('/delete', UserController.deleteUser);
+router.delete('/delete/:id', UserController.deleteUser);
 
 
 module.exports = router;
