@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { ConfirmationService } from 'primeng/api';
 import { catchError, map, of, tap } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -19,15 +18,18 @@ export class SignupRequestsComponent implements OnInit{
 
   imagesUrl = environment.userImagesUrl;
   users : any[] = [];
+  filteredUsers : any[] = [];
   rowGroupMetadata: any;
   loading: boolean = false;
   displayInfos = false;
   selectedUser = null;
 
+  approveLoading : string | null = null;
+  deleteLoading : string | null = null;
+
 
   constructor(
     private _users : UserService,
-    private confirmationService : ConfirmationService
   ){}
 
 
@@ -43,7 +45,8 @@ export class SignupRequestsComponent implements OnInit{
       }),
       tap((res : any) => {
         this.loading = false;
-        this.users = res
+        this.users = res;
+        this.filteredUsers = res
       }),
       catchError(err => {
         this.loading = false;
@@ -52,29 +55,51 @@ export class SignupRequestsComponent implements OnInit{
     ).subscribe()
   }
 
-  onGlobalFilter(dt1, $event){
-
-  }
-
-
   showDetails(user : any){
     this.selectedUser = user;
     this.displayInfos = true;
   }
 
-  confirm1(id : string){
-    this.confirmationService.confirm({
-        key: 'confirm1',
-        message: 'Are you sure to perform this action?',
-        accept : ()=>{
-          this._users.delete(id)
-            .pipe(
-              tap((r : any) => {
-                this.users = this.users.filter(u => u._id !== r.data._id);
-              })
-            )
-            .subscribe();
-        },      
-    });
+  handleUserApprove(){
+    this._users.enableUser(this.approveLoading).subscribe(
+      {
+        next : res => {
+          this.users = this.users.filter(u => u._id !== this.approveLoading)
+          this.clearLoading();
+        },
+        error : (err)=>{
+          this.clearLoading();
+        }
+      }
+    )
+  }
+
+  handleUserDelete(){
+    this._users.delete(this.deleteLoading).subscribe(
+      {
+        next : res => {
+          this.users = this.users.filter(u => u._id !== this.deleteLoading)
+        },
+        error : (err)=>{
+          this.clearLoading()
+        }
+      }      
+    )
+  }
+
+  selectUserToApprove(id : any){
+    this.approveLoading = id;
+  }
+  selectUserToDelete(id : any){
+    this.deleteLoading = id;
+  }
+  
+  clearLoading(){
+    this.approveLoading = null;
+    this.deleteLoading = null;
+  }
+
+  handleSearch(e : any){
+    this.filteredUsers = this.users.filter(u => u.firstName.toLowerCase().includes(e.target.value.toLowerCase()))
   }
 }

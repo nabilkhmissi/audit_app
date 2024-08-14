@@ -31,10 +31,16 @@ import { SliderModule } from "primeng/slider";
 import { TableModule } from "primeng/table";
 import { ToastModule } from "primeng/toast";
 import { ToggleButtonModule } from "primeng/togglebutton";
+import { CustomConfirmDialogComponent } from "./dialogs/custom-confirm-dialog/custom-confirm-dialog.component";
+import { DialogModule } from "primeng/dialog";
+
 
 @NgModule({
-    declarations : [],
-    imports : [ConfirmDialogModule
+    declarations : [
+		CustomConfirmDialogComponent,
+	],
+    imports : [
+		ConfirmDialogModule
 	],
     exports : [
 		CommonModule,
@@ -74,7 +80,9 @@ import { ToggleButtonModule } from "primeng/togglebutton";
 		ButtonModule,
 		TableModule,
 		ConfirmDialogModule,
-		OverlayPanelModule 
+		OverlayPanelModule,
+		CustomConfirmDialogComponent,
+		DialogModule
 	],
     providers : [
 		ConfirmationService,

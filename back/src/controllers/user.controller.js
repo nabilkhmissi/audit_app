@@ -6,7 +6,7 @@ const { genSalt, hashPassword } = require("../utils/password-utility");
 module.exports.findAll = async function (req, res, next) {
   try {
     const users = await User.find({ isDeleted : false })
-    return res.status(200).send(users);
+    return res.status(200).send({message : "Users retrieved successfully", data :  users});
   } catch (error) {
     next(Error("Error while getting enabled users"))
   }
@@ -89,6 +89,7 @@ module.exports.deleteUser = async function (req, res, next) {
     const deleted =  await user.save();
     return res.status(200).json({ message: "User deleted/restored successfully", data : deleted });
   } catch (error) {
+    console.log(error)
     next(new Error("Error while deleting/restoring user"))
   }
 };

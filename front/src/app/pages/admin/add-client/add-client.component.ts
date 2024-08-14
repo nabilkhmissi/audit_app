@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { catchError, of, tap } from 'rxjs';
+import { tap } from 'rxjs';
 import { ToastService } from 'src/app/services/toast.service';
 import { UserService } from 'src/app/services/user.service';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -41,9 +41,6 @@ export class AddClientComponent implements OnInit {
         company : ['', Validators.required],
         gender : ['', Validators.required],
     })
-    this.newClientForm.valueChanges.pipe(
-      tap(console.log)
-    ).subscribe()
   }
 
   handleSubmit(){
@@ -53,26 +50,26 @@ export class AddClientComponent implements OnInit {
       return;
     }
 
-    const payload = {
-      firstName  : this.newClientForm.value.firstName,
-      lastName  : this.newClientForm.value.lastName,
-      email  : this.newClientForm.value.email,
-      password  : this.newClientForm.value.password,
-      role  : this.newClientForm.value.role,
-      company  : this.newClientForm.value.company,
-      adresse  : this.newClientForm.value.adresse,
-    }
+    // const payload = {
+    //   firstName  : this.newClientForm.value.firstName,
+    //   lastName  : this.newClientForm.value.lastName,
+    //   email  : this.newClientForm.value.email,
+    //   password  : this.newClientForm.value.password,
+    //   role  : this.newClientForm.value.role,
+    //   company  : this.newClientForm.value.company,
+    //   adresse  : this.newClientForm.value.adresse,
+    // }
     this.submitted = true;
-    this._user.createUser(this.newClientForm.value).pipe(
-      tap(r => {
-        this.submitted = false;
-      }),
-      catchError(err => {
-        this.submitted = false;
-        console.log("error handled")
-        return of(err)
-      })
-    ).subscribe();
+    this._user.createUser(this.newClientForm.value).subscribe(
+      {
+        next : res => this.submitted = false,
+        error : err => {
+          console.log(err)
+          console.log("setting submitted")
+          this.submitted = false
+        }
+      }
+    );
   }
 
 }

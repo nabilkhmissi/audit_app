@@ -16,14 +16,12 @@ export class ClientsComponent implements OnInit{
 
 
   clients : any[] = [];
-  rowGroupMetadata: any;
   loading: boolean = false;
 
 
   constructor(
     private _users : UserService
   ){}
-
 
   ngOnInit(): void {
     this.getAllClients();
@@ -41,10 +39,6 @@ export class ClientsComponent implements OnInit{
         return of(err)
       })
     ).subscribe()
-  }
-
-  onGlobalFilter(dt1, $event){
-
   }
 
 }

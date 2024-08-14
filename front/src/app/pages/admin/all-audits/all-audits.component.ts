@@ -19,7 +19,9 @@ export class AllAuditsComponent {
     imagesUrl = environment.userImagesUrl;
     customers1: Customer[] = [];
     audits: any[] = [];
+    filteredAudits: any[] = [];
     auditors: any[] = [];
+    auditDeleteLoading  : string | null = null;
     
     rowGroupMetadata: any;
     loading: boolean = true;
@@ -43,6 +45,7 @@ export class AllAuditsComponent {
             (res : any) => {
                 this.loading = false;
                 this.audits = res.data; 
+                this.filteredAudits = res.data; 
             }
         )
     }
@@ -59,10 +62,26 @@ export class AllAuditsComponent {
 
     }
 
-    delete(){
-
+    selectAuditToDlete(id : string){
+        this.auditDeleteLoading = id;
     }
-    onGlobalFilter(dt1, $event){
-        
+    handleAuditDelete(){
+        this._audits.deleteAudit(this.auditDeleteLoading).subscribe(
+            {
+                next : (res)=> {
+                    this.audits = this.audits.filter(a => a._id !== this.auditDeleteLoading)
+                    this.clearLoading();
+                },
+                error : (err)=> this.clearLoading()
+            }
+        )
+    }
+
+    clearLoading(){
+        this.auditDeleteLoading = null;
+    }
+
+    handleSearch(e : any){
+        this.filteredAudits = this.audits.filter(u => u.organisationName.toLowerCase().includes(e.target.value.toLowerCase()))
     }
 }

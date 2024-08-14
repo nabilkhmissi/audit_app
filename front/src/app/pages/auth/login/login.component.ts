@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { ToastService } from 'src/app/services/toast.service';
 
 @Component({
     selector: 'app-login',
@@ -14,7 +14,7 @@ export class LoginComponent implements OnInit{
         public layoutService: LayoutService,
         private fb : FormBuilder,
         private _auth : AuthService,
-        private _toast :ToastService
+        private _message : MessageService
     ) { }
 
     authForm : FormGroup;
@@ -28,7 +28,7 @@ export class LoginComponent implements OnInit{
 
     handleLogin(){
         if(!this.authForm.valid) {
-            this._toast.setError("Please enter all fields");
+            this._message.add({severity:"error", summary: 'Error', detail: "Please enter all fields"})
             return;
         }
         this._auth.login(this.authForm.value).subscribe();
