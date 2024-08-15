@@ -47,10 +47,10 @@ import { AdminGuard } from './guards/admin.guard';
                                 path : 'clients', loadComponent : ()=>import('./pages/admin/clients/clients.component').then((c)=>c.ClientsComponent)
                             },
                             {   
-                                path : 'add-user', loadComponent : ()=>import('./pages/admin/add-user/add-user.component').then((c)=>c.AddUserComponent)
+                                path : 'add-user', loadComponent : ()=>import('./pages/admin/add-client/add-client.component').then((c)=>c.AddClientComponent), data : { role : 'AUDITOR' }
                             },
                             {   
-                                path : 'add-client', loadComponent : ()=>import('./pages/admin/add-client/add-client.component').then((c)=>c.AddClientComponent)
+                                path : 'add-client', loadComponent : ()=>import('./pages/admin/add-client/add-client.component').then((c)=>c.AddClientComponent), data : { role : 'CLIENT' }
                             },
                             {   
                                 path : 'signup-requests', loadComponent : ()=>import('./pages/admin/signup-request/signup-request.component').then((c)=>c.SignupRequestsComponent)

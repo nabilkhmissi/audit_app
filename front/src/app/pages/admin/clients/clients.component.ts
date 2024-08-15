@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MessageService } from 'primeng/api';
 import { catchError, of, tap } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-clients',
@@ -14,13 +16,17 @@ import { SharedModule } from 'src/app/shared/shared.module';
 })
 export class ClientsComponent implements OnInit{
 
-
+  imagesUrl = environment.userImagesUrl;
   clients : any[] = [];
   loading: boolean = false;
+  dialogVisible = false;
+  selectedUser = null;
+  deleteClientLoading : string | null = null;
 
 
   constructor(
-    private _users : UserService
+    private _users : UserService,
+    private _message : MessageService
   ){}
 
   ngOnInit(): void {
@@ -40,5 +46,33 @@ export class ClientsComponent implements OnInit{
       })
     ).subscribe()
   }
+
+  showDetails(user :any){
+    this.selectedUser = user;
+  }
+
+  handleUserDelete(){
+    this._users.delete(this.deleteClientLoading!).subscribe(
+      {
+        next : (res : any)=>{
+          this._message.add({ severity : 'success', summary : res.message });
+          this.clients = this.clients.filter(c => c._id !== this.deleteClientLoading);
+          this.clearLoading()
+        },
+        error : (err)=>{
+          this.clearLoading()
+        }
+      }
+    )
+  }
+
+  delete(id : string){
+    this.deleteClientLoading = id;
+  }
+
+  clearLoading(){
+    this.deleteClientLoading = null;
+  }
+
 
 }

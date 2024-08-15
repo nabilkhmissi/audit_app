@@ -18,7 +18,7 @@
 					<tr>
 						<th style="min-width: 12rem">
 							<div class="flex justify-content-between align-items-center">
-								Full name
+								Name
 							</div>
 						</th>
                         <th style="min-width: 8rem">
@@ -59,7 +59,15 @@
 						</td>
 					
 						 <td>
-							<span class="image-text ml-2">{{user.role}}</span>
+							<span 
+								class="customer-badge" 
+								[ngClass]="{
+									'status-qualified': user.role === 'ADMIN', 
+									'status-new': user.role === 'CLIENT', 
+									'status-renewal': user.role === 'AUDITOR'
+								}">
+								{{user.role}}
+								</span>
 						</td>
 						 <td>
 							<span class="image-text ml-2">{{user.email}}</span>
@@ -77,7 +85,7 @@
 								type="button" 
 								icon="pi pi-eye" 
 								class="p-button-rounded p-button-outlined mx-2" 
-								(click)="showDetails(user._id)">
+								(click)="showDetails(user)">
 							</button>
 							<p-button 
                                 icon="pi pi-trash" 
@@ -116,23 +124,5 @@
 	(onReject)="clearLoading()"
 ></app-custom-confirm-dialog>
 
-<!-- dialog for information -->
-<p-dialog 
-	header="Information" 
-	[modal]="true"
-	[(visible)]="dialogVisible" 
-	[style]="{ width: '50rem' }" 
-	[breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
-		<ng-template *ngIf="selectedUser">
-			<img [alt]="selectedUser.firstName +' ' + selectedUser.lastName" [src]="imagesUrl+'/'+selectedUser.image" width="34" style="vertical-align: middle;border-radius: 100px;"/>
-			<p class="mb-5">
-				Full name : {{ selectedUser.firstName }} {{ selectedUser.lastName }}
-			</p>
-			<p class="mb-5">
-				Role : {{ selectedUser.role }}
-			</p>
-			<p class="mb-5">
-				Creation date : {{ selectedUser.createdAt }}
-			</p>
-		</ng-template>
-	</p-dialog>
+<!-- user informations dialog -->
+<app-user-infos-dialog [selectedUser]="selectedUser" [visible]="dialogVisible" (hide)="dialogVisible=false"></app-user-infos-dialog>

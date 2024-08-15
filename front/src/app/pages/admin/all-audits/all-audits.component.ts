@@ -22,6 +22,8 @@ export class AllAuditsComponent {
     filteredAudits: any[] = [];
     auditors: any[] = [];
     auditDeleteLoading  : string | null = null;
+    dialogVisible = false;
+    selectedAudit : any | null = null;
     
     rowGroupMetadata: any;
     loading: boolean = true;
@@ -58,8 +60,8 @@ export class AllAuditsComponent {
         )
     }
 
-    showDetails(){
-
+    showDetails(audit : any){
+        this.selectedAudit = audit;
     }
 
     selectAuditToDlete(id : string){

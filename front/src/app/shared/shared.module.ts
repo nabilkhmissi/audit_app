@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ConfirmationService, MessageService } from "primeng/api";
 import { AutoCompleteModule } from "primeng/autocomplete";
 import { ButtonModule } from "primeng/button";
@@ -33,6 +33,11 @@ import { ToastModule } from "primeng/toast";
 import { ToggleButtonModule } from "primeng/togglebutton";
 import { CustomConfirmDialogComponent } from "./dialogs/custom-confirm-dialog/custom-confirm-dialog.component";
 import { DialogModule } from "primeng/dialog";
+import { UserInfosDialogComponent } from "./dialogs/user-infos-dialog/user-infos-dialog.component";
+import { AuditInfosDialogComponent } from "./dialogs/audit-infos-dialog/audit-infos-dialog.component";
+import { AvatarModule } from "primeng/avatar";
+import { AvatarGroupModule } from "primeng/avatargroup";
+import { FieldsetModule } from "primeng/fieldset";
 
 
 @NgModule({
@@ -40,7 +45,9 @@ import { DialogModule } from "primeng/dialog";
 		CustomConfirmDialogComponent,
 	],
     imports : [
-		ConfirmDialogModule
+		ConfirmDialogModule,
+		UserInfosDialogComponent,
+		AuditInfosDialogComponent
 	],
     exports : [
 		CommonModule,
@@ -82,7 +89,13 @@ import { DialogModule } from "primeng/dialog";
 		ConfirmDialogModule,
 		OverlayPanelModule,
 		CustomConfirmDialogComponent,
-		DialogModule
+		DialogModule,
+		UserInfosDialogComponent,
+		AuditInfosDialogComponent,
+		AvatarModule,
+		AvatarGroupModule,
+		ReactiveFormsModule,
+		FieldsetModule
 	],
     providers : [
 		ConfirmationService,

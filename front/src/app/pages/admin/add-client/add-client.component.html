@@ -1,19 +1,18 @@
 <div class="grid p-fluid">
     <div class="col-12">
         <div class="card">
-            <h5>Add Client</h5>
+            <h5>{{ formTitle }}</h5>
             <form [formGroup]="newClientForm" (ngSubmit)="handleSubmit()">
                 <div class="p-fluid p-formgrid grid">
                     <div class="field col-12">
                         <label>Select role</label>
-                        <p-dropdown [options]="roles" formControlName="role" placeholder="Select a role" />
+                        <p-dropdown [options]="roles" [showClear]="true" formControlName="role" placeholder="Select a role"/>
                         <small
                             *ngIf="newClientForm.get('role').touched && newClientForm.get('role').errors?.['required']"
                             class="p-error">Role field is required</small>
                     </div>
 
-                    <div class="field col-12">
-
+                    <div class="col-12">
                         <h5>Gender</h5>
                         <div class="grid formgrid">
                             <div class="col-12 md:col-4">
@@ -66,7 +65,7 @@
                             *ngIf="newClientForm.get('phone').touched && newClientForm.get('phone').errors?.['required']"
                             class="p-error">Phone number is required</small>
                     </div>
-                    <div class="field col-12 md:col-6">
+                    <div class="field col-12 md:col-6" *ngIf="role == 'CLIENT'">
                         <label>Company</label>
                         <input pInputText type="text" formControlName="company" />
                         <small

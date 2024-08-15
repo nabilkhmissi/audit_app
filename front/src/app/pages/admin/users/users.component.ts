@@ -73,11 +73,8 @@ export class UsersComponent implements OnInit{
     this.deleteUserloading = null;
   }
 
-  showDetails(id : string){
+  showDetails(user){
     this.dialogVisible = !this.dialogVisible;
-    console.log(id)
-    this.selectedUser = this.users.find(u => u._id === id);
-    console.log(this.selectedUser)
-
+    this.selectedUser = user;
   }
 }

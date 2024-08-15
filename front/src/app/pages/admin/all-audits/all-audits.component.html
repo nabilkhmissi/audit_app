@@ -38,12 +38,12 @@
 						</th>
 						<th style="min-width: 10rem">
 							<div class="flex justify-content-between align-items-center">
-								Creation date
+								Status
 							</div>
 						</th>
 						<th style="min-width: 10rem">
 							<div class="flex justify-content-between align-items-center">
-								Status
+								Creation date
 							</div>
 						</th>
 						<th style="min-width: 10rem">
@@ -57,10 +57,12 @@
 				<ng-template pTemplate="body" let-audit>
 					<tr>
 						<td>
-							 <div *ngFor="let user of auditors">
-								<img [alt]="user.firstName +' ' + user.lastName" [src]="imagesUrl+'/'+user.image" width="34" style="vertical-align: middle;border-radius: 100px;"/>
-								<span class="image-text ml-2">{{user.firstName}} {{user.lastName}}</span>
-							 </div>
+							<p-avatarGroup styleClass="mb-3">
+								<p-avatar *ngFor="let a of audit?.auditors" 
+									[image]="imagesUrl+'/'+ a.image" 
+									size="large" 
+									shape="circle" />
+							</p-avatarGroup>
 						</td>
 						<td>
 							<span class="image-text ml-2">{{audit.organisationName}}</span>
@@ -72,13 +74,20 @@
 							<span class="image-text ml-2">{{audit.contactEmail}}</span>
 						</td>
 						<td>
+							<span 
+							[class]="'customer-badge'"
+							[ngClass]="{
+								'status-new': audit.status === 'PENDING', 
+								'status-qualified': audit.status === 'FINISHED', 
+								'status-renewal': audit.status === 'IN PROGRESS'
+							}"							
+							>{{audit.status}}</span>
+						</td>
+						<td>
 							{{audit.createdAt | date: 'dd/MM/yyyy'}}
 						</td>
 						<td>
-							<span [class]="'customer-badge status-proposal'">{{audit.status}}</span>
-						</td>
-						<td>
-							<button pButton pRipple type="button" icon="pi pi-eye" class="p-button-rounded p-button-outlined mx-2" (click)="showDetails()"></button>
+							<button pButton pRipple type="button" icon="pi pi-eye" class="p-button-rounded p-button-outlined mx-2" (click)="showDetails(audit);dialogVisible=true"></button>
 							<p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true"  [loading]="audit._id === auditDeleteLoading" [disabled]="audit._id === auditDeleteLoading" key="accept" (click)="deleteDialog.show();selectAuditToDlete(audit._id)"></p-button>
 						</td>
 					</tr>
@@ -105,3 +114,6 @@
 	(onAccept)="handleAuditDelete()"
 	(onReject)="clearLoading()"
 ></app-custom-confirm-dialog>
+
+
+<app-audit-infos-dialog [visible]="dialogVisible" (hide)="dialogVisible = false" [selectedAudit]="selectedAudit"></app-audit-infos-dialog>

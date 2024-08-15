@@ -18,17 +18,7 @@
 					<tr>
 						<th style="min-width: 12rem">
 							<div class="flex justify-content-between align-items-center">
-								Image
-							</div>
-						</th>
-						<th style="min-width: 12rem">
-							<div class="flex justify-content-between align-items-center">
-								First name
-							</div>
-						</th>
-						<th style="min-width: 12rem">
-							<div class="flex justify-content-between align-items-center">
-								Last name
+								Name
 							</div>
 						</th>
 						 <th style="min-width: 14rem">
@@ -57,28 +47,20 @@
 				<ng-template pTemplate="body" let-client>
 					<tr>
 						<td>
-							  <!-- <div class="flex flex-wrap align-items-center">
-								<p-chip *ngFor="let item of auditors" [label]="item.firstName + item.lastName" [image]="imagesUrl + '/' + item.image" styleClass="m-1"></p-chip>
-							    </div> -->
-						</td>
-						<td>
-							<span class="image-text ml-2">{{client.firstName}}</span>
-						</td>
-						 <td>
-							<span class="image-text ml-2">{{client.lastname}}</span>
+							<span class="image-text ml-2">{{client.firstName}} {{client.lastname}}</span>
 						</td>
 						 <td>
 							<span class="image-text ml-2">{{client.email}}</span>
 						</td>
 						<td>
+							{{client.adresse}}
+						</td>
+						<td>
 							{{client.createdAt | date: 'dd/MM/yyyy'}}
 						</td>
 						<td>
-							<!-- <span [class]="'customer-badge status-proposal'">{{audit.status}}</span> -->
-						</td>
-						<td>
-							<button pButton pRipple type="button" icon="pi pi-eye" class="p-button-rounded p-button-outlined mx-2" (click)="showDetails()"></button>
-							<button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-outlined" (click)="delete()"></button>
+							<button pButton pRipple type="button" icon="pi pi-eye" class="p-button-rounded p-button-outlined mx-2" (click)="showDetails(client);dialogVisible=true"></button>
+							<button pButton pRipple type="button" icon="pi pi-trash" class="p-button-rounded p-button-danger p-button-outlined" (click)="deleteDialog.show();delete(client._id)"></button>
 						</td>
 					</tr>
 				</ng-template>
@@ -97,3 +79,12 @@
 
 	</div>
 </div>
+
+<!-- user informations dialog -->
+<app-user-infos-dialog [selectedUser]="selectedUser" [visible]="dialogVisible" (hide)="dialogVisible=false"></app-user-infos-dialog>
+<app-custom-confirm-dialog 
+	#deleteDialog
+	[key]="'delete'"
+	(onAccept)="handleUserDelete()"
+	(onReject)="clearLoading()"
+></app-custom-confirm-dialog>

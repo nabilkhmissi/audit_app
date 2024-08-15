@@ -1,16 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { SelectItem } from 'primeng/api';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { catchError, of, tap } from 'rxjs';
 import { AuditService } from 'src/app/services/audit.service';
 import { ToastService } from 'src/app/services/toast.service';
 import { UserService } from 'src/app/services/user.service';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-add-audit',
   standalone: true,
-  imports: [SharedModule, ReactiveFormsModule],
+  imports: [
+    SharedModule, 
+  ],
   templateUrl: './add-audit.component.html',
   styleUrl: './add-audit.component.scss'
 })
@@ -18,6 +20,7 @@ export class AddAuditComponent  implements OnInit {
    
   submitted = false;
   auditors: any[] = [];
+  imagesUrl = environment.userImagesUrl;
 
   createAuditForm : FormGroup;
 
@@ -36,7 +39,7 @@ export class AddAuditComponent  implements OnInit {
   fetchAuditors(){
     this._user.findAllAuditors().subscribe(
         (res : any) => {
-            this.filteredAuditors = res
+            this.filteredAuditors = res.data
         }
     )
   }

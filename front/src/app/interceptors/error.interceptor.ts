@@ -37,7 +37,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           this.authServ.logout();
         }
         this._message.add({severity:'error', summary: 'Error', detail: err.error.message})
-        return of(err);
+        return throwError(err);;
       })
     );
   }

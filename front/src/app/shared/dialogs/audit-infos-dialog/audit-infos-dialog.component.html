@@ -1,0 +1,116 @@
+<p-dialog 
+	header="Information" 
+	[modal]="true"
+	[(visible)]="visible" 
+	[style]="{ width: '50rem' }" 
+	(onHide)="handleHide()"
+	[breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
+		<ul class="p-0 mx-0 mt-0 mb-4 list-none">
+			<li class="flex align-items-center py-2 surface-border">
+				<div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
+					<i class="pi pi-users text-xl text-gray-500"></i>
+				</div>
+				<span class="text-900 line-height-3"><span class="modal-row-title">Auditors :</span></span>
+                <p-avatarGroup styleClass="mb-3">
+                    <p-avatar *ngFor="let a of selectedAudit?.auditors" 
+                        [image]="imagesUrl+'/'+ a.image" 
+                        size="large" 
+                        shape="circle" />
+                </p-avatarGroup>
+			</li>
+            <div class="my-4">
+                <span class="modal-row-title">Organisation:</span>
+            </div>
+			<li class="flex align-items-center py-2 border-bottom-1 surface-border">
+				<div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
+					<i class="pi pi-building text-xl text-gray-500"></i>
+				</div>
+				<span class="text-900 line-height-3"><span class="modal-row-title">Organisation :</span> {{ selectedAudit?.organisationName }}</span>
+			</li>
+            <li class="flex align-items-center py-2 border-bottom-1 surface-border">
+				<div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
+					<i class="pi pi-phone text-xl text-gray-500"></i>
+				</div>
+				<span class="text-900 line-height-3"><span class="modal-row-title">Phone number :</span> {{ selectedAudit?.phoneNumber }}</span>
+			</li>
+
+            
+			<li class="flex align-items-center py-2 border-bottom-1 surface-border">
+				<div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
+					<i class="pi pi-globe text-xl text-gray-500"></i>
+				</div>
+				<span class="text-900 line-height-3"><span class="modal-row-title">Website :</span> {{ selectedAudit?.website }}</span>
+			</li>
+		
+
+			<li class="flex align-items-center py-2 border-bottom-1 surface-border">
+				<div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
+					<i class="pi pi-users text-xl text-gray-500"></i>
+				</div>
+				<span class="text-900 line-height-3"><span class="modal-row-title">Employees number :</span> {{ selectedAudit?.employeesNumber }}</span>
+			</li>
+		
+
+			<li class="flex align-items-center py-2 surface-border">
+				<div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
+					<i class="pi pi-users text-xl text-gray-500"></i>
+				</div>
+				<span class="text-900 line-height-3"><span class="modal-row-title">Employees in perimeter :</span> {{ selectedAudit?.employeesInPerimeter }}</span>
+			</li>
+
+            <div class="my-4">
+                <span class="modal-row-title">Contact infos:</span>
+            </div>
+			<li class="flex align-items-center py-2 border-bottom-1 surface-border">
+				<div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
+					<i class="pi pi-user text-xl text-gray-500"></i>
+				</div>
+				<span class="text-900 line-height-3"><span class="modal-row-title">Contact Name :</span> {{ selectedAudit?.contactName }}</span>
+			</li>
+
+			<li class="flex align-items-center py-2 border-bottom-1 surface-border">
+				<div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
+					<i class="pi pi-phone text-xl text-gray-500"></i>
+				</div>
+				<span class="text-900 line-height-3"><span class="modal-row-title">Contact number :</span> {{ selectedAudit?.contactNumber }}</span>
+			</li>		
+
+			<li class="flex align-items-center py-2 surface-border">
+				<div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
+					<i class="pi pi-envelope text-xl text-gray-500"></i>
+				</div>
+				<span class="text-900 line-height-3"><span class="modal-row-title">Contact Email :</span> {{ selectedAudit?.contactEmail }}</span>
+			</li>
+		    <div class="my-4">
+                <span class="modal-row-title">Audit details:</span>
+            </div>
+
+			<li class="flex align-items-center py-2 border-bottom-1 surface-border">
+				<div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
+					<i class="pi pi-chart-line text-xl text-gray-500"></i>
+				</div>
+				<span class="text-900 line-height-3">
+					<span class="modal-row-title">Status :</span> 
+					<span class="customer-badge"  [ngClass]="{
+						'status-qualified': selectedAudit?.status === 'FINISHED', 
+						'status-new': selectedAudit?.status === 'PENDING', 
+						'status-renewal': selectedAudit?.status === 'IN PROGRESS'
+					}">   {{ selectedAudit?.status }} </span>
+				</span>
+			</li>
+		
+			<li class="flex align-items-center py-2 border-bottom-1 surface-border">
+				<div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
+					<i class="pi pi-folder text-xl text-gray-500"></i>
+				</div>
+				<span class="text-900 line-height-3"><span class="modal-row-title">Files :</span> {{ selectedAudit?.files }}</span>
+			</li>
+
+			<li class="flex align-items-center py-2 surface-border">
+				<div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
+					<i class="pi pi-calendar text-xl text-gray-500"></i>
+				</div>
+				<span class="text-900 line-height-3"><span class="modal-row-title">Created at :</span> {{ selectedAudit?.createdAt | date : 'dd/MM/yyyy'}}</span>
+			</li>
+		</ul>
+	</p-dialog>

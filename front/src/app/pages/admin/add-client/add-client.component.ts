@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { MessageService } from 'primeng/api';
 import { tap } from 'rxjs';
-import { ToastService } from 'src/app/services/toast.service';
 import { UserService } from 'src/app/services/user.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -22,14 +23,24 @@ export class AddClientComponent implements OnInit {
 
   newClientForm : FormGroup;
   image = "";
+  formTitle = "";
+  role = "AUDITOR";
 
   constructor(
     private _user : UserService, 
     private _formBuilder : FormBuilder,
-    private _toast : ToastService,
+    private _message : MessageService,
+    private _route : ActivatedRoute,
 ) { }
 
   ngOnInit() {
+    this._route.data.pipe(
+      tap(data => {
+        this.formTitle = `Add ${data['role'].toLowerCase()}`
+        this.role = data['role'];
+      })
+    ).subscribe();
+
     this.newClientForm =  this._formBuilder.group({
         firstName : ['', Validators.required],
         lastName : ['', Validators.required],
@@ -37,35 +48,32 @@ export class AddClientComponent implements OnInit {
         phone : ['', Validators.required],
         password : ['', Validators.required],
         adresse : ['', Validators.required],
-        role : ['', Validators.required],
-        company : ['', Validators.required],
+        role : [ this.role ? this.role : '' , Validators.required],
+        company : ['', this.role == "CLIENT" ? Validators.required : null],
         gender : ['', Validators.required],
     })
+
+    this.newClientForm.valueChanges.pipe(
+      tap(v => {
+        this.role = v.role
+      })
+    ).subscribe()
   }
 
   handleSubmit(){
     if(!this.newClientForm.valid){
-      this._toast.setError("Missing or Invalid fields, please try again !");
+      this._message.add({ severity :'error', summary : "Missing or Invalid fields, please try again !"});
       this.submitted = false;
       return;
     }
-
-    // const payload = {
-    //   firstName  : this.newClientForm.value.firstName,
-    //   lastName  : this.newClientForm.value.lastName,
-    //   email  : this.newClientForm.value.email,
-    //   password  : this.newClientForm.value.password,
-    //   role  : this.newClientForm.value.role,
-    //   company  : this.newClientForm.value.company,
-    //   adresse  : this.newClientForm.value.adresse,
-    // }
     this.submitted = true;
     this._user.createUser(this.newClientForm.value).subscribe(
       {
-        next : res => this.submitted = false,
+        next : (res: any) => {
+          this._message.add({ severity : 'success', summary : res.message  })
+          this.submitted = false
+        },
         error : err => {
-          console.log(err)
-          console.log("setting submitted")
           this.submitted = false
         }
       }
