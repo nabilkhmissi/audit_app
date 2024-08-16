@@ -79,13 +79,22 @@
 							{{user.createdAt | date: 'dd/MM/yyyy'}}
 						</td>
 						<td>
-							<button 
+							<div style="display: flex;gap: 5px;">
+								<button 
 								pButton 
 								pRipple 
 								type="button" 
 								icon="pi pi-eye" 
-								class="p-button-rounded p-button-outlined mx-2" 
+								class="p-button-rounded p-button-outlined" 
 								(click)="showDetails(user)">
+							</button>
+							<button 
+								pButton 
+								pRipple 
+								type="button" 
+								icon="pi pi-pencil" 
+								class="p-button-rounded p-button-outlined" 
+								(click)="showEditDialog(user)">
 							</button>
 							<p-button 
                                 icon="pi pi-trash" 
@@ -97,6 +106,7 @@
                                 key="delete" 
                                 (click)="deleteDialog.show();selectUserToDelete(user._id)"
                             ></p-button>
+							</div>
 						</td>
 					</tr>
 				</ng-template>
@@ -124,5 +134,15 @@
 	(onReject)="clearLoading()"
 ></app-custom-confirm-dialog>
 
-<!-- user informations dialog -->
-<app-user-infos-dialog [selectedUser]="selectedUser" [visible]="dialogVisible" (hide)="dialogVisible=false"></app-user-infos-dialog>
+<app-user-infos-dialog 
+	[selectedUser]="selectedUser" 
+	[visible]="dialogVisible" 
+	(hide)="dialogVisible=false"
+></app-user-infos-dialog>
+
+<app-edit-user-dialog 
+	[selectedUser]="selectedUser" 
+	(callback)="handleUserUpdate($event)"
+	[editDialogVisible]="editDialogVisible"
+	(dismiss)="editDialogVisible = false"
+></app-edit-user-dialog>

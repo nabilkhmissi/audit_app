@@ -15,7 +15,7 @@ const UserSchema = new Schema({
     required: true,
     unique: [true, "Email is already in use"],
   },
-  gender : { type : String, required : true },
+  gender : { type : String },
   password: { type: String, required : true },  
   role: {type: String, enum: Object.values(Role)},
   image: { type: String ,default: default_image},

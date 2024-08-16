@@ -24,6 +24,9 @@ export class AllAuditsComponent {
     auditDeleteLoading  : string | null = null;
     dialogVisible = false;
     selectedAudit : any | null = null;
+
+    selectedUser : any | null = null;
+    editDialogVisible = false;
     
     rowGroupMetadata: any;
     loading: boolean = true;
@@ -85,5 +88,19 @@ export class AllAuditsComponent {
 
     handleSearch(e : any){
         this.filteredAudits = this.audits.filter(u => u.organisationName.toLowerCase().includes(e.target.value.toLowerCase()))
+    }
+
+    handleAuditUpdate(event : any){
+        //get users data from pop up 
+        const index = this.audits.findIndex(u => u._id === event._id);
+        this.audits[index] = event;
+        //colde modal after update
+        this.editDialogVisible = !this.editDialogVisible;
+        this.selectedUser = null;
+    }
+
+    showEditDialog(user : any){
+        this.editDialogVisible = !this.editDialogVisible;
+        this.selectedUser = user;
     }
 }

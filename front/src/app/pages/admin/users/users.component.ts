@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { catchError, of, tap } from 'rxjs';
+import { BehaviorSubject, catchError, of, tap } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { environment } from 'src/environments/environment';
@@ -21,8 +21,10 @@ export class UsersComponent implements OnInit{
   loading: boolean = false;
   deleteUserloading  : string | null = null;
   selectedUser : any | null = null;
+ 
 
   dialogVisible = false;
+  editDialogVisible = false;
 
 
   constructor(
@@ -73,8 +75,22 @@ export class UsersComponent implements OnInit{
     this.deleteUserloading = null;
   }
 
-  showDetails(user){
+  showDetails(user : any){
     this.dialogVisible = !this.dialogVisible;
+    this.selectedUser = user;
+  }
+
+  handleUserUpdate(event : any){
+    //get users data from pop up 
+    const index = this.users.findIndex(u => u._id === event._id);
+    this.users[index] = event;
+    //colde modal after update
+    this.editDialogVisible = !this.editDialogVisible;
+    this.selectedUser = null;
+  }
+
+  showEditDialog(user : any){
+    this.editDialogVisible = !this.editDialogVisible;
     this.selectedUser = user;
   }
 }

@@ -38,6 +38,10 @@ import { AuditInfosDialogComponent } from "./dialogs/audit-infos-dialog/audit-in
 import { AvatarModule } from "primeng/avatar";
 import { AvatarGroupModule } from "primeng/avatargroup";
 import { FieldsetModule } from "primeng/fieldset";
+import { EditUserDialogComponent } from "./dialogs/edit-user-dialog/edit-user-dialog.component";
+import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import { EditAuditDialogComponent } from "./dialogs/edit-audit-dialog/edit-audit-dialog.component";
+
 
 
 @NgModule({
@@ -47,7 +51,10 @@ import { FieldsetModule } from "primeng/fieldset";
     imports : [
 		ConfirmDialogModule,
 		UserInfosDialogComponent,
-		AuditInfosDialogComponent
+		AuditInfosDialogComponent,
+		EditUserDialogComponent,
+		ProgressSpinnerModule,
+		EditAuditDialogComponent
 	],
     exports : [
 		CommonModule,
@@ -95,7 +102,10 @@ import { FieldsetModule } from "primeng/fieldset";
 		AvatarModule,
 		AvatarGroupModule,
 		ReactiveFormsModule,
-		FieldsetModule
+		FieldsetModule,
+		EditUserDialogComponent,
+		ProgressSpinnerModule,
+		EditAuditDialogComponent
 	],
     providers : [
 		ConfirmationService,

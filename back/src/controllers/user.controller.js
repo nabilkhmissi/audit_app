@@ -115,9 +115,10 @@ module.exports.UpdateUserDetails = async function (req, res, next) {
     if(lastName) user.lastName = lastName;  
     if(phone) user.phone = phone;  
     if(adresse) user.adresse = adresse;  
-    await user.save();
-    return res.status(200).json({ message: "Details updated successfully", image : new_image });
+    const updated  =  await user.save();
+    return res.status(200).json({ message: "Details updated successfully", data : updated });
   } catch (error) {
+    console.log(error)
     next(new Error("Error while updating user details"))
   } 
 };

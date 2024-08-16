@@ -22,7 +22,7 @@ export class UserService {
     }
 
     findById(id : string){
-        this._http.get(`${this.baseUrl}/findById/${id}`);
+        return this._http.get(`${this.baseUrl}/findById/${id}`);
     }
     enableUser(id : string){
         return this._http.patch(`${this.baseUrl}/enable/${id}`, {});

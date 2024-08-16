@@ -1,0 +1,51 @@
+<p-dialog 
+    header="Edit Profile" 
+    [modal]="true" 
+    [(visible)]="editDialogVisible" 
+    [style]="{ width: '30rem' }">
+    <span class="p-text-secondary block mb-5">Update user information</span>
+    <form [formGroup]="userForm">
+        <div class="flex align-items-center gap-3 mb-3">
+            <label class="font-semibold w-6rem">
+                First Name
+            </label>
+            <input class="flex-auto" autocomplete="off" formControlName="firstName" />
+        </div>
+        <div class="flex align-items-center gap-3 mb-5">
+            <label class="font-semibold w-6rem">Last Name</label>
+            <input class="flex-auto" formControlName="lastName" />
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-5">
+            <label class="font-semibold w-6rem">Email</label>
+            <input class="flex-auto" formControlName="email" />
+        </div>
+
+        <div class="flex align-items-center gap-3 mb-5">
+            <label class="font-semibold w-6rem">Phone</label>
+            <input class="flex-auto" formControlName="phone" />
+        </div>
+        <div class="flex align-items-center gap-3 mb-5" *ngIf="selectedUser?.role == 'CLIENT'">
+            <label class="font-semibold w-6rem">Company</label>
+            <input class="flex-auto" formControlName="company" />
+        </div>
+        <div class="flex align-items-center gap-3 mb-5">
+            <label class="font-semibold w-6rem">Adresse</label>
+            <input class="flex-auto" formControlName="adresse" />
+        </div>
+    </form>
+    <ng-template pTemplate="footer">
+        <p-button 
+            label="Cancel" 
+            [text]="true" 
+            severity="secondary" 
+            (onClick)="onDismiss()" />
+        <p-button 
+            label="Save" 
+            [outlined]="true" 
+            severity="secondary" 
+            (onClick)="handleUpdate()" 
+            [disabled]="submitted || !userForm.valid"
+          />
+    </ng-template>
+</p-dialog>

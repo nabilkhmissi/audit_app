@@ -3,11 +3,11 @@
     <div class="card">
         <h5 class="mb-5">Create new audit</h5>
         <form [formGroup]="createAuditForm" (ngSubmit)="handleSubmit()">
-            <div class="p-fluid p-formgrid grid">
-                <p-fieldset [toggleable]="true" legend="Auditors" class="p-fluid col-12">                    
+            <div class="p-fluid p-formgrid">
+                <p-fieldset [toggleable]="true" legend="Auditors" class="p-fluid">                    
                     <label>Select auditor</label>
                     <p-multiSelect 
-                        class="custom-ms"
+                        class="custom-ms field md:col-12"
                         [options]="filteredAuditors"  
                         formControlName="auditors" 
                         optionLabel="firstName"
@@ -19,7 +19,8 @@
                     <small *ngIf="createAuditForm.get('auditors').touched && createAuditForm.get('auditors').errors?.['required']" class="p-error">This field is required</small>
                     <small *ngIf="createAuditForm.get('auditors').touched && createAuditForm.get('auditors').errors?.['minlength']" class="p-error">You must select at least 1 auditor</small>
                 </p-fieldset>               
-                <p-fieldset [toggleable]="true" legend="Organisation" class="p-fluid col-12">
+                <br>
+                <p-fieldset [toggleable]="true" legend="Organisation" class="p-fluid">
                     <div class="field col-12 md:col-12">
                         <label>Organisation name</label>
                         <input pInputText type="text" formControlName="organisationName"/>
@@ -40,28 +41,33 @@
                         <input pInputText type="text" formControlName="website"/>
                         <!-- <small *ngIf="createAuditForm.get('website').touched && createAuditForm.get('website').errors?.['required']" class="p-error">Webiste is required</small> -->
                     </div>
-                    <div class="field col-12 md:col-6">
-                        <label>Employees number</label>
-                        <input pInputText type="number" min="0" formControlName="employeesNumber"/>
-                        <small *ngIf="createAuditForm.get('employeesNumber').touched && createAuditForm.get('employeesNumber').errors?.['required']" class="p-error">Employees number is required</small>
-                    </div>
-                    <div class="field col-12 md:col-6">
-                        <label>Employees number in the perimeter</label>
-                        <input pInputText type="number" min="0" formControlName="employeesInPerimeter"/>
-                        <!-- <small *ngIf="createAuditForm.get('employeesInPerimeter').touched && createAuditForm.get('employeesInPerimeter').errors?.['required']" class="p-error">Employees in perimeter is required</small> -->
+                    
+                    <div class="grid p-fluid">
+                        <div class="field col-12 md:col-6">
+                            <label>Employees number</label>
+                            <input pInputText type="number" min="0" formControlName="employeesNumber"/>
+                            <small *ngIf="createAuditForm.get('employeesNumber').touched && createAuditForm.get('employeesNumber').errors?.['required']" class="p-error">Employees number is required</small>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label>Employees number in the perimeter</label>
+                            <input pInputText type="number" min="0" formControlName="employeesInPerimeter"/>
+                            <!-- <small *ngIf="createAuditForm.get('employeesInPerimeter').touched && createAuditForm.get('employeesInPerimeter').errors?.['required']" class="p-error">Employees in perimeter is required</small> -->
+                        </div>
                     </div>
                 </p-fieldset>
-               
-                <p-fieldset [toggleable]="true" legend="Contact" class="p-fluid col-12">
-                    <div class="field col-12 md:col-6">
-                        <label>Contact name</label>
-                        <input pInputText type="text" formControlName="contactName"/>
-                        <small *ngIf="createAuditForm.get('contactName').touched && createAuditForm.get('contactName').errors?.['required']" class="p-error">Contact name is required</small>
-                    </div>
-                    <div class="field col-12 md:col-6">
-                        <label>Contact email</label>
-                        <input pInputText type="text" formControlName="contactEmail"/>
-                        <small *ngIf="createAuditForm.get('contactEmail').touched && createAuditForm.get('contactEmail').errors?.['required']" class="p-error">Contact email is required</small>
+                <br>
+                <p-fieldset [toggleable]="true" legend="Contact" class="p-fluid">
+                    <div class="grid">
+                        <div class="field col-12 md:col-6">
+                            <label>Contact name</label>
+                            <input pInputText type="text" formControlName="contactName"/>
+                            <small *ngIf="createAuditForm.get('contactName').touched && createAuditForm.get('contactName').errors?.['required']" class="p-error">Contact name is required</small>
+                        </div>
+                        <div class="field col-12 md:col-6">
+                            <label>Contact email</label>
+                            <input pInputText type="text" formControlName="contactEmail"/>
+                            <small *ngIf="createAuditForm.get('contactEmail').touched && createAuditForm.get('contactEmail').errors?.['required']" class="p-error">Contact email is required</small>
+                        </div>
                     </div>
                 </p-fieldset>
             </div>

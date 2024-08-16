@@ -33,4 +33,8 @@ export class AuditService {
     findByAuditor(id : string){
         return this._http.get(`${this.baseUrl}/findByAuditor/${id}`);
     }
+
+    updateAudit(id : string, data : any){
+        return this._http.patch(`${this.baseUrl}/updateAudit/${id}`, data);
+    }
 }
