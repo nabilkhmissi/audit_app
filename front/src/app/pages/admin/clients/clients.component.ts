@@ -18,6 +18,7 @@ export class ClientsComponent implements OnInit{
 
   imagesUrl = environment.userImagesUrl;
   clients : any[] = [];
+  filteredClients : any[] = [];
   loading: boolean = false;
   dialogVisible = false;
   selectedUser = null;
@@ -39,6 +40,7 @@ export class ClientsComponent implements OnInit{
       tap((res : any) => {
         this.loading = false;
         this.clients = res.data
+        this.filteredClients = res.data
       }),
       catchError(err => {
         this.loading = false;
@@ -72,6 +74,10 @@ export class ClientsComponent implements OnInit{
 
   clearLoading(){
     this.deleteClientLoading = null;
+  }
+
+  handleSearch(v : any){
+    this.filteredClients = this.clients.filter(u => u.firstName.toLowerCase().includes(v.toLowerCase()))
   }
 
 
