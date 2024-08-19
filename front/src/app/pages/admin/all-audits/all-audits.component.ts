@@ -91,16 +91,9 @@ export class AllAuditsComponent {
     }
 
     handleAuditUpdate(event : any){
-        //get users data from pop up 
         const index = this.audits.findIndex(u => u._id === event._id);
         this.audits[index] = event;
-        //colde modal after update
         this.editDialogVisible = !this.editDialogVisible;
         this.selectedUser = null;
-    }
-
-    showEditDialog(user : any){
-        this.editDialogVisible = !this.editDialogVisible;
-        this.selectedUser = user;
     }
 }

@@ -3,10 +3,12 @@ const { Audit, User } = require("../models");
 //find all audits
 module.exports.findAll = async function (req, res, next) {
   try {
-    const audits = await Audit.find({ isDeleted : false }).populate({
+    const audits = await Audit.find({ isDeleted : false })
+    .populate({
         path: "auditors",
         select: "-password -salt -isEnabled -isDeleted"
       })
+      .populate("client")
       .exec();
     return res.status(200).send({ data : audits, message : "Audits retrieved successfully" });
   } catch (error) {
@@ -38,8 +40,10 @@ module.exports.createAudit = async function (req, res, next) {
       const user = await User.findById(a).select("-password -salt");
       auditors.push(user);
     }
+    const selectedClient = await User.findById(req.body.client);
     const audit = await Audit.create({
       auditors : auditors,
+      client : selectedClient,
       contactEmail : req.body.contactEmail,
       contactName : req.body.contactName,
       contactNumber : req.body.contactNumber,
@@ -49,11 +53,11 @@ module.exports.createAudit = async function (req, res, next) {
       phoneNumber : req.body.phoneNumber,
       website : req.body.website,
       organisationName : req.body.organisationName,
-      status : req.body.status
     })
     
     return res.status(200).send({ data : audit, message : "Audit created successfully" });
   } catch (error) {
+    console.log(error)
     next(Error("Error while creating audit"))
   }
 }
@@ -83,5 +87,45 @@ module.exports.deleteAudit = async function (req, res, next) {
     return res.status(200).send({ message : "Audit deleted successfully" });
   } catch (error) {
     next(Error("Error while deleteing audit"))
+  }
+}
+
+module.exports.updateAudit = async function (req, res, next) {
+  try {
+    const auditors = [];
+    let files = [];
+    if(req.files){
+      req.files.forEach(element => {
+        files.push(element);
+      });
+    }
+    const req_auditors = req.body.auditors;
+    for (const a of req_auditors) {
+      const user = await User.findById(a).select("-password -salt");
+      auditors.push(user);
+    }
+    const audit = await Audit.findByIdAndUpdate(req.params.id, {
+      auditors : auditors,
+      contactEmail : req.body.contactEmail,
+      contactName : req.body.contactName,
+      contactNumber : req.body.contactNumber,
+      employeesInPerimeter : req.body.employeesInPerimeter,
+      employeesNumber : req.body.employeesNumber,
+      files : files,
+      phoneNumber : req.body.phoneNumber,
+      website : req.body.website,
+      organisationName : req.body.organisationName,
+      progress : req.body.progress
+    });
+    const updated = await Audit.findById(req.params.id).populate({
+      path: "auditors",
+      select: "-password -salt -isEnabled -isDeleted"
+    })
+    .exec();
+    
+    
+    return res.status(200).send({ data : updated, message : "Audit created successfully" });
+  } catch (error) {
+    next(Error("Error while creating audit"))
   }
 }

@@ -21,7 +21,7 @@ export class SignupRequestsComponent implements OnInit{
   filteredUsers : any[] = [];
   rowGroupMetadata: any;
   loading: boolean = false;
-  displayInfos = false;
+  dialogVisible = false;
   selectedUser = null;
 
   approveLoading : string | null = null;
@@ -57,7 +57,7 @@ export class SignupRequestsComponent implements OnInit{
 
   showDetails(user : any){
     this.selectedUser = user;
-    this.displayInfos = true;
+    this.dialogVisible = true;
   }
 
   handleUserApprove(){

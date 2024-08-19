@@ -20,11 +20,13 @@ export class AddAuditComponent  implements OnInit {
    
   submitted = false;
   auditors: any[] = [];
+  clients: any[] = [];
   imagesUrl = environment.userImagesUrl;
 
   createAuditForm : FormGroup;
 
   filteredAuditors: any[] = [];
+
   selectedAuditors: any[] = [];
 
   selectedAuditor = [];
@@ -43,11 +45,20 @@ export class AddAuditComponent  implements OnInit {
         }
     )
   }
+  fetchClients(){
+    this._user.findAllClients().subscribe(
+        (res : any) => {
+            this.clients = res.data
+        }
+    )
+  }
 
   ngOnInit() {
     this.fetchAuditors();
+    this.fetchClients();
     this.createAuditForm =  this._formBuilder.group({
         auditors : [this.selectedAuditor.map(e=>e._id), [ Validators.required, Validators.minLength(1) ]],
+        client : ['', Validators.required],
         organisationName : ['', Validators.required],
         contactNumber : ['', Validators.required],
         phoneNumber : ['', Validators.required],
@@ -57,6 +68,7 @@ export class AddAuditComponent  implements OnInit {
         contactName : ['', Validators.required],
         contactEmail : ['', Validators.required],
     })
+    this.createAuditForm.valueChanges.pipe(tap(console.log)).subscribe()
   }
   filterAuditors(event: any) {
       const filtered: any[] = [];

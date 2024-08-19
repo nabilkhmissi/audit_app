@@ -1,1 +1,107 @@
-<p>edit-audit-dialog works!</p>
+<p-dialog 
+header="Edit audit details" 
+[modal]="true" 
+[(visible)]="editDialogVisible" 
+[style]="{ width: '50rem' }"
+(onHide)="onDismiss()"
+>
+
+
+    <form [formGroup]="createAuditForm">
+        <div class="p-fluid p-formgrid">
+            <div class="flex align-items-center gap-3 mb-5">
+                <label class="font-semibold w-10rem">Select client</label>
+                <p-dropdown 
+                [options]="clients" 
+                [showClear]="true" 
+                formControlName="client" 
+                optionLabel="firstName" 
+                placeholder="Select a client"
+                optionValue="_id"
+                class="flex-auto"
+                />
+                <small *ngIf="createAuditForm.get('client').touched && createAuditForm.get('client').errors?.['required']" class="p-error">This field is required</small>
+            </div>
+            <div class="flex align-items-center gap-3 mb-5">
+                <label class="font-semibold w-10rem">Select auditor</label>
+                <p-multiSelect class="flex-auto" [options]="filteredAuditors" formControlName="auditors"
+                    optionLabel="firstName" optionValue="_id" display="chip" [showClear]="true"
+                    defaultLabel="Select auditors">
+                </p-multiSelect>
+                <small
+                    *ngIf="createAuditForm.get('auditors').touched && createAuditForm.get('auditors').errors?.['required']"
+                    class="p-error">This field is required
+                </small>
+                <small
+                    *ngIf="createAuditForm.get('auditors').touched && createAuditForm.get('auditors').errors?.['minlength']"
+                    class="p-error">You must select at least 1 auditor
+                </small>
+            </div>
+
+            <br>
+            <div class="flex align-items-center gap-3 mb-5">
+                <label class="font-semibold w-10rem">Organisation name</label>
+                <input pInputText class="flex-auto" type="text" formControlName="organisationName" />
+                <small
+                    *ngIf="createAuditForm.get('organisationName').touched && createAuditForm.get('organisationName').errors?.['required']"
+                    class="p-error">Organisation name is required
+                </small>
+            </div>
+            <div class="flex align-items-center gap-3 mb-5">
+                <label class="font-semibold w-10rem">Contract number</label>
+                <input pInputText type="text" formControlName="contactNumber" class="flex-auto"/>
+                <small
+                    *ngIf="createAuditForm.get('contactNumber').touched && createAuditForm.get('contactNumber').errors?.['required']"
+                    class="p-error">Contact number is required</small>
+            </div>
+            <div class="flex align-items-center gap-3 mb-5">
+                <label class="font-semibold w-10rem">Phone number</label>
+                <input pInputTextarea rows="4" formControlName="phoneNumber" class="flex-auto"/>
+                <small
+                    *ngIf="createAuditForm.get('phoneNumber').touched && createAuditForm.get('phoneNumber').errors?.['required']"
+                    class="p-error">Phone number is required</small>
+            </div>
+            <div class="flex align-items-center gap-3 mb-5">
+                <label class="font-semibold w-10rem">Website</label>
+                <input pInputText type="text" formControlName="website" class="flex-auto"/>
+                <!-- <small *ngIf="createAuditForm.get('website').touched && createAuditForm.get('website').errors?.['required']" class="p-error">Webiste is required</small> -->
+            </div>
+            <div class="flex align-items-center gap-3 mb-5 ">
+                <label class="font-semibold w-10rem">Employees number</label>
+                <input pInputText type="number" min="0" formControlName="employeesNumber" class="flex-auto"/>
+                <small
+                    *ngIf="createAuditForm.get('employeesNumber').touched && createAuditForm.get('employeesNumber').errors?.['required']"
+                    class="p-error">Employees number is required</small>
+            </div>
+            <div class="flex align-items-center gap-3 mb-5">
+                <label class="font-semibold w-10rem">Employees number in the perimeter</label>
+                <input pInputText type="number" min="0" formControlName="employeesInPerimeter" class="flex-auto"/>
+                <!-- <small *ngIf="createAuditForm.get('employeesInPerimeter').touched && createAuditForm.get('employeesInPerimeter').errors?.['required']" class="p-error">Employees in perimeter is required</small> -->
+            </div>
+
+            <br>
+            <div class="flex align-items-center gap-3 mb-5">
+                <label class="font-semibold w-10rem">Contact name</label>
+                <input pInputText type="text" formControlName="contactName" class="flex-auto"/>
+                <small
+                    *ngIf="createAuditForm.get('contactName').touched && createAuditForm.get('contactName').errors?.['required']"
+                    class="p-error">Contact name is required</small>
+            </div>
+            <div class="flex align-items-center gap-3 mb-5">
+                <label class="font-semibold w-10rem">Contact email</label>
+                <input pInputText type="text" formControlName="contactEmail" class="flex-auto"/>
+                <small
+                    *ngIf="createAuditForm.get('contactEmail').touched && createAuditForm.get('contactEmail').errors?.['required']"
+                    class="p-error">Contact email is required</small>
+            </div>            
+        </div>
+    </form>
+
+
+
+    <ng-template pTemplate="footer">
+        <p-button label="Cancel" [text]="true" severity="secondary" (onClick)="onDismiss()" />
+        <p-button label="Save" [outlined]="true" severity="secondary" (onClick)="handleUpdate()"
+            [disabled]="submitted || !createAuditForm.valid" />
+    </ng-template>
+</p-dialog>

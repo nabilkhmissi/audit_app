@@ -8,5 +8,6 @@ router.patch("/assign/:id", AuditController.assignAudit);
 router.get("/findAll", AuditController.findAll);
 router.delete("/delete/:id", AuditController.deleteAudit);
 router.get("/findByAuditor/:id", AuditController.findByAuditor);
+router.patch("/updateAudit/:id", AuditController.updateAudit);
 
 module.exports = router;

@@ -2,12 +2,9 @@ import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angu
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 import { UserService } from 'src/app/services/user.service';
-import { catchError, tap, throwError } from 'rxjs';
 import { DialogModule } from 'primeng/dialog';
 import { CommonModule } from '@angular/common';
-import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { ButtonModule } from 'primeng/button';
-import { LoadingService } from 'src/app/services/loading.service';
 import { MessageService } from 'primeng/api';
 
 @Component({
@@ -18,7 +15,6 @@ import { MessageService } from 'primeng/api';
     DialogModule,
     CommonModule,
     ButtonModule,
-    ProgressSpinnerModule
   ],
   templateUrl: './edit-user-dialog.component.html',
   styleUrl: './edit-user-dialog.component.scss'

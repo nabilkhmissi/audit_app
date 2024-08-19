@@ -4,6 +4,19 @@
         <h5 class="mb-5">Create new audit</h5>
         <form [formGroup]="createAuditForm" (ngSubmit)="handleSubmit()">
             <div class="p-fluid p-formgrid">
+                <p-fieldset [toggleable]="true" legend="Client" class="p-fluid">                    
+                    <label>Select client</label>
+                    <p-dropdown 
+                    [options]="clients" 
+                    [showClear]="true" 
+                    formControlName="client" 
+                    optionLabel="firstName" 
+                    placeholder="Select a client"
+                    optionValue="_id"
+                    />
+                    <small *ngIf="createAuditForm.get('client').touched && createAuditForm.get('client').errors?.['required']" class="p-error">This field is required</small>
+                </p-fieldset>               
+                <br>
                 <p-fieldset [toggleable]="true" legend="Auditors" class="p-fluid">                    
                     <label>Select auditor</label>
                     <p-multiSelect 

@@ -5,7 +5,7 @@ const { genSalt, hashPassword } = require("../utils/password-utility");
 //find all users
 module.exports.findAll = async function (req, res, next) {
   try {
-    const users = await User.find({ isDeleted : false })
+    const users = await User.find({ isDeleted : false, isEnabled : true })
     return res.status(200).send({message : "Users retrieved successfully", data :  users});
   } catch (error) {
     next(Error("Error while getting enabled users"))

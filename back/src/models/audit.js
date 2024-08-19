@@ -16,6 +16,8 @@ const AuditSchema = new Schema({
         isDeleted : { type : Boolean , default : false },
         status : { type : String , default : AuditStatus.pending },
         files : [ { type : String  } ],
+        progress : { type : Number, default : 0 },
+        client : { type: mongoose.Types.ObjectId, ref: "User", required : true}
     },
     {
         timestamps: true
@@ -25,7 +27,7 @@ const AuditSchema = new Schema({
 AuditSchema.methods.toJSON = function () {
   var obj = this.toObject();
   delete obj.__v;
-  delete obj.createdAt;
+  // delete obj.createdAt;
   delete obj.updatedAt;
   delete obj.isDeleted;
   return obj;

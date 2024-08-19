@@ -41,6 +41,7 @@ import { FieldsetModule } from "primeng/fieldset";
 import { EditUserDialogComponent } from "./dialogs/edit-user-dialog/edit-user-dialog.component";
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { EditAuditDialogComponent } from "./dialogs/edit-audit-dialog/edit-audit-dialog.component";
+import { TooltipModule } from "primeng/tooltip";
 
 
 
@@ -105,7 +106,8 @@ import { EditAuditDialogComponent } from "./dialogs/edit-audit-dialog/edit-audit
 		FieldsetModule,
 		EditUserDialogComponent,
 		ProgressSpinnerModule,
-		EditAuditDialogComponent
+		EditAuditDialogComponent,
+		TooltipModule
 	],
     providers : [
 		ConfirmationService,

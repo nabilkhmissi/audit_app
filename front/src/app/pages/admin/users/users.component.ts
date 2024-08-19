@@ -21,10 +21,10 @@ export class UsersComponent implements OnInit{
   loading: boolean = false;
   deleteUserloading  : string | null = null;
   selectedUser : any | null = null;
+  editDialogVisible = false;
  
 
   dialogVisible = false;
-  editDialogVisible = false;
 
 
   constructor(
@@ -84,7 +84,7 @@ export class UsersComponent implements OnInit{
     //get users data from pop up 
     const index = this.users.findIndex(u => u._id === event._id);
     this.users[index] = event;
-    //colde modal after update
+    //close modal after update
     this.editDialogVisible = !this.editDialogVisible;
     this.selectedUser = null;
   }
@@ -93,4 +93,5 @@ export class UsersComponent implements OnInit{
     this.editDialogVisible = !this.editDialogVisible;
     this.selectedUser = user;
   }
+
 }
