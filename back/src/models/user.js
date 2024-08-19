@@ -34,7 +34,7 @@ UserSchema.methods.toJSON = function () {
   delete obj.salt;
   delete obj.__v;
   // delete obj.createdAt;
-  delete obj.updatedAt;
+  // delete obj.updatedAt;
   return obj;
 }
 

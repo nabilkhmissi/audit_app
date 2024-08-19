@@ -55,6 +55,9 @@ import { AdminGuard } from './guards/admin.guard';
                             {   
                                 path : 'signup-requests', loadComponent : ()=>import('./pages/admin/signup-request/signup-request.component').then((c)=>c.SignupRequestsComponent)
                             },
+                            {   
+                                path : 'deleted-users', loadComponent : ()=>import('./pages/admin/deleted-users/deleted-users.component').then((c)=>c.DeletedUsersComponent)
+                            },
                         ]
                     },
                     {

@@ -27,8 +27,11 @@ export class UserService {
     enableUser(id : string){
         return this._http.patch(`${this.baseUrl}/enable/${id}`, {});
     }
-    findEnabled(enabled : boolean, role : string){
+    findEnabled(enabled : boolean, role : string, deleted? : boolean | null){
         return this._http.get(`${this.baseUrl}/findEnabled?enabled=${enabled}&role=${role}`);
+    }
+    findDeleted(){
+        return this._http.get(`${this.baseUrl}/findDeleted`);
     }
     updateDetails(id : string, data : any){
         return this._http.patch(`${this.baseUrl}/updateDetails/${id}`, data);

@@ -5,6 +5,7 @@ const { uploader } = require('../utils');
 
 router.get('/findAll', UserController.findAll);
 router.get('/findEnabled', UserController.findEnabled);
+router.get('/findDeleted', UserController.findDeleted);
 router.get('/findAllAuditors', UserController.findAllAuditors);
 router.get('/findAllClients', UserController.findAllClients);
 router.get('/findById/:id', UserController.findById);

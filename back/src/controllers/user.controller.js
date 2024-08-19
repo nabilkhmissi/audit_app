@@ -39,6 +39,17 @@ module.exports.findEnabled = async function (req, res, next) {
     next(new Error("Error while getting users"));
   }
 };
+module.exports.findDeleted = async function (req, res, next) {
+  try {
+    const query = { isDeleted: true };
+  
+    const data = await User.find(query);
+
+    return res.status(200).send({ message: "Users retrieved successfully", data: data });
+  } catch (error) {
+    next(new Error("Error while getting users"));
+  }
+};
 //find all clients
 module.exports.findAllClients = async function (req, res, next) {
   try {
