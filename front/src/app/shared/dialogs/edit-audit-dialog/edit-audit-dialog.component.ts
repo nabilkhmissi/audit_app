@@ -6,7 +6,6 @@ import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { tap } from 'rxjs';
 import { AuditService } from 'src/app/services/audit.service';
 import { UserService } from 'src/app/services/user.service';
 import { environment } from 'src/environments/environment';
@@ -108,7 +107,11 @@ export class EditAuditDialogComponent implements OnInit, OnChanges{
 
   ngOnChanges(changes: any) {
     if (changes.selectedAudit && this.selectedAudit) {
-      this.createAuditForm.patchValue({...this.selectedAudit, auditors : this.selectedAudit.auditors.map(e =>e._id),  client : this.selectedAudit.client._id});
+      this.createAuditForm.patchValue({
+        ...this.selectedAudit, 
+        auditors : this.selectedAudit.auditors.map(e =>e._id), 
+        client : this.selectedAudit.client._id
+      });
     }
   }
 

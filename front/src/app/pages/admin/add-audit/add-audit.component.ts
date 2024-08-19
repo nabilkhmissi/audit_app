@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MessageService } from 'primeng/api';
 import { catchError, of, tap } from 'rxjs';
 import { AuditService } from 'src/app/services/audit.service';
 import { ToastService } from 'src/app/services/toast.service';
@@ -35,7 +36,8 @@ export class AddAuditComponent  implements OnInit {
     private _user : UserService, 
     private _formBuilder : FormBuilder,
     private _toast : ToastService,
-    private _audit : AuditService
+    private _audit : AuditService,
+    private _message : MessageService
 ) { }
 
   fetchAuditors(){
@@ -68,7 +70,6 @@ export class AddAuditComponent  implements OnInit {
         contactName : ['', Validators.required],
         contactEmail : ['', Validators.required],
     })
-    this.createAuditForm.valueChanges.pipe(tap(console.log)).subscribe()
   }
   filterAuditors(event: any) {
       const filtered: any[] = [];
@@ -90,8 +91,9 @@ export class AddAuditComponent  implements OnInit {
     }
     this.submitted = true;
     this._audit.createAudit(this.createAuditForm.value).pipe(
-      tap(r => {
+      tap((r: any) => {
         this.submitted = false;
+        this._message.add({ severity : 'success', summary : r.message });
       }),
       catchError(err => {
         this.submitted = false;

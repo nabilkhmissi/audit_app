@@ -50,7 +50,6 @@ export class EditUserDialogComponent implements OnInit, OnChanges{
   }
 
   handleUpdate(){
-    // this.callback.emit(this.userForm.value);
     if(!this.userForm.valid){
       this._message.add({ severity: 'error', summary : 'Please fill all fields' });
       return;
@@ -59,9 +58,9 @@ export class EditUserDialogComponent implements OnInit, OnChanges{
     this._user.updateDetails(this.selectedUser._id,  this.userForm.value).subscribe(
       {
         next : (res : any)=> {
-          this._message.add({ severity: 'success', summary : res.message });
           this.submitted = false;
           this.callback.emit(res.data);
+          this._message.add({ severity: 'success', summary : res.message });
         },
         error : (err : any)=> {
           this.submitted = false;

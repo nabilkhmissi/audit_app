@@ -14,6 +14,7 @@ import { PhotoService } from './demo/service/photo.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { ErrorInterceptor } from './interceptors/error.interceptor';
 import { SharedModule } from './shared/shared.module';
+import { MessageService } from 'primeng/api';
 
 @NgModule({
     declarations: [AppComponent, NotfoundComponent],
@@ -27,6 +28,7 @@ import { SharedModule } from './shared/shared.module';
         { provide: LocationStrategy, useClass: PathLocationStrategy },
         CountryService, CustomerService, EventService, IconService, NodeService,
         PhotoService, ProductService,
+        MessageService,
         { provide : HTTP_INTERCEPTORS, useClass : ErrorInterceptor, multi : true }
     ],
     bootstrap: [AppComponent],

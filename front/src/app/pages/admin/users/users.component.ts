@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { BehaviorSubject, catchError, of, tap } from 'rxjs';
+import { MessageService } from 'primeng/api';
+import { catchError, of, tap } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { environment } from 'src/environments/environment';
@@ -28,7 +29,8 @@ export class UsersComponent implements OnInit{
 
 
   constructor(
-    private _users : UserService
+    private _users : UserService,
+    private _message : MessageService,
   ){}
 
   ngOnInit(): void {
@@ -41,7 +43,7 @@ export class UsersComponent implements OnInit{
       tap((res : any) => {
         this.loading = false;
         this.users = res.data
-        this.filteredUsers = res.data
+        this.filteredUsers = res.data;
       }),
       catchError(err => {
         this.loading = false;
@@ -61,9 +63,10 @@ export class UsersComponent implements OnInit{
 
   handleUserDelete(){
     this._users.delete(this.deleteUserloading).subscribe({
-      next : (res)=> {
+      next : (res : any)=> {
         this.filteredUsers = this.filteredUsers.filter(u => u._id !== this.deleteUserloading)
-        this.clearLoading()
+        this.clearLoading();
+        this._message.add({ severity : 'success', summary : res.message })
       },
       error : (err)=> {
         this.clearLoading()
@@ -81,10 +84,8 @@ export class UsersComponent implements OnInit{
   }
 
   handleUserUpdate(event : any){
-    //get users data from pop up 
     const index = this.users.findIndex(u => u._id === event._id);
     this.users[index] = event;
-    //close modal after update
     this.editDialogVisible = !this.editDialogVisible;
     this.selectedUser = null;
   }

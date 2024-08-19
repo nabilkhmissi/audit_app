@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MessageService } from 'primeng/api';
 import { catchError, map, of, tap } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -30,6 +31,7 @@ export class SignupRequestsComponent implements OnInit{
 
   constructor(
     private _users : UserService,
+    private _message : MessageService,
   ){}
 
 
@@ -63,9 +65,10 @@ export class SignupRequestsComponent implements OnInit{
   handleUserApprove(){
     this._users.enableUser(this.approveLoading).subscribe(
       {
-        next : res => {
+        next : (res : any) => {
           this.users = this.users.filter(u => u._id !== this.approveLoading)
           this.clearLoading();
+          this._message.add({ severity : 'success', summary : res.message })
         },
         error : (err)=>{
           this.clearLoading();
@@ -77,8 +80,9 @@ export class SignupRequestsComponent implements OnInit{
   handleUserDelete(){
     this._users.delete(this.deleteLoading).subscribe(
       {
-        next : res => {
-          this.users = this.users.filter(u => u._id !== this.deleteLoading)
+        next : (res : any)=> {
+          this.users = this.users.filter(u => u._id !== this.deleteLoading);
+          this._message.add({ severity : 'success', summary : res.message })
         },
         error : (err)=>{
           this.clearLoading()

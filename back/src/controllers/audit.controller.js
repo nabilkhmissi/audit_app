@@ -124,7 +124,7 @@ module.exports.updateAudit = async function (req, res, next) {
     .exec();
     
     
-    return res.status(200).send({ data : updated, message : "Audit created successfully" });
+    return res.status(200).send({ data : updated, message : "Audit updated successfully" });
   } catch (error) {
     next(Error("Error while creating audit"))
   }
