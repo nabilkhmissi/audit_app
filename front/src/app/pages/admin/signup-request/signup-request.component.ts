@@ -81,7 +81,8 @@ export class SignupRequestsComponent implements OnInit{
     this._users.delete(this.deleteLoading).subscribe(
       {
         next : (res : any)=> {
-          this.users = this.users.filter(u => u._id !== this.deleteLoading);
+          this.users = this.users.filter(u => u._id !== res.data._id);
+          this.filteredUsers = this.users;
           this._message.add({ severity : 'success', summary : res.message })
         },
         error : (err)=>{

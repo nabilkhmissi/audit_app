@@ -83,8 +83,8 @@ module.exports.deleteAudit = async function (req, res, next) {
   try {
     const audit = await Audit.findById(req.params.id);
     audit.isDeleted = !audit.isDeleted;
-    await audit.save()
-    return res.status(200).send({ message : "Audit deleted successfully" });
+    const deleted = await audit.save()
+    return res.status(200).send({ message : "Audit deleted successfully", data : deleted });
   } catch (error) {
     next(Error("Error while deleteing audit"))
   }

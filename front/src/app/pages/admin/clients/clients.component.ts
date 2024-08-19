@@ -58,7 +58,8 @@ export class ClientsComponent implements OnInit{
       {
         next : (res : any)=>{
           this._message.add({ severity : 'success', summary : res.message });
-          this.clients = this.clients.filter(c => c._id !== this.deleteClientLoading);
+          this.clients = this.clients.filter(c => c._id !== res.data._id);
+          this.filteredClients = this.clients;
           this.clearLoading()
         },
         error : (err)=>{

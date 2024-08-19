@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { MessageService } from 'primeng/api';
 import { Customer } from 'src/app/demo/api/customer';
 import { AuditService } from 'src/app/services/audit.service';
 import { UserService } from 'src/app/services/user.service';
@@ -35,7 +36,8 @@ export class AllAuditsComponent {
 
     constructor(
         private _audits : AuditService,
-        private _user : UserService
+        private _user : UserService,
+        private _message : MessageService
     ) { }
 
     ngOnInit() {
@@ -73,9 +75,11 @@ export class AllAuditsComponent {
     handleAuditDelete(){
         this._audits.deleteAudit(this.auditDeleteLoading).subscribe(
             {
-                next : (res)=> {
-                    this.audits = this.audits.filter(a => a._id !== this.auditDeleteLoading)
+                next : (res : any)=> {
+                    this.audits = this.audits.filter(a => a._id != res.data._id)
+                    this.filteredAudits = this.audits;
                     this.clearLoading();
+                    this._message.add({ severity : 'success', summary : res.message })
                 },
                 error : (err)=> this.clearLoading()
             }
