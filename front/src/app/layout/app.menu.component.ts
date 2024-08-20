@@ -53,10 +53,18 @@ export class AppMenuComponent implements OnInit {
                         label : 'Audits',
                         items : [
                             { label: 'All audits', icon: 'pi pi-users', routerLink: ['admin/all-audits'] },
-                            { label: 'Add audit', icon: 'pi pi-user-plus', routerLink: ['admin/add-audit'] }
+                            { label: 'Add audit', icon: 'pi pi-user-plus', routerLink: ['admin/add-audit'] },
+                            { 
+                                label: 'Add audit stepper', 
+                                icon: 'pi pi-user-plus', 
+                                routerLink: ['admin/add-audit-stepper'],
+                                items : [
+                                    { label: 'contact', icon: 'pi pi-user', routerLink: ['admin/add-audit-contact'] },
+                                    { label: 'Organisation', icon: 'pi pi-user', routerLink: ['admin/add-audit-organisation'] },
+                                ]
+                             },
                         ]
                     },
-                    { label: 'Audits', icon: 'pi pi-database', routerLink: ['admin/audits'] },
                 ],
                 roles : ["ADMIN"]
             },
