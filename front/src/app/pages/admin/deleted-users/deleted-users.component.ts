@@ -41,13 +41,10 @@ export class DeletedUsersComponent {
   getAllDeleted(){
     this.loading = true;
     this._users.findEnabled(false, "").pipe(
-      map((r : any) => {
-        return r.data.map(e => ({ ...e, image : `${environment.userImagesUrl}/${e.image}` }))
-      }),
       tap((res : any) => {
         this.loading = false;
-        this.users = res;
-        this.filteredUsers = res
+        this.users = res.data;
+        this.filteredUsers = this.users
       }),
       catchError(err => {
         this.loading = false;

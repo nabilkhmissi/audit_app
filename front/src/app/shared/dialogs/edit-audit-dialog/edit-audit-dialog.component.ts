@@ -112,6 +112,7 @@ export class EditAuditDialogComponent implements OnInit, OnChanges{
         auditors : this.selectedAudit.auditors.map(e =>e._id), 
         client : this.selectedAudit.client._id
       });
+      console.log(this.createAuditForm.value)
     }
   }
 

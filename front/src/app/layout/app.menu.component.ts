@@ -38,6 +38,8 @@ export class AppMenuComponent implements OnInit {
                         items : [
                             { label: 'All users', icon: 'pi pi-fw pi-users', routerLink: ['admin/users'] },
                             { label: 'Add user', icon: 'pi pi-fw pi-user-plus', routerLink: ['admin/add-user'] },
+                            { label: 'Signup requests', icon: 'pi pi-users', routerLink: ['admin/signup-requests'] },
+                            { label: 'Deleted users', icon: 'pi pi-user-minus', routerLink: ['admin/deleted-users'] },
                         ]
                     },
                     {
@@ -55,8 +57,6 @@ export class AppMenuComponent implements OnInit {
                         ]
                     },
                     { label: 'Audits', icon: 'pi pi-database', routerLink: ['admin/audits'] },
-                    { label: 'Signup requests', icon: 'pi pi-users', routerLink: ['admin/signup-requests'] },
-                    { label: 'Deleted users', icon: 'pi pi-user-minus', routerLink: ['admin/deleted-users'] },
                 ],
                 roles : ["ADMIN"]
             },

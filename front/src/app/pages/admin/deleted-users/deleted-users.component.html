@@ -11,7 +11,7 @@
 							<i class="pi pi-search"></i>
 							<input pInputText type="text" #filter (input)="handleSearch($event)" placeholder="Search user" class="w-full"/>
 						</span>
-						<p-button label="Reload" [loading]="loading" (onClick)="getAllDisabled()" class="mx-2"></p-button>
+						<p-button label="Reload" [loading]="loading" (onClick)="getAllDeleted()" class="mx-2"></p-button>
 					</div>
 				</ng-template>
 				<!-- table header -->
@@ -53,7 +53,7 @@
 				<ng-template pTemplate="body" let-user>
 					<tr>
 						<td>
-							<img [alt]="user.firstName +' ' + user.lastName" [src]="user.image" width="34" style="vertical-align: middle"/>
+							<img [alt]="user.firstName +' ' + user.lastName" [src]="imagesUrl+'/'+user?.image" width="34" style="vertical-align: middle"/>
 							<span class="image-text ml-2">{{user.firstName}} {{user.lastName}}</span>
 						</td>
 						 <td>
@@ -79,8 +79,8 @@
 						<td>
 							<div style="display: flex;justify-content: center;gap: 5px;">
 							<button pButton pRipple type="button" icon="pi pi-eye" class="p-button-rounded p-button-outlined" (click)="showDetails(user)"></button>
-							<p-button icon="pi pi-check" severity="danger" severity="success" [rounded]="true" [outlined]="true"  [loading]="user._id === approveLoading" [disabled]="user._id === approveLoading" key="accept" (click)="confirmationDialog1.show();selectUserToApprove(user._id)"></p-button>
-							<p-button icon="pi pi-trash" severity="danger" [rounded]="true" [outlined]="true" [loading]="user._id === deleteLoading" [disabled]="user._id === deleteLoading" key="delete" (click)="confirmationDialog.show();selectUserToDelete(user._id)"></p-button>
+							<!-- <p-button icon="pi pi-refresh" severity="danger" severity="success" [rounded]="true" [outlined]="true"  [loading]="user._id === approveLoading" [disabled]="user._id === approveLoading" key="accept" (click)="confirmationDialog1.show();selectUserToApprove(user._id)"></p-button> -->
+							<p-button icon="pi pi-refresh" severity="success" [rounded]="true" [outlined]="true" [loading]="user._id === deleteLoading" [disabled]="user._id === deleteLoading" key="delete" (click)="confirmationDialog.show();selectUserToDelete(user._id)"></p-button>
 							</div>
 						</td>
 					</tr>
