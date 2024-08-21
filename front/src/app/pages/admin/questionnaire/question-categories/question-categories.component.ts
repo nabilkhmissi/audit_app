@@ -79,8 +79,8 @@ export class QuestionCategoriesComponent {
 
   handleCallback(event : any){
     if(event.type === 'update'){
-        const index = this.categories.findIndex(u => u._id === event._id);
-        this.categories[index] = event;
+        const index = this.categories.findIndex(u => u._id === event.data._id);
+        this.categories[index] = event.data;
     }else{
         this.categories.push(event.data);
         this.filteredCategories = this.categories;

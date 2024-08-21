@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 const QuestionCategorySchema = new Schema({
     label: { type: String, required : true },
     subcategories : [{ type : String }],
-    isDeleted : { type : Boolean, default : false }
 },
 {
   timestamps: true
