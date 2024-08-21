@@ -47,14 +47,12 @@ export class AddQuestionCategoryDialogComponent {
       this._message.add({ severity: 'error', summary : 'Please fill all fields' });
       return;
     }
-    console.log(this.createCategoryForm.value);
     this.submitted = true;
     if(this.selectedCategory){
       this.updateCategory();
-      return;
-    }
-    this.createCategory()
-    
+    }else{
+      this.createCategory()
+    }    
   }
 
   createCategory(){
@@ -63,7 +61,7 @@ export class AddQuestionCategoryDialogComponent {
         next : (res : any)=> {
           this._message.add({ severity: 'success', summary : res.message });
           this.submitted = false;
-          this.callback.emit(res.data);
+          this.callback.emit({type:  'add', data: res.data});
         },
         error : (err : any)=> {
           this.submitted = false;
@@ -79,7 +77,7 @@ export class AddQuestionCategoryDialogComponent {
         next : (res : any)=> {
           this._message.add({ severity: 'success', summary : res.message });
           this.submitted = false;
-          this.callback.emit(res.data);
+          this.callback.emit({type:  'update', data: res.data});
         },
         error : (err : any)=> {
           this.submitted = false;

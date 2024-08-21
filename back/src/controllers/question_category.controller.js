@@ -27,10 +27,8 @@ module.exports.create = async function (req, res, next) {
 //delete category
 module.exports.delete = async function (req, res, next) {
   try {
-    const question = await QuestionCategory.findById(req.params.id);
-    question.isDeleted = !question.isDeleted;
-    const deleted = await question.save()
-    return res.status(200).send({ message : "Category deleted successfully", data : deleted });
+    await QuestionCategory.deleteOne({ _id : req.params.id });
+    return res.status(200).send({ message : "Category deleted successfully", data : req.params.id });
   } catch (error) {
     next(Error("Error while deleteing category"))
   }

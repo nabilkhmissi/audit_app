@@ -1,9 +1,13 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-custom-confirm-dialog',
   standalone : true,
+  imports : [
+    ConfirmDialogModule
+  ],
   templateUrl: './custom-confirm-dialog.component.html',
   styleUrl: './custom-confirm-dialog.component.scss'
 })

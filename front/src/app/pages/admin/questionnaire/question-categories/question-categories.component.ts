@@ -59,7 +59,7 @@ export class QuestionCategoriesComponent {
       this._questionnaire.deleteCategory(this.categoryDeleteLoading).subscribe(
           {
               next : (res : any)=> {
-                  this.categories = this.categories.filter(a => a._id != res.data._id)
+                  this.categories = this.categories.filter(a => a._id != res.data)
                   this.filteredCategories = this.categories;
                   this.clearLoading();
                   this._message.add({ severity : 'success', summary : res.message })
@@ -77,10 +77,15 @@ export class QuestionCategoriesComponent {
       this.filteredCategories = this.categories.filter(u => u.label.toLowerCase().includes(e.target.value.toLowerCase()))
   }
 
-  handleCategoryUpdate(event : any){
-      const index = this.categories.findIndex(u => u._id === event._id);
-      this.categories[index] = event;
-      this.editDialogVisible = !this.editDialogVisible;
+  handleCallback(event : any){
+    if(event.type === 'update'){
+        const index = this.categories.findIndex(u => u._id === event._id);
+        this.categories[index] = event;
+    }else{
+        this.categories.push(event.data);
+        this.filteredCategories = this.categories;
+    }
+    this.editDialogVisible = !this.editDialogVisible;
   }
 
   selectCategoryToDelete(c : any){
