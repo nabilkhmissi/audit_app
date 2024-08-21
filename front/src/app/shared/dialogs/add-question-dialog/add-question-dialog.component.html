@@ -24,6 +24,17 @@
                     />
                     <small *ngIf="createAuditForm.get('client').touched && createAuditForm.get('client').errors?.['required']" class="p-error">This field is required</small>
                 </div> -->
+                <p-dropdown 
+                    [options]="categories" 
+                    formControlName="category"
+                    optionLabel="label" 
+                    [showClear]="true" 
+                    placeholder="Select Category" />
+                <p-dropdown 
+                    [options]="subCategories" 
+                    formControlName="subcategory"
+                    [showClear]="true" 
+                    placeholder="Select Category" />
             </div>
         </form>
         <div class="field col-12">

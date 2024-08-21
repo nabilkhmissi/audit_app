@@ -1,3 +1,4 @@
+import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
@@ -6,15 +7,14 @@ import { DialogModule } from 'primeng/dialog';
 import { DropdownModule } from 'primeng/dropdown';
 import { QuestionService } from 'src/app/services/question.service';
 import { environment } from 'src/environments/environment';
+import { SharedModule } from '../../shared.module';
+import { tap } from 'rxjs';
 
 @Component({
   selector: 'app-add-question-dialog',
   standalone: true,
   imports: [
-    DialogModule,
-    ReactiveFormsModule,
-    DropdownModule,
-    ButtonModule
+    SharedModule
   ],
   templateUrl: './add-question-dialog.component.html',
   styleUrl: './add-question-dialog.component.scss'
@@ -28,7 +28,8 @@ export class AddQuestionDialogComponent {
   imagesUrl = environment.userImagesUrl;
   submitted = false;
 
-  clients: any[] = [];
+  categories: any[] = [];
+  subCategories: any[] = [];
   dialogHeader = "Create new question";
 
   constructor(
@@ -40,12 +41,31 @@ export class AddQuestionDialogComponent {
   createQuestionForm : FormGroup; 
 
   ngOnInit(): void {
+    this.fetchCategories();
     this.createQuestionForm =  this.fb.group({
-      question : ['', [ Validators.required, Validators.minLength(10) ]],
-  })  
+      question : ['', [ Validators.required ]],
+      category : ['', [ Validators.required ]],
+      subcategory : ['', [ Validators.required ]],
+    })
+    
+    this.createQuestionForm.valueChanges.pipe(
+      tap(value => {
+        if(value){
+          console.log(value)
+          this.subCategories = value.category.subcategories
+        }
+      })
+    ).subscribe()
   }
 
-
+  
+  fetchCategories(){
+    this._question.getCategories().subscribe(
+        (res : any) => {
+            this.categories = res.data;
+        }
+    )
+  }
 
   handleUpdate(){
     if(!this.createQuestionForm.valid){

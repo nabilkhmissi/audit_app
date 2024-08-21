@@ -1,7 +1,7 @@
 <div class="grid">
 	<div class="col-12">
 		<div class="card">
-			<h5>Questionnaire ({{ filteredQuestions.length }} questions)</h5>
+			<h5>Questionnaire ({{ filteredQuestions.length }})</h5>
 			<p-table #dt1 [value]="filteredQuestions" dataKey="_id" [rows]="10" [loading]="loading" [rowHover]="true" styleClass="p-datatable-gridlines" [paginator]="true" [globalFilterFields]="['name','country.name','representative.name','status']" responsiveLayout="scroll">
 				<ng-template pTemplate="caption">
 					<div class="flex justify-content-end flex-column sm:flex-row">
@@ -12,7 +12,7 @@
 							<input pInputText type="text" #filter (input)="handleSearch($event)" placeholder="Search Keyword" class="w-full"/>
 						</span>
 						<p-button label="Reload" [loading]="loading" (onClick)="getQuestions()" class="mx-2"></p-button>
-						<p-button label="Create" severity="success" (onClick)="editDialogVisible = true"></p-button>
+						<p-button icon="pi pi-plus" label="Create" severity="success" (onClick)="editDialogVisible = true"></p-button>
 					</div>
 				</ng-template>
 				<!-- table header -->

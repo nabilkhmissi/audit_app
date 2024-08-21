@@ -92,7 +92,7 @@ import { SplitButtonModule } from "primeng/splitbutton";
 		TooltipModule,
 		SplitButtonModule,
 		ChipsModule,
-		ChipModule
+		ChipModule,
 	],
     providers : [
 		ConfirmationService,

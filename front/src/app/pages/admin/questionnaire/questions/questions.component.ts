@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
-import { ReactiveFormsModule } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { DialogModule } from 'primeng/dialog';
 import { QuestionService } from 'src/app/services/question.service';
-import { AddQuestionCategoryDialogComponent } from 'src/app/shared/dialogs/add-question-category-dialog/add-question-category-dialog.component';
 import { AddQuestionDialogComponent } from 'src/app/shared/dialogs/add-question-dialog/add-question-dialog.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { environment } from 'src/environments/environment';
@@ -12,10 +9,8 @@ import { environment } from 'src/environments/environment';
   selector: 'app-questions',
   standalone: true,
   imports: [
-    ReactiveFormsModule,
-    SharedModule,
-    DialogModule,
-    AddQuestionDialogComponent,
+   SharedModule,
+   AddQuestionDialogComponent
   ],
   templateUrl: './questions.component.html',
   styleUrl: './questions.component.scss'
