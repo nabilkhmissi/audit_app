@@ -3,6 +3,7 @@ import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-custom-confirm-dialog',
+  standalone : true,
   templateUrl: './custom-confirm-dialog.component.html',
   styleUrl: './custom-confirm-dialog.component.scss'
 })

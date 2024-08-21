@@ -78,6 +78,22 @@ import { AdminGuard } from './guards/admin.guard';
                             {   
                                 path : 'deleted-users', loadComponent : ()=>import('./pages/admin/deleted-users/deleted-users.component').then((c)=>c.DeletedUsersComponent)
                             },
+                            {
+                                path : 'questionnaire',
+                                children : [
+                                    {
+                                        path : '',
+                                        redirectTo : 'questions',
+                                        pathMatch : 'full'
+                                    },
+                                    {   
+                                        path : 'questions', loadComponent : ()=>import('./pages/admin/questionnaire/questions/questions.component').then((c)=>c.QuestionsComponent)
+                                    },
+                                    {   
+                                        path : 'question-categories', loadComponent : ()=>import('./pages/admin/questionnaire/question-categories/question-categories.component').then((c)=>c.QuestionCategoriesComponent)
+                                    },
+                                ]
+                            }
                         ]
                     },
                     {

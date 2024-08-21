@@ -1,0 +1,33 @@
+<p-dialog [header]="dialogHeader" [modal]="true" [(visible)]="editDialogVisible" [style]="{ width: '50rem' }"
+    (onHide)="onDismiss()">
+
+    <div style="display: flex;flex-direction: column">
+        <form [formGroup]="createCategoryForm">
+            <div style="display: flex;flex-direction: column;">
+                <label class="font-semibold w-10rem">Label</label>
+                <br>
+                <input pInputText class="flex-auto" type="text" formControlName="label"/>
+                <small
+                *ngIf="createCategoryForm.get('label').touched && createCategoryForm.get('label').errors?.['required']"
+                class="p-error">label is required
+            </small>                
+        </div>
+        <br>
+        <div style="display: flex;flex-direction: column;">
+            <label class="font-semibold w-10rem">Sub-categories</label>
+            <br>
+            <div class="flex-auto">
+                <p-chips formControlName="subcategories"/>
+            </div>
+        </div>
+        </form>
+        <div class="field col-12">
+            <div class="flex justify-content-end">
+                <p-button label="Cancel" [text]="true" severity="secondary" (onClick)="onDismiss()" />
+                <p-button label="Save" [outlined]="true" severity="secondary" (onClick)="handleAdd()" [loading]="submitted"
+                    [disabled]="submitted || !createCategoryForm.valid" />
+            </div>
+        </div>
+    </div>
+
+</p-dialog>

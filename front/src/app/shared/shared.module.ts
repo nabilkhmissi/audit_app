@@ -31,32 +31,19 @@ import { SliderModule } from "primeng/slider";
 import { TableModule } from "primeng/table";
 import { ToastModule } from "primeng/toast";
 import { ToggleButtonModule } from "primeng/togglebutton";
-import { CustomConfirmDialogComponent } from "./dialogs/custom-confirm-dialog/custom-confirm-dialog.component";
 import { DialogModule } from "primeng/dialog";
-import { UserInfosDialogComponent } from "./dialogs/user-infos-dialog/user-infos-dialog.component";
-import { AuditInfosDialogComponent } from "./dialogs/audit-infos-dialog/audit-infos-dialog.component";
 import { AvatarModule } from "primeng/avatar";
 import { AvatarGroupModule } from "primeng/avatargroup";
 import { FieldsetModule } from "primeng/fieldset";
-import { EditUserDialogComponent } from "./dialogs/edit-user-dialog/edit-user-dialog.component";
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
-import { EditAuditDialogComponent } from "./dialogs/edit-audit-dialog/edit-audit-dialog.component";
 import { TooltipModule } from "primeng/tooltip";
+import { SplitButtonModule } from "primeng/splitbutton";
 
 
 
 @NgModule({
-    declarations : [
-		CustomConfirmDialogComponent,
-	],
-    imports : [
-		ConfirmDialogModule,
-		UserInfosDialogComponent,
-		AuditInfosDialogComponent,
-		EditUserDialogComponent,
-		ProgressSpinnerModule,
-		EditAuditDialogComponent
-	],
+    declarations : [],
+    imports : [],
     exports : [
 		CommonModule,
 		FormsModule,
@@ -96,18 +83,16 @@ import { TooltipModule } from "primeng/tooltip";
 		TableModule,
 		ConfirmDialogModule,
 		OverlayPanelModule,
-		CustomConfirmDialogComponent,
 		DialogModule,
-		UserInfosDialogComponent,
-		AuditInfosDialogComponent,
 		AvatarModule,
 		AvatarGroupModule,
 		ReactiveFormsModule,
 		FieldsetModule,
-		EditUserDialogComponent,
 		ProgressSpinnerModule,
-		EditAuditDialogComponent,
-		TooltipModule
+		TooltipModule,
+		SplitButtonModule,
+		ChipsModule,
+		ChipModule
 	],
     providers : [
 		ConfirmationService,

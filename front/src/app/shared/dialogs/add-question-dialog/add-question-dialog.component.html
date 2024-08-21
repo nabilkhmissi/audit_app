@@ -1,0 +1,38 @@
+<p-dialog [header]="dialogHeader" [modal]="true" [(visible)]="editDialogVisible" [style]="{ width: '50rem' }"
+    (onHide)="onDismiss()">
+
+    <div style="display: flex;flex-direction: column">
+        <form [formGroup]="createQuestionForm">
+            <div style="display: flex;flex-direction: column;">
+                <label class="font-semibold w-10rem">Question</label>
+                <br>
+                <textarea pInputText class="flex-auto" type="text" formControlName="question" multiple ></textarea>
+                <small
+                    *ngIf="createQuestionForm.get('question').touched && createQuestionForm.get('question').errors?.['required']"
+                    class="p-error">Organisation name is required
+                </small>
+                <!-- <div class="flex align-items-center gap-3 mb-5">
+                    <label class="font-semibold w-10rem">Select client</label>
+                    <p-dropdown 
+                    [options]="clients" 
+                    [showClear]="true" 
+                    formControlName="client" 
+                    optionLabel="firstName" 
+                    placeholder="Select a client"
+                    optionValue="_id"
+                    class="flex-auto"
+                    />
+                    <small *ngIf="createAuditForm.get('client').touched && createAuditForm.get('client').errors?.['required']" class="p-error">This field is required</small>
+                </div> -->
+            </div>
+        </form>
+        <div class="field col-12">
+            <div class="flex justify-content-end">
+                <p-button label="Cancel" [text]="true" severity="secondary" (onClick)="onDismiss()" />
+                <p-button label="Save" [outlined]="true" severity="secondary" (onClick)="handleUpdate()" [loading]="submitted"
+                    [disabled]="submitted || !createQuestionForm.valid" />
+            </div>
+        </div>
+    </div>
+
+</p-dialog>

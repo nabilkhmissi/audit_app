@@ -58,11 +58,19 @@ export class AppMenuComponent implements OnInit {
                                 label: 'Add audit stepper', 
                                 icon: 'pi pi-user-plus', 
                                 routerLink: ['admin/add-audit-stepper'],
-                                items : [
-                                    { label: 'contact', icon: 'pi pi-user', routerLink: ['admin/add-audit-contact'] },
-                                    { label: 'Organisation', icon: 'pi pi-user', routerLink: ['admin/add-audit-organisation'] },
-                                ]
+                                // items : [
+                                //     { label: 'contact', icon: 'pi pi-user', routerLink: ['admin/add-audit-contact'] },
+                                //     { label: 'Organisation', icon: 'pi pi-user', routerLink: ['admin/add-audit-organisation'] },
+                                // ]
                              },
+                             { 
+                                label: 'Questionnaire', 
+                                icon: 'pi pi-question-circle', 
+                                items : [
+                                    { label: 'Questions', icon: 'pi pi-question', routerLink: ['admin/questionnaire/questions'] },
+                                    { label: 'Question categories', icon: 'pi pi-question', routerLink: ['admin/questionnaire/question-categories'] },
+                                ]
+                            },
                         ]
                     },
                 ],

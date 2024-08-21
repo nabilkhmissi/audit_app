@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { catchError, map, of, tap } from 'rxjs';
 import { UserService } from 'src/app/services/user.service';
+import { CustomConfirmDialogComponent } from 'src/app/shared/dialogs/custom-confirm-dialog/custom-confirm-dialog.component';
+import { UserInfosDialogComponent } from 'src/app/shared/dialogs/user-infos-dialog/user-infos-dialog.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { environment } from 'src/environments/environment';
 
@@ -10,6 +12,8 @@ import { environment } from 'src/environments/environment';
   standalone: true,
   imports: [
     SharedModule,
+    CustomConfirmDialogComponent,
+    UserInfosDialogComponent
   ],
   providers : [],
   templateUrl: './signup-request.component.html',

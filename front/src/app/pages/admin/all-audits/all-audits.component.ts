@@ -3,6 +3,9 @@ import { MessageService } from 'primeng/api';
 import { Customer } from 'src/app/demo/api/customer';
 import { AuditService } from 'src/app/services/audit.service';
 import { UserService } from 'src/app/services/user.service';
+import { AuditInfosDialogComponent } from 'src/app/shared/dialogs/audit-infos-dialog/audit-infos-dialog.component';
+import { CustomConfirmDialogComponent } from 'src/app/shared/dialogs/custom-confirm-dialog/custom-confirm-dialog.component';
+import { EditAuditDialogComponent } from 'src/app/shared/dialogs/edit-audit-dialog/edit-audit-dialog.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { environment } from 'src/environments/environment';
 
@@ -10,7 +13,10 @@ import { environment } from 'src/environments/environment';
   selector: 'app-all-audits',
   standalone: true,
   imports: [
-    SharedModule
+    SharedModule,
+    CustomConfirmDialogComponent,
+    AuditInfosDialogComponent,
+    EditAuditDialogComponent,
   ],
   templateUrl: './all-audits.component.html',
   styleUrl: './all-audits.component.scss'

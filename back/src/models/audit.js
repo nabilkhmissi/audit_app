@@ -17,7 +17,9 @@ const AuditSchema = new Schema({
         status : { type : String , default : AuditStatus.pending },
         files : [ { type : String  } ],
         progress : { type : Number, default : 0 },
-        client : { type: mongoose.Types.ObjectId, ref: "User", required : true}
+        client : { type: mongoose.Types.ObjectId, ref: "User", required : true},
+        equipements : [{ type: mongoose.Types.ObjectId, ref: "Equipement"}],
+        questionnaire : [{ type: mongoose.Types.ObjectId, ref: "Question"}]
     },
     {
         timestamps: true
