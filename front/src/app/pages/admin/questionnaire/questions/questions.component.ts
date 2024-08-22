@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { MessageService } from 'primeng/api';
 import { QuestionService } from 'src/app/services/question.service';
 import { AddQuestionDialogComponent } from 'src/app/shared/dialogs/add-question-dialog/add-question-dialog.component';
+import { CustomConfirmDialogComponent } from 'src/app/shared/dialogs/custom-confirm-dialog/custom-confirm-dialog.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { environment } from 'src/environments/environment';
 
@@ -10,7 +11,8 @@ import { environment } from 'src/environments/environment';
   standalone: true,
   imports: [
    SharedModule,
-   AddQuestionDialogComponent
+   AddQuestionDialogComponent,
+   CustomConfirmDialogComponent
   ],
   templateUrl: './questions.component.html',
   styleUrl: './questions.component.scss'
@@ -57,9 +59,6 @@ export class QuestionsComponent {
       this.selectedQuestion = audit;
   }
 
-  selectAuditToDelete(id : string){
-      this.questionDeleteLoading = id;
-  }
   handleQuestionDelete(){
       this._questionnaire.delete(this.questionDeleteLoading).subscribe(
           {
@@ -82,10 +81,15 @@ export class QuestionsComponent {
       this.filteredQuestions = this.questions.filter(u => u.organisationName.toLowerCase().includes(e.target.value.toLowerCase()))
   }
 
-  handleAuditUpdate(event : any){
-      const index = this.questions.findIndex(u => u._id === event._id);
-      this.questions[index] = event;
-      this.editDialogVisible = !this.editDialogVisible;
-      this.selectedUser = null;
-  }
+  handleQuestionUpdate(event : any){
+    if(event.type === 'update'){
+        const index = this.questions.findIndex(u => u._id === event.data._id);
+        this.questions[index] = event.data;
+    } else{
+        this.questions = [...this.questions, event.data];
+        this.filteredQuestions = this.questions;
+    }
+    this.editDialogVisible = false;
+}
+
 }

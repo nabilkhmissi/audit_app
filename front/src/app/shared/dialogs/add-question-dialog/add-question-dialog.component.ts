@@ -30,6 +30,7 @@ export class AddQuestionDialogComponent {
 
   categories: any[] = [];
   subCategories: any[] = [];
+  selectedCategory : any | null = null;
   dialogHeader = "Create new question";
 
   constructor(
@@ -43,16 +44,17 @@ export class AddQuestionDialogComponent {
   ngOnInit(): void {
     this.fetchCategories();
     this.createQuestionForm =  this.fb.group({
-      question : ['', [ Validators.required ]],
       category : ['', [ Validators.required ]],
       subcategory : ['', [ Validators.required ]],
+      question : ['', [ Validators.required ]],
     })
     
     this.createQuestionForm.valueChanges.pipe(
       tap(value => {
         if(value){
           console.log(value)
-          this.subCategories = value.category.subcategories
+          this.selectedCategory = this.categories.find(c => c.label === value.category);
+          this.subCategories = this.selectedCategory?.subcategories;
         }
       })
     ).subscribe()
@@ -77,8 +79,7 @@ export class AddQuestionDialogComponent {
       this.updateQuestion();
       return;
     }
-    this.createQuestion()
-    
+    this.createQuestion();    
   }
 
   createQuestion(){
@@ -87,7 +88,7 @@ export class AddQuestionDialogComponent {
         next : (res : any)=> {
           this._message.add({ severity: 'success', summary : res.message });
           this.submitted = false;
-          this.callback.emit(res.data);
+          this.callback.emit({type : "add", data : res.data});
         },
         error : (err : any)=> {
           this.submitted = false;
@@ -103,7 +104,7 @@ export class AddQuestionDialogComponent {
         next : (res : any)=> {
           this._message.add({ severity: 'success', summary : res.message });
           this.submitted = false;
-          this.callback.emit(res.data);
+          this.callback.emit({type :'update' , data : res.data});
         },
         error : (err : any)=> {
           this.submitted = false;
@@ -114,14 +115,16 @@ export class AddQuestionDialogComponent {
   }
 
   onDismiss(){
-    this.createQuestionForm.reset();
+    // this.createQuestionForm.reset();
     this.dismiss.emit(false);
   }
 
   ngOnChanges(changes: any) {
     if (changes.selectedQuestion && this.selectedQuestion) {
-      this.dialogHeader = "Edit Question"
-      this.createQuestionForm.patchValue(this.selectedQuestion);
+      this.dialogHeader = "Edit Question";
+      console.log(changes.selectedQuestion)
+      this.subCategories = this.categories.find(c => c.label === changes.selectedQuestion.categroy); 
+      this.createQuestionForm.patchValue({...this.selectedQuestion});
     }
   }
 }

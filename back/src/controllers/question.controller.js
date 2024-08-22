@@ -3,9 +3,10 @@ const { Question, QuestionCategory } = require("../models");
 //find all questions
 module.exports.findAll = async function (req, res, next) {
   try {
-    const questions = await Question.find();
+    const questions = await Question.find({}).populate("category");
     return res.status(200).send({ data : questions, message : "Questions retrieved successfully" });
   } catch (error) {
+    console.log(error)
     next(Error("Error while getting Questions"))
   }
 }
@@ -23,7 +24,8 @@ module.exports.create = async function (req, res, next) {
   try {
     const question = await Question.create({
       question : req.body.question,
-      category : req.body.category
+      category : req.body.category,
+      subcategory : req.body.subcategory,
     })
     
     return res.status(200).send({ data : question, message : "Question created successfully" });
@@ -35,10 +37,8 @@ module.exports.create = async function (req, res, next) {
 //delete question
 module.exports.delete = async function (req, res, next) {
   try {
-    const question = await Question.findById(req.params.id);
-    question.isDeleted = !question.isDeleted;
-    const deleted = await question.save()
-    return res.status(200).send({ message : "Question deleted successfully", data : deleted });
+    await Question.deleteOne({ _id : req.params.id });
+    return res.status(200).send({ message : "Question deleted successfully", data : { _id : req.params.id } });
   } catch (error) {
     next(Error("Error while deleteing question"))
   }
@@ -47,7 +47,9 @@ module.exports.delete = async function (req, res, next) {
 module.exports.update = async function (req, res, next) {
   try {
     const updated = await Question.findByIdAndUpdate(req.params.id, {
-      question : req.body.question
+      question : req.body.question,
+      category : req.body.category,
+      subcategory : req.body.subcategory,
     }, { new : true });   
     
     return res.status(200).send({ data : updated, message : "Question updated successfully" });
