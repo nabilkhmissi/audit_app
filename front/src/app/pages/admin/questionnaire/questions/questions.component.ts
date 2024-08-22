@@ -78,7 +78,7 @@ export class QuestionsComponent {
   }
 
   handleSearch(e : any){
-      this.filteredQuestions = this.questions.filter(u => u.organisationName.toLowerCase().includes(e.target.value.toLowerCase()))
+      this.filteredQuestions = this.questions.filter(u => u.question.toLowerCase().includes(e.target.value.toLowerCase()))
   }
 
   handleQuestionUpdate(event : any){

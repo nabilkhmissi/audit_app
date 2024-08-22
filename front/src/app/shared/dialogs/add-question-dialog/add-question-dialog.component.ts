@@ -52,7 +52,6 @@ export class AddQuestionDialogComponent {
     this.createQuestionForm.valueChanges.pipe(
       tap(value => {
         if(value){
-          console.log(value)
           this.selectedCategory = this.categories.find(c => c.label === value.category);
           this.subCategories = this.selectedCategory?.subcategories;
         }
@@ -122,7 +121,6 @@ export class AddQuestionDialogComponent {
   ngOnChanges(changes: any) {
     if (changes.selectedQuestion && this.selectedQuestion) {
       this.dialogHeader = "Edit Question";
-      console.log(changes.selectedQuestion)
       this.subCategories = this.categories.find(c => c.label === changes.selectedQuestion.categroy); 
       this.createQuestionForm.patchValue({...this.selectedQuestion});
     }

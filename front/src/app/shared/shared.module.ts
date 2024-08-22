@@ -38,12 +38,15 @@ import { FieldsetModule } from "primeng/fieldset";
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TooltipModule } from "primeng/tooltip";
 import { SplitButtonModule } from "primeng/splitbutton";
+import { ShortenPipe } from "./pipes/shorten.pipe";
 
 
 
 @NgModule({
     declarations : [],
-    imports : [],
+    imports : [
+		ShortenPipe
+	],
     exports : [
 		CommonModule,
 		FormsModule,
@@ -93,6 +96,7 @@ import { SplitButtonModule } from "primeng/splitbutton";
 		SplitButtonModule,
 		ChipsModule,
 		ChipModule,
+		ShortenPipe
 	],
     providers : [
 		ConfirmationService,
