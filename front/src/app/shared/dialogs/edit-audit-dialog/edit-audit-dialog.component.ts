@@ -1,25 +1,16 @@
-import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { DialogModule } from 'primeng/dialog';
-import { DropdownModule } from 'primeng/dropdown';
-import { MultiSelectModule } from 'primeng/multiselect';
 import { AuditService } from 'src/app/services/audit.service';
 import { UserService } from 'src/app/services/user.service';
 import { environment } from 'src/environments/environment';
+import { SharedModule } from '../../shared.module';
 
 @Component({
   selector: 'app-edit-audit-dialog',
   standalone: true,
   imports: [
-    ReactiveFormsModule,
-    DialogModule,
-    CommonModule,
-    ButtonModule,
-    MultiSelectModule,
-    DropdownModule
+    SharedModule
   ],
   templateUrl: './edit-audit-dialog.component.html',
   styleUrl: './edit-audit-dialog.component.scss'
@@ -109,10 +100,9 @@ export class EditAuditDialogComponent implements OnInit, OnChanges{
     if (changes.selectedAudit && this.selectedAudit) {
       this.createAuditForm.patchValue({
         ...this.selectedAudit, 
-        auditors : this.selectedAudit.auditors.map(e =>e._id), 
-        client : this.selectedAudit.client._id
+        client : this.selectedAudit?.client._id,
+        auditors : this.selectedAudit?.auditors.map(e =>e._id), 
       });
-      console.log(this.createAuditForm.value)
     }
   }
 

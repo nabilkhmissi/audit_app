@@ -16,6 +16,9 @@ export class AuditService {
     findAllAudits(){
         return this._http.get(`${this.baseUrl}/findAll`)
     }
+    findById(id : string){
+        return this._http.get(`${this.baseUrl}/findById/${id}`)
+    }
 
     createAudit(data : any){
         return this._http.post(`${this.baseUrl}/create`, data).pipe(

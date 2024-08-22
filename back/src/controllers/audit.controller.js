@@ -8,11 +8,32 @@ module.exports.findAll = async function (req, res, next) {
         path: "auditors",
         select: "-password -salt -isEnabled -isDeleted"
       })
-      .populate("client")
+      .populate({
+        path: "client",
+        select: "-password -salt -isEnabled -isDeleted"
+      })
       .exec();
     return res.status(200).send({ data : audits, message : "Audits retrieved successfully" });
   } catch (error) {
     next(Error("Error while getting audits"))
+  }
+}
+//find by id
+module.exports.findById = async function (req, res, next) {
+  try {
+    const audit = await Audit.findOne({ _id : req.params.id, isDeleted : false })
+    .populate({
+        path: "auditors",
+        select: "-password -salt -isEnabled -isDeleted"
+      })
+      .populate({
+        path: "client",
+        select: "-password -salt -isEnabled -isDeleted"
+      })
+      .exec();
+    return res.status(200).send({ data : audit, message : "Audit retrieved successfully" });
+  } catch (error) {
+    next(Error("Error while getting audit by id"))
   }
 }
 
@@ -20,6 +41,10 @@ module.exports.findAll = async function (req, res, next) {
 module.exports.findByAuditor = async function (req, res, next) {
   try {
     const audits = await Audit.find({ auditors : { $in : req.params.id } })
+    .populate({
+      path: "auditors",
+      select: "-password -salt -isEnabled -isDeleted"
+    })
     return res.status(200).send({ data : audits, message : "Audits retrieved successfully" });
   } catch (error) {
     next(Error("Error while getting audits by auditor"))

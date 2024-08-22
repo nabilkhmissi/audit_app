@@ -9,5 +9,6 @@ router.get("/findAll", AuditController.findAll);
 router.delete("/delete/:id", AuditController.deleteAudit);
 router.get("/findByAuditor/:id", AuditController.findByAuditor);
 router.patch("/updateAudit/:id", AuditController.updateAudit);
+router.get("/findById/:id", AuditController.findById);
 
 module.exports = router;

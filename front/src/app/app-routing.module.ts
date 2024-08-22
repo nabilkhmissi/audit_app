@@ -38,26 +38,6 @@ import { AdminGuard } from './guards/admin.guard';
                                 path : 'add-audit', loadComponent : ()=>import('./pages/admin/add-audit/add-audit.component').then((c)=>c.AddAuditComponent)
                             },
                             {   
-                                path : 'add-audit-stepper', 
-                                loadComponent : ()=>import('./pages/admin/add-audit-stepper/add-audit-stepper.component').then((c)=>c.AddAuditStepperComponent),
-                                children : [
-                                    {
-                                        path : '',
-                                        redirectTo : 'contact',
-                                        pathMatch : 'full'
-                                    },
-                                    {   
-                                        path : 'contact', loadComponent : ()=>import('./pages/admin/add-audit-stepper/contact/contact.component').then((c)=>c.ContactComponent)
-                                    },
-                                    {   
-                                        path : 'organisation', loadComponent : ()=>import('./pages/admin/add-audit-stepper/organisation/organisation.component').then((c)=>c.OrganisationComponent)
-                                    },
-                                    {   
-                                        path : 'infrastructure', loadComponent : ()=>import('./pages/admin/add-audit-stepper/infrastructure/infrastructure.component').then((c)=>c.InfrastructureComponent)
-                                    },
-                                ]
-                            },
-                            {   
                                 path : 'all-audits', loadComponent : ()=>import('./pages/admin/all-audits/all-audits.component').then((c)=>c.AllAuditsComponent)
                             },
                             {   
@@ -110,6 +90,26 @@ import { AdminGuard } from './guards/admin.guard';
                             },
                             {   
                                 path : 'my-audits', loadComponent : ()=>import('./pages/auditor/my-audits/my-audits.component').then((c)=>c.MyAuditsComponent)
+                            },
+                            {   
+                                path : 'add-audit-stepper/:id', 
+                                loadComponent : ()=>import('./pages/auditor/add-audit-stepper/add-audit-stepper.component').then((c)=>c.AddAuditStepperComponent),
+                                children : [
+                                    {
+                                        path : '',
+                                        redirectTo : 'contact',
+                                        pathMatch : 'full'
+                                    },
+                                    {   
+                                        path : 'contact', loadComponent : ()=>import('./pages/auditor/add-audit-stepper/contact/contact.component').then((c)=>c.ContactComponent)
+                                    },
+                                    {   
+                                        path : 'organisation', loadComponent : ()=>import('./pages/auditor/add-audit-stepper/organisation/organisation.component').then((c)=>c.OrganisationComponent)
+                                    },
+                                    {   
+                                        path : 'infrastructure', loadComponent : ()=>import('./pages/auditor/add-audit-stepper/infrastructure/infrastructure.component').then((c)=>c.InfrastructureComponent)
+                                    },
+                                ]
                             },
                         ]
                     },

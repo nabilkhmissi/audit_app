@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { disableCursor } from '@fullcalendar/core/internal';
 import { MessageService } from 'primeng/api';
-import { tap } from 'rxjs';
+import { of, switchMap, tap } from 'rxjs';
 import { AuditService } from 'src/app/services/audit.service';
 import { AuditStepperService } from 'src/app/services/audit_stepper.service';
 import { ToastService } from 'src/app/services/toast.service';
@@ -36,9 +37,6 @@ export class ContactComponent implements OnInit{
   constructor(
     private _user : UserService, 
     private _formBuilder : FormBuilder,
-    private _toast : ToastService,
-    private _audit : AuditService,
-    private _message : MessageService,
     private _router : Router,
     private _auditStepper : AuditStepperService
 ) { }
@@ -59,10 +57,22 @@ export class ContactComponent implements OnInit{
   }
 
   ngOnInit() {
+    this._auditStepper.auditForm$.pipe(
+      tap(r => {
+        if(r && r.contact){
+          this.createAuditForm.patchValue({
+            ...r.contact,
+            auditors : r.contact.auditors.map(e => e._id),
+            client : r.contact.client._id
+          });
+        }
+      })
+    ).subscribe();
+
     this.fetchAuditors();
     this.fetchClients();
     this.createAuditForm =  this._formBuilder.group({
-        auditors : [this.selectedAuditor.map(e=>e._id), [ Validators.required, Validators.minLength(1) ]],
+        auditors : ['', [ Validators.required, Validators.minLength(1) ]],
         client : ['', Validators.required],
         organisationName : ['', Validators.required],
         contactNumber : ['', Validators.required],
@@ -73,13 +83,7 @@ export class ContactComponent implements OnInit{
         contactName : ['', Validators.required],
         contactEmail : ['', Validators.required],
     });
-    this._auditStepper.auditForm$.pipe(
-      tap(r => {
-        if(r && r.contact){
-          this.createAuditForm.patchValue(r.contact)
-        }
-      })
-    ).subscribe();
+    this.createAuditForm.disable();
   }
 
   filterAuditors(event: any) {
@@ -95,11 +99,11 @@ export class ContactComponent implements OnInit{
   }
 
   handleContactSubmit(){
-    if(!this.createAuditForm.valid){
-      this._message.add({ severity : 'error', summary : 'Please fill all fields' });
-      return;
-    }
+    // if(!this.createAuditForm.valid){
+    //   this._message.add({ severity : 'error', summary : 'Please fill all fields' });
+    //   return;
+    // }
     this._auditStepper.setForm('contact', this.createAuditForm.value);
-    this._router.navigate(['main/admin/add-audit-stepper/organisation']);
+    this._router.navigateByUrl('/organisation');
   }
 }

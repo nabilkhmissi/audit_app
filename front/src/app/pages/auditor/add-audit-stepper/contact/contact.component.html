@@ -5,12 +5,12 @@
            <div>
                 <label>Select client</label>
                 <p-dropdown 
-                [options]="clients" 
-                [showClear]="true" 
-                formControlName="client" 
-                optionLabel="firstName" 
-                placeholder="Select a client"
-                optionValue="_id"
+                    [options]="clients" 
+                    [showClear]="true" 
+                    formControlName="client" 
+                    optionLabel="firstName" 
+                    placeholder="Select a client"
+                    optionValue="_id"
                 />
                 <small *ngIf="createAuditForm.get('client').touched && createAuditForm.get('client').errors?.['required']" class="p-error">This field is required</small>
            </div>           
@@ -80,7 +80,7 @@
             </div>
         </div>
         <div class="grid justify-content-end col">
-            <p-button label="Next" (onClick)="handleContactSubmit()" [disabled]="!createAuditForm.valid"></p-button>
+            <p-button label="Next" (onClick)="handleContactSubmit()"></p-button>
         </div>
     </form>
 </div>
