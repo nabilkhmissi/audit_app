@@ -31,11 +31,11 @@ export class AddAuditStepperComponent implements OnInit{
         routerLink: 'contact'
     },
     {
-        label: 'Oragnisation',
+        label: 'Infrastructure',
         routerLink: 'organisation'
     },
     {
-        label: 'Infrastructure',
+        label: 'Questionnaire',
         routerLink: 'infrastructure'
     },
     {
@@ -47,12 +47,15 @@ export class AddAuditStepperComponent implements OnInit{
 
   ngOnInit(): void {
     this._activatedRoute.paramMap.pipe(
-      switchMap((v : any) => this._audit.findById(v.params.id).pipe(
-        map((res : any) => res.data),
-        tap(r => {
-          this._auditStepper.setForm('contact', r);
-        })
-      ))
+      switchMap((v : any) => {
+        return this._audit.findById(v.params.id).pipe(
+          map((res : any) => res.data),
+          tap(r => {
+            this._auditStepper.setForm('contact', r);
+            this._auditStepper.setSelectedID(v.params.id);
+          })
+        )
+      })
     ).    
     subscribe()
   }

@@ -2,36 +2,15 @@
     <h4 class="mb-5">Create new audit</h4>
     <form [formGroup]="createAuditForm">
         <div class="p-fluid p-formgrid">
-           <div>
-                <label>Select client</label>
-                <p-dropdown 
-                    [options]="clients" 
-                    [showClear]="true" 
-                    formControlName="client" 
-                    optionLabel="firstName" 
-                    placeholder="Select a client"
-                    optionValue="_id"
-                />
-                <small *ngIf="createAuditForm.get('client').touched && createAuditForm.get('client').errors?.['required']" class="p-error">This field is required</small>
-           </div>           
-            <br>
-            <div>
-                <label>Select auditor</label>
-                <p-multiSelect 
-                    class="custom-ms field md:col-12"
-                    [options]="filteredAuditors"  
-                    formControlName="auditors" 
-                    optionLabel="firstName"
-                    optionValue="_id"
-                    display="chip" 
-                    [showClear]="true" 
-                    defaultLabel="Select auditors">
-                </p-multiSelect>
-                <small *ngIf="createAuditForm.get('auditors').touched && createAuditForm.get('auditors').errors?.['required']" class="p-error">This field is required</small>
-                <small *ngIf="createAuditForm.get('auditors').touched && createAuditForm.get('auditors').errors?.['minlength']" class="p-error">You must select at least 1 auditor</small>
-            </div>             
-            <br>
             <div class="grid">
+                <div class="field col-12">
+                    <label>Client</label>
+                    <input pInputText type="text" formControlName="client"/>
+                </div>  
+                <div class="field col-12">
+                    <label>Auditors</label>
+                    <p-chips formControlName="auditors"/>       
+                </div>     
                 <div class="field col-12 md:col-12">
                     <label>Organisation name</label>
                     <input pInputText type="text" formControlName="organisationName"/>
@@ -80,7 +59,7 @@
             </div>
         </div>
         <div class="grid justify-content-end col">
-            <p-button label="Next" (onClick)="handleContactSubmit()"></p-button>
+            <p-button label="Next" (onClick)="goNext()"></p-button>
         </div>
     </form>
 </div>

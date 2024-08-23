@@ -1,12 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { disableCursor } from '@fullcalendar/core/internal';
-import { MessageService } from 'primeng/api';
 import { of, switchMap, tap } from 'rxjs';
-import { AuditService } from 'src/app/services/audit.service';
 import { AuditStepperService } from 'src/app/services/audit_stepper.service';
-import { ToastService } from 'src/app/services/toast.service';
 import { UserService } from 'src/app/services/user.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { environment } from 'src/environments/environment';
@@ -31,14 +27,14 @@ export class ContactComponent implements OnInit{
   filteredAuditors: any[] = [];
 
   selectedAuditors: any[] = [];
-
-  selectedAuditor = [];
+  selectedClient : any| null = null; 
 
   constructor(
     private _user : UserService, 
     private _formBuilder : FormBuilder,
     private _router : Router,
-    private _auditStepper : AuditStepperService
+    private _auditStepper : AuditStepperService,
+    private _route: ActivatedRoute
 ) { }
 
   fetchAuditors(){
@@ -57,35 +53,39 @@ export class ContactComponent implements OnInit{
   }
 
   ngOnInit() {
+    this.fetchAuditors();
+    this.fetchClients();
+    this.initForm();
     this._auditStepper.auditForm$.pipe(
       tap(r => {
         if(r && r.contact){
+          this.selectedAuditors = r.contact.auditors;
+          this.selectedClient = r.contact.client;
           this.createAuditForm.patchValue({
             ...r.contact,
-            auditors : r.contact.auditors.map(e => e._id),
-            client : r.contact.client._id
+            auditors : r.contact.auditors.map(e =>`${e.firstName} ${e.lastName}`),
+            client : r.contact.client.firstName
           });
         }
       })
     ).subscribe();
-
-    this.fetchAuditors();
-    this.fetchClients();
-    this.createAuditForm =  this._formBuilder.group({
-        auditors : ['', [ Validators.required, Validators.minLength(1) ]],
-        client : ['', Validators.required],
-        organisationName : ['', Validators.required],
-        contactNumber : ['', Validators.required],
-        phoneNumber : ['', Validators.required],
-        website : ['', Validators.required],
-        employeesNumber : ['', Validators.required],
-        employeesInPerimeter : ['', Validators.required],
-        contactName : ['', Validators.required],
-        contactEmail : ['', Validators.required],
-    });
-    this.createAuditForm.disable();
   }
 
+  initForm(){
+    this.createAuditForm =  this._formBuilder.group({
+      auditors : ['', [ Validators.required, Validators.minLength(1) ]],
+      client : ['', Validators.required],
+      organisationName : ['', Validators.required],
+      contactNumber : ['', Validators.required],
+      phoneNumber : ['', Validators.required],
+      website : ['', Validators.required],
+      employeesNumber : ['', Validators.required],
+      employeesInPerimeter : ['', Validators.required],
+      contactName : ['', Validators.required],
+      contactEmail : ['', Validators.required],
+  });
+  this.createAuditForm.disable();
+  }
   filterAuditors(event: any) {
       const filtered: any[] = [];
       const query = event.query;
@@ -98,12 +98,20 @@ export class ContactComponent implements OnInit{
       this.filteredAuditors = filtered;
   }
 
-  handleContactSubmit(){
-    // if(!this.createAuditForm.valid){
-    //   this._message.add({ severity : 'error', summary : 'Please fill all fields' });
-    //   return;
-    // }
-    this._auditStepper.setForm('contact', this.createAuditForm.value);
-    this._router.navigateByUrl('/organisation');
+  goNext(){
+    this._auditStepper.setForm('contact', {
+      ...this.createAuditForm.value, 
+      auditors : this.selectedAuditors, 
+      client : this.selectedClient 
+    });
+
+    this._auditStepper.selectedAuditID$.pipe(
+      switchMap((id : string | null) => {
+        if(id){
+          return this._router.navigateByUrl(`/main/auditor/add-audit-stepper/${id}/organisation`);
+        } 
+        return of(null)
+      })
+    ).subscribe()
   }
 }

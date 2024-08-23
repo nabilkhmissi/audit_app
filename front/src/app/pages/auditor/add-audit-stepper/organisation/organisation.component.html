@@ -1,6 +1,16 @@
 <div class="card">
+    <h4 class="mb-5">Select Infrastructure</h4>
     <div class="grid justify-content-end col">
-        <p-button label="Back"  (onClick)="router.navigateByUrl('main/admin/add-audit-stepper/contact')" class="mx-2"></p-button>
-        <p-button label="Next"  (onClick)="router.navigateByUrl('main/admin/add-audit-stepper/infrastructure');handleSubmit()"></p-button>
+        <p-button label="Add New Equipement" (onClick)="showAddDialog()" class="mx-2"></p-button>
+    </div>
+    <div class="grid justify-content-end col">
+        <p-button label="Back"  (onClick)="goBack()" class="mx-2"></p-button>
+        <p-button label="Next"  (onClick)="goBack()"></p-button>
     </div>
 </div>
+
+<app-add-equipement-dialog
+    (dismiss)="addEquipementDialogVisible=false"
+    (callback)="addNewEquipementCallback($event)"
+    [addEquipementDialogVisible]="addEquipementDialogVisible"
+></app-add-equipement-dialog>

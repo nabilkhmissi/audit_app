@@ -45,6 +45,9 @@ module.exports.login = async (req, res, next)=>{
         if(!user){
             throw new Error("User with this email not found")
         }
+        if(!user.isEnabled){
+            throw new Error("Your account is not activated yet, contact the administartor for activation")
+        }
 
         const isPasswordValid = await validatePassword(password, user.password, user.salt);
         if (!isPasswordValid) {

@@ -8,12 +8,23 @@ export class AuditStepperService {
     constructor(){}
 
 
-    auditFormSubject = new BehaviorSubject<any | null>(null)
+    private auditFormSubject = new BehaviorSubject<any | null>(null)
     auditForm$ = this.auditFormSubject.asObservable();
+  
+    private selectedAuditIDSubject = new BehaviorSubject<string | null>(null)
+    selectedAuditID$ = this.selectedAuditIDSubject.asObservable();
 
 
     clearForm(){
         this.auditFormSubject.next(null);
+    }
+
+    clearSelectedID(){
+        this.selectedAuditIDSubject.next(null);
+    }
+
+    setSelectedID(id : string){
+        this.selectedAuditIDSubject.next(id);
     }
 
     setForm(title : string, data : any){

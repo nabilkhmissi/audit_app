@@ -1,0 +1,27 @@
+<p-dialog 
+header="Add New Equipement" 
+[modal]="true" 
+[(visible)]="addEquipementDialogVisible" 
+[style]="{ width: '50rem' }"
+(onHide)="onDismiss()"
+>
+    <form [formGroup]="createEquipementForm">
+        <div class="p-fluid p-formgrid">
+            <div class="flex align-items-center gap-3 mb-5 ">
+                <label class="font-semibold w-10rem">Category</label>
+                <input pInputText type="number" min="0" formControlName="category" class="flex-auto"/>
+            </div>           
+        </div>
+    </form>
+    
+    
+    
+    <ng-template pTemplate="footer">
+        <p-button label="Cancel" [text]="true" severity="secondary" (onClick)="onDismiss()" />
+        <p-button label="Save" [outlined]="true" severity="secondary" (onClick)="handleSubmit()"
+        [disabled]="submitted || !createEquipementForm.valid" />
+    </ng-template>
+</p-dialog>
+<!-- <small
+    *ngIf="createAuditForm.get('employeesNumber').touched && createAuditForm.get('employeesNumber').errors?.['required']"
+    class="p-error">Employees number is required</small> -->
