@@ -7,9 +7,61 @@ header="Add New Equipement"
 >
     <form [formGroup]="createEquipementForm">
         <div class="p-fluid p-formgrid">
+            <div class="flex align-items-center gap-3 mb-5">
+                <label class="font-semibold w-10rem">Select role</label>
+                <div class="flex-auto">
+                    <p-dropdown 
+                    [options]="categories" 
+                    [showClear]="true" 
+                    optionValue=""
+                    formControlName="category" 
+                    placeholder="Select a category"/>
+                    <small
+                        *ngIf="createEquipementForm.get('category').touched && createEquipementForm.get('category').errors?.['required']"
+                        class="p-error">Category field is required
+                    </small>
+                </div>
+            </div>        
+        </div>
+        <div class="p-fluid p-formgrid">
+            <div class="flex align-items-center gap-3 mb-5">
+                <label class="font-semibold w-10rem">Select sub category</label>
+                <div class="flex-auto">
+                    <p-dropdown 
+                    [options]="sub_categories" 
+                    [showClear]="true" 
+                    formControlName="subcategory" 
+                    placeholder="Select a category"/>
+                    <small
+                        *ngIf="createEquipementForm.get('subcategory').touched && createEquipementForm.get('subcategory').errors?.['required']"
+                        class="p-error">Sub category field is required
+                    </small>
+                </div>
+            </div>        
+        </div>
+
+        <div class="p-fluid p-formgrid">
             <div class="flex align-items-center gap-3 mb-5 ">
-                <label class="font-semibold w-10rem">Category</label>
-                <input pInputText type="number" min="0" formControlName="category" class="flex-auto"/>
+                <label class="font-semibold w-10rem">Référence</label>
+                <div class="flex flex-column justify-contant-start flex-auto">
+                    <input pInputText type="text" formControlName="ref" class="flex-auto"/>
+                    <small
+                        *ngIf="createEquipementForm.get('ref').touched && createEquipementForm.get('ref').errors?.['required']"
+                        class="p-error">Référence field is required
+                    </small>
+                </div>
+            </div>           
+        </div>
+        <div class="p-fluid p-formgrid">
+            <div class="flex align-items-center gap-3 mb-5 ">
+                <label class="font-semibold w-10rem">Details</label>
+                <div class="flex flex-column justify-contant-start flex-auto">
+                    <input pInputText type="text" formControlName="details" class="flex-auto"/>
+                    <small
+                        *ngIf="createEquipementForm.get('details').touched && createEquipementForm.get('details').errors?.['required']"
+                        class="p-error">Détails field is required
+                    </small>
+                </div>
             </div>           
         </div>
     </form>
@@ -22,6 +74,3 @@ header="Add New Equipement"
         [disabled]="submitted || !createEquipementForm.valid" />
     </ng-template>
 </p-dialog>
-<!-- <small
-    *ngIf="createAuditForm.get('employeesNumber').touched && createAuditForm.get('employeesNumber').errors?.['required']"
-    class="p-error">Employees number is required</small> -->

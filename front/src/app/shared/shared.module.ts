@@ -39,6 +39,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { TooltipModule } from "primeng/tooltip";
 import { SplitButtonModule } from "primeng/splitbutton";
 import { ShortenPipe } from "./pipes/shorten.pipe";
+import { TreeModule } from "primeng/tree";
+import { AccordionModule } from "primeng/accordion";
 
 
 
@@ -96,7 +98,9 @@ import { ShortenPipe } from "./pipes/shorten.pipe";
 		SplitButtonModule,
 		ChipsModule,
 		ChipModule,
-		ShortenPipe
+		ShortenPipe,
+		TreeModule,
+		AccordionModule
 	],
     providers : [
 		ConfirmationService,
