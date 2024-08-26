@@ -85,6 +85,13 @@ export class OrganisationComponent implements OnInit{
     }
   }
 
+  deleteEquipementFromList(index : any){
+    this.equipements.splice(index, 1);
+    this.equipements = [...this.equipements];
+    this.groupEquipements();
+    this.selectedEquipement = null;
+  }
+
   getKeys(obj: any): string[] {
     return Object.keys(obj);
   }

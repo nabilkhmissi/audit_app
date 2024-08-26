@@ -41,6 +41,8 @@ import { SplitButtonModule } from "primeng/splitbutton";
 import { ShortenPipe } from "./pipes/shorten.pipe";
 import { TreeModule } from "primeng/tree";
 import { AccordionModule } from "primeng/accordion";
+import { DividerModule } from "primeng/divider";
+import { BadgeModule } from "primeng/badge";
 
 
 
@@ -100,7 +102,9 @@ import { AccordionModule } from "primeng/accordion";
 		ChipModule,
 		ShortenPipe,
 		TreeModule,
-		AccordionModule
+		AccordionModule,
+		DividerModule,
+		BadgeModule
 	],
     providers : [
 		ConfirmationService,
