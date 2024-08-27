@@ -13,6 +13,6 @@ router.get("/findById/:id", AuditController.findById);
 router.patch("/:id/equipements", AuditController.addEquipement);
 router.get("/:id/equipements", AuditController.findAuditEquipements);
 router.delete("/:auditID/equipements/:eqID", AuditController.removeEquipementFromAudit);
-router.delete("/equipements/:eqID", AuditController.updateEquipementFromAudit);
+router.patch("/equipements/:eqID", AuditController.updateEquipementFromAudit);
 
 module.exports = router;

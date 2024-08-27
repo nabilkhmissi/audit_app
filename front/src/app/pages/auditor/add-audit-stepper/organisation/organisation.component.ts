@@ -73,8 +73,11 @@ export class OrganisationComponent implements OnInit{
     this.addEquipementDialogVisible = false;
     if(event.action == "add"){
       this.rawEquipements = [...this.rawEquipements, event.data];
-      this.groupEquipementsByCategory();
+    }else{
+      const index = this.rawEquipements.findIndex(e => e._id === event.data._id);
+      this.rawEquipements[index] = event.data;
     }
+    this.groupEquipementsByCategory()
   }
 
   fetchAuditEquipements(){
@@ -117,7 +120,7 @@ export class OrganisationComponent implements OnInit{
 
   handleEquipementEdit(item : any){
     this.dialoagMode = 'update';
-    this.selectedEquipement = item;
+    this._auditStepper.setSelectedEquiepemnt(item);
     this.addEquipementDialogVisible = true;
   }
   

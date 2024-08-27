@@ -47,8 +47,10 @@ export class AddEquipementDialogComponent {
     this._stepper.selectedEquipement$.pipe(
       tap(v => {
         if(v){
+          this.mode = 'update';
+          console.log(v)
+          this.id = v._id;
           this.createEquipementForm.patchValue(v);
-          this.id = v.id
         }
       })
     ).subscribe();
@@ -154,11 +156,17 @@ export class AddEquipementDialogComponent {
     this._stepper.selectedAuditID$.pipe(
       switchMap(id => {
         if(!id){
-          return of(null);
+          return this._audit.addEquipementToAudit(id, this.createEquipementForm.value).pipe(
+            tap((res : any) => {
+              this.callback.emit({data : res.data, action : 'add'});
+               this.addEquipementDialogVisible = false;
+               this._message.add({ severity : 'success', summary : res.message })
+            })
+          )
         }
-        return this._audit.addEquipementToAudit(id, this.createEquipementForm.value).pipe(
+        return this._audit.updateEquipementFromAudit(this.id, this.createEquipementForm.value).pipe(
           tap((res : any) => {
-            this.callback.emit({data : res.data, action : 'add'});
+            this.callback.emit({data : res.data, action : 'update'});
              this.addEquipementDialogVisible = false;
              this._message.add({ severity : 'success', summary : res.message })
           })
@@ -171,14 +179,4 @@ export class AddEquipementDialogComponent {
     this.createEquipementForm.reset()
     this.dismiss.emit(false);
   }
-  ngOnChanges(changes: any) {
-    console.log(changes)
-    if(changes.equipement && changes.mode){
-      this.title = changes.mode == "add" ? "Add New Equipement" : "Update Equipement details"
-      if(changes.equipement){
-        this.createEquipementForm.patchValue(changes.equipement.currentValue)
-      }
-    }
-  }
-
 }
