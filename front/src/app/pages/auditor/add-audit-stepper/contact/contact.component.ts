@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { of, switchMap, tap } from 'rxjs';
 import { AuditStepperService } from 'src/app/services/audit_stepper.service';
-import { UserService } from 'src/app/services/user.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { environment } from 'src/environments/environment';
 
@@ -30,31 +29,12 @@ export class ContactComponent implements OnInit{
   selectedClient : any| null = null; 
 
   constructor(
-    private _user : UserService, 
     private _formBuilder : FormBuilder,
     private _router : Router,
     private _auditStepper : AuditStepperService,
-    private _route: ActivatedRoute
 ) { }
 
-  fetchAuditors(){
-    this._user.findAllAuditors().subscribe(
-        (res : any) => {
-            this.filteredAuditors = res.data
-        }
-    )
-  }
-  fetchClients(){
-    this._user.findAllClients().subscribe(
-        (res : any) => {
-            this.clients = res.data
-        }
-    )
-  }
-
   ngOnInit() {
-    this.fetchAuditors();
-    this.fetchClients();
     this.initForm();
     this._auditStepper.auditForm$.pipe(
       tap(r => {

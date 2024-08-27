@@ -3,7 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 import { SharedModule } from '../../shared.module';
-import { tap } from 'rxjs';
+import { switchMap, tap } from 'rxjs';
+import { AuditStepperService } from 'src/app/services/audit_stepper.service';
 
 @Component({
   selector: 'app-add-equipement-dialog',
@@ -17,7 +18,11 @@ import { tap } from 'rxjs';
 export class AddEquipementDialogComponent {
   @Output() callback : any = new EventEmitter();
   @Input() addEquipementDialogVisible = false;
+  @Input() equipement : any | null = null;
   @Output() dismiss = new EventEmitter();
+  @Input() mode = 'add'
+
+  title = "Add New Equipement";
 
   imagesUrl = environment.userImagesUrl;
   submitted = false;
@@ -25,20 +30,31 @@ export class AddEquipementDialogComponent {
   categories = [];
   data_categories = [];
   sub_categories = [];
+  id = '';
 
   constructor(
     private fb : FormBuilder,
-    private _message : MessageService
+    private _message : MessageService,
+    private _stepper : AuditStepperService 
   ){}
 
   createEquipementForm : FormGroup; 
 
   ngOnInit(): void {
+    this._stepper.selectedEquipement$.pipe(
+      tap(v => {
+        if(v){
+          this.createEquipementForm.patchValue(v);
+          this.id = v.id
+        }
+      })
+    ).subscribe();
     this.fetchCategories();
     this.createEquipementForm =  this.fb.group({
       category : ['', [ Validators.required, Validators.required ]],
       subcategory : ['', Validators.required],
       ref : ['', Validators.required],
+      manufacturer : ['', Validators.required],
       details : ['', Validators.required],
   })  
 
@@ -132,26 +148,22 @@ export class AddEquipementDialogComponent {
       this._message.add({ severity: 'error', summary : 'Please fill all fields' });
       return;
     }
-    this.callback.emit(this.createEquipementForm.value);
+
+    const event = { data : {...this.createEquipementForm.value, id : this.id}, type : '' };
+    event.type = this.mode == 'add' ? 'add' : 'update'; 
+
+    this._stepper.addEquipement(event);
     this.createEquipementForm.reset();
     this.addEquipementDialogVisible = false;
+    this._stepper.setSelectedEquiepemnt(null)
   }
 
   onDismiss(){
     this.createEquipementForm.reset()
     this.dismiss.emit(false);
   }
+  ngOnChanges(changes: any) {
+    this.title = this.mode == "add" ? "Add New Equipement" : "Update Equipement details"
+  }
 
-
-
-
-  // ngOnChanges(changes: any) {
-  //   if (changes.selectedAudit && this.selectedAudit) {
-  //     this.createAuditForm.patchValue({
-  //       ...this.selectedAudit, 
-  //       client : this.selectedAudit?.client._id,
-  //       auditors : this.selectedAudit?.auditors.map(e =>e._id), 
-  //     });
-  //   }
-  // }
 }

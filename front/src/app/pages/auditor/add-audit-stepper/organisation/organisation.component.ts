@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TreeNode } from 'primeng/api';
-import { BehaviorSubject, map, of, switchMap } from 'rxjs';
+import { of, switchMap, tap } from 'rxjs';
 import { AuditStepperService } from 'src/app/services/audit_stepper.service';
 import { AddEquipementDialogComponent } from 'src/app/shared/dialogs/add-equipement-dialog/add-equipement-dialog.component';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -21,9 +20,8 @@ export class OrganisationComponent implements OnInit{
 
   addEquipementDialogVisible = false;
 
-  equipements : any = [];
-  groupedEquipements : any = [];
   selectedEquipement = null;
+  dialoagMode = 'add';
 
   constructor(
     public _router : Router,
@@ -34,6 +32,8 @@ export class OrganisationComponent implements OnInit{
 
 
   oranginisationForm : FormGroup;
+
+  equipementForm$ = this._auditStepper.equipementForm$;
 
   ngOnInit(): void {
     this.oranginisationForm = this.fb.group({
@@ -58,46 +58,31 @@ export class OrganisationComponent implements OnInit{
 
   showAddDialog(){
     this.addEquipementDialogVisible = true;
+    this.dialoagMode = 'add'
   }
 
-  addNewEquipementCallback(equipement : any){
-
+  addNewEquipementCallback(event : any){
     this.addEquipementDialogVisible = false;
 
-    const category = equipement.category;
-
-    if(!this.equipements[category]){
-      this.equipements[category] = [];
-    }
-    this.equipements = [...this.equipements, equipement];
-    this.groupEquipements();
-
-  }
-  groupEquipements(){
-    this.groupedEquipements = [];
-    for (let i = 0; i < this.equipements.length; i++) {
-      const element = this.equipements[i];
-      const cat = element.category;
-      if (!this.groupedEquipements[cat]) {
-        this.groupedEquipements[cat] = [];
-      }
-      this.groupedEquipements[cat] = [...this.groupedEquipements[cat], element];
-    }
-  }
-
-  deleteEquipementFromList(index : any){
-    this.equipements.splice(index, 1);
-    this.equipements = [...this.equipements];
-    this.groupEquipements();
-    this.selectedEquipement = null;
   }
 
   getKeys(obj: any): string[] {
-    return Object.keys(obj);
+    const keys = Object.keys(obj);
+    return keys;
   }
 
   handleEquipementShow(item : any){
     this.selectedEquipement = item
+  }
+
+  handleEquipementEdit(item : any){
+    this.dialoagMode = 'update';
+    this._auditStepper.setSelectedEquiepemnt(item);
+    this.addEquipementDialogVisible = true;
+  }
+  
+  deleteEquipementFromList(item : any){
+    this._auditStepper.addEquipement({ data : item, type : 'delete' });
   }
 }
 

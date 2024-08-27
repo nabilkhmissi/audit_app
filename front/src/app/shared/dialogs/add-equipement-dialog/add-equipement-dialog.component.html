@@ -8,7 +8,7 @@ header="Add New Equipement"
     <form [formGroup]="createEquipementForm">
         <div class="p-fluid p-formgrid">
             <div class="flex align-items-center gap-3 mb-5">
-                <label class="font-semibold w-10rem">Select role</label>
+                <label class="font-semibold w-10rem">Select category</label>
                 <div class="flex-auto">
                     <p-dropdown 
                     [options]="categories" 
@@ -52,6 +52,20 @@ header="Add New Equipement"
                 </div>
             </div>           
         </div>
+
+        <div class="p-fluid p-formgrid">
+            <div class="flex align-items-center gap-3 mb-5 ">
+                <label class="font-semibold w-10rem">Manufacturer</label>
+                <div class="flex flex-column justify-contant-start flex-auto">
+                    <input pInputText type="text" formControlName="manufacturer" class="flex-auto"/>
+                    <small
+                        *ngIf="createEquipementForm.get('manufacturer').touched && createEquipementForm.get('manufacturer').errors?.['required']"
+                        class="p-error">Manufacturer field is required
+                    </small>
+                </div>
+            </div>           
+        </div>
+
         <div class="p-fluid p-formgrid">
             <div class="flex align-items-center gap-3 mb-5 ">
                 <label class="font-semibold w-10rem">Details</label>

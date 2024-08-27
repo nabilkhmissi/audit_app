@@ -6,6 +6,7 @@ const EquipementSchema = new Schema({
   subcategory: { type: String, required : true },
   ref: { type: String, required: true },
   details: { type: String },
+  manufacturer: { type: String , required : true},
   
 },
 {
