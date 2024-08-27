@@ -19,6 +19,10 @@ export class AuditService {
     findById(id : string){
         return this._http.get(`${this.baseUrl}/findById/${id}`)
     }
+  
+    findAuditEquipements(id : string){
+        return this._http.get(`${this.baseUrl}/${id}/equipements`)
+    }
 
     createAudit(data : any){
         return this._http.post(`${this.baseUrl}/create`, data).pipe(
@@ -39,5 +43,15 @@ export class AuditService {
 
     updateAudit(id : string, data : any){
         return this._http.patch(`${this.baseUrl}/updateAudit/${id}`, data);
+    }
+   
+    addEquipementToAudit(id : string, data : any){
+        return this._http.patch(`${this.baseUrl}/${id}/equipements`, data);
+    }
+    removeEquipementFromAudit(auditId : string, equipementID : string, ){
+        return this._http.delete(`${this.baseUrl}/${auditId}/equipements/${equipementID}`);
+    }
+    updateEquipementFromAudit(equipementID : string, data: any ){
+        return this._http.patch(`${this.baseUrl}/equipements/${equipementID}`, data);
     }
 }

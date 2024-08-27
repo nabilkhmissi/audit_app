@@ -3,8 +3,9 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 import { SharedModule } from '../../shared.module';
-import { switchMap, tap } from 'rxjs';
+import { of, switchMap, tap } from 'rxjs';
 import { AuditStepperService } from 'src/app/services/audit_stepper.service';
+import { AuditService } from 'src/app/services/audit.service';
 
 @Component({
   selector: 'app-add-equipement-dialog',
@@ -35,7 +36,9 @@ export class AddEquipementDialogComponent {
   constructor(
     private fb : FormBuilder,
     private _message : MessageService,
-    private _stepper : AuditStepperService 
+    private _stepper : AuditStepperService,
+    private _audit : AuditService,
+
   ){}
 
   createEquipementForm : FormGroup; 
@@ -148,14 +151,20 @@ export class AddEquipementDialogComponent {
       this._message.add({ severity: 'error', summary : 'Please fill all fields' });
       return;
     }
-
-    const event = { data : {...this.createEquipementForm.value, id : this.id}, type : '' };
-    event.type = this.mode == 'add' ? 'add' : 'update'; 
-
-    this._stepper.addEquipement(event);
-    this.createEquipementForm.reset();
-    this.addEquipementDialogVisible = false;
-    this._stepper.setSelectedEquiepemnt(null)
+    this._stepper.selectedAuditID$.pipe(
+      switchMap(id => {
+        if(!id){
+          return of(null);
+        }
+        return this._audit.addEquipementToAudit(id, this.createEquipementForm.value).pipe(
+          tap((res : any) => {
+            this.callback.emit({data : res.data, action : 'add'});
+             this.addEquipementDialogVisible = false;
+             this._message.add({ severity : 'success', summary : res.message })
+          })
+        )
+      })
+    ).subscribe()
   }
 
   onDismiss(){
@@ -163,7 +172,13 @@ export class AddEquipementDialogComponent {
     this.dismiss.emit(false);
   }
   ngOnChanges(changes: any) {
-    this.title = this.mode == "add" ? "Add New Equipement" : "Update Equipement details"
+    console.log(changes)
+    if(changes.equipement && changes.mode){
+      this.title = changes.mode == "add" ? "Add New Equipement" : "Update Equipement details"
+      if(changes.equipement){
+        this.createEquipementForm.patchValue(changes.equipement.currentValue)
+      }
+    }
   }
 
 }

@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { of, switchMap, tap } from 'rxjs';
+import { MessageService } from 'primeng/api';
+import { map, of, switchMap, tap } from 'rxjs';
+import { AuditService } from 'src/app/services/audit.service';
 import { AuditStepperService } from 'src/app/services/audit_stepper.service';
 import { AddEquipementDialogComponent } from 'src/app/shared/dialogs/add-equipement-dialog/add-equipement-dialog.component';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -21,6 +23,8 @@ export class OrganisationComponent implements OnInit{
   addEquipementDialogVisible = false;
 
   selectedEquipement = null;
+  groupedEquipements = [];
+  rawEquipements = [];
   dialoagMode = 'add';
 
   constructor(
@@ -28,6 +32,9 @@ export class OrganisationComponent implements OnInit{
     private _auditStepper : AuditStepperService,
     private fb : FormBuilder,
     public route : ActivatedRoute,
+    public _audit : AuditService,
+    public _message : MessageService,
+
   ){}
 
 
@@ -36,6 +43,7 @@ export class OrganisationComponent implements OnInit{
   equipementForm$ = this._auditStepper.equipementForm$;
 
   ngOnInit(): void {
+    this.fetchAuditEquipements();
     this.oranginisationForm = this.fb.group({
       organisationName : ['default org name']
     })
@@ -63,7 +71,39 @@ export class OrganisationComponent implements OnInit{
 
   addNewEquipementCallback(event : any){
     this.addEquipementDialogVisible = false;
+    if(event.action == "add"){
+      this.rawEquipements = [...this.rawEquipements, event.data];
+      this.groupEquipementsByCategory();
+    }
+  }
 
+  fetchAuditEquipements(){
+    this._auditStepper.selectedAuditID$.pipe(
+      switchMap(id => {
+        if(!id){
+          return of(null)
+        }
+        return this._audit.findAuditEquipements(id).pipe(
+          tap((res : any) => {
+            this.rawEquipements = res.data;
+            this.groupEquipementsByCategory()
+          }),
+        )
+      })
+    ).subscribe();
+  }
+
+
+  groupEquipementsByCategory(){
+    this.groupedEquipements = [];
+    for (let i = 0; i < this.rawEquipements.length; i++) {
+      const element = this.rawEquipements[i];
+      const category = element.category;
+      if(!this.groupedEquipements[category]){
+        this.groupedEquipements[category] = [];
+      }
+      this.groupedEquipements[category].push(element);
+    }  
   }
 
   getKeys(obj: any): string[] {
@@ -77,12 +117,25 @@ export class OrganisationComponent implements OnInit{
 
   handleEquipementEdit(item : any){
     this.dialoagMode = 'update';
-    this._auditStepper.setSelectedEquiepemnt(item);
+    this.selectedEquipement = item;
     this.addEquipementDialogVisible = true;
   }
   
-  deleteEquipementFromList(item : any){
-    this._auditStepper.addEquipement({ data : item, type : 'delete' });
+  handleEquipementRemove(item : any){
+    this._auditStepper.selectedAuditID$.pipe(
+      switchMap(id=> {
+        if(!id){
+          return of()
+        }
+        return this._audit.removeEquipementFromAudit(id, item._id).pipe(
+          tap((res : any) => {
+            this.rawEquipements = this.rawEquipements.filter(e => e._id != res.data._id);
+            this.groupEquipementsByCategory();
+            this._message.add({ severity : 'success', summary : res.message })
+          })
+        )
+      })
+    ).subscribe();
   }
 }
 
