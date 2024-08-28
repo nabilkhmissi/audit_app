@@ -88,7 +88,7 @@ export class ContactComponent implements OnInit{
     this._auditStepper.selectedAuditID$.pipe(
       switchMap((id : string | null) => {
         if(id){
-          return this._router.navigateByUrl(`/main/auditor/add-audit-stepper/${id}/organisation`);
+          return this._router.navigateByUrl(`/main/auditor/add-audit-stepper/${id}/infrastructure`);
         } 
         return of(null)
       })

@@ -9,23 +9,23 @@ import { AddEquipementDialogComponent } from 'src/app/shared/dialogs/add-equipem
 import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
-  selector: 'app-organisation',
+  selector: 'app-equipements',
   standalone: true,
   imports: [
     SharedModule,
     AddEquipementDialogComponent
   ],
-  templateUrl: './organisation.component.html',
-  styleUrl: './organisation.component.scss'
+  templateUrl: './equipements.component.html',
+  styleUrl: './equipements.component.scss'
 })
-export class OrganisationComponent implements OnInit{
+export class EquipementComponent implements OnInit{
 
   addEquipementDialogVisible = false;
 
   selectedEquipement = null;
   groupedEquipements = [];
   rawEquipements = [];
-  dialoagMode = 'add';
+  dialoagMode = '';
 
   constructor(
     public _router : Router,
@@ -53,20 +53,9 @@ export class OrganisationComponent implements OnInit{
     this._auditStepper.setForm('oragnisation', this.oranginisationForm.value);
   }
 
-  goBack(){
-    this._auditStepper.selectedAuditID$.pipe(
-      switchMap((id : string | null) => {
-        if(id){
-          return this._router.navigateByUrl(`/main/auditor/add-audit-stepper/${id}/contact`);
-        } 
-        return of(null)
-      })
-    ).subscribe()
-  }
-
   showAddDialog(){
     this.addEquipementDialogVisible = true;
-    this.dialoagMode = 'add'
+    this.dialoagMode = 'add';
   }
 
   addNewEquipementCallback(event : any){
@@ -76,6 +65,7 @@ export class OrganisationComponent implements OnInit{
     }else{
       const index = this.rawEquipements.findIndex(e => e._id === event.data._id);
       this.rawEquipements[index] = event.data;
+      if(this.selectedEquipement && this.selectedEquipement._id == event.data._id) this.selectedEquipement = event.data
     }
     this.groupEquipementsByCategory()
   }
@@ -125,6 +115,8 @@ export class OrganisationComponent implements OnInit{
   }
   
   handleEquipementRemove(item : any){
+    const res = confirm('Dou you want to delete this equipement ?');
+    if(!res) return;
     this._auditStepper.selectedAuditID$.pipe(
       switchMap(id=> {
         if(!id){
@@ -139,6 +131,28 @@ export class OrganisationComponent implements OnInit{
         )
       })
     ).subscribe();
+  }
+
+  goNext(){
+    this._auditStepper.selectedAuditID$.pipe(
+      switchMap((id : string | null) => {
+        if(id){
+          return this._router.navigateByUrl(`/main/auditor/add-audit-stepper/${id}/questionnaire`);
+        } 
+        return of(null)
+      })
+    ).subscribe()
+  }
+
+  goBack(){
+    this._auditStepper.selectedAuditID$.pipe(
+      switchMap((id : string | null) => {
+        if(id){
+          return this._router.navigateByUrl(`/main/auditor/add-audit-stepper/${id}/contact`);
+        } 
+        return of(null)
+      })
+    ).subscribe()
   }
 }
 

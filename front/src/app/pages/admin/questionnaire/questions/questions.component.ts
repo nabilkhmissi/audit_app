@@ -59,6 +59,11 @@ export class QuestionsComponent {
       this.selectedQuestion = audit;
   }
 
+  handleQuestionCreate(){
+    this.editDialogVisible = true;
+    this.selectedQuestion = null;
+  }
+
   handleQuestionDelete(){
       this._questionnaire.delete(this.questionDeleteLoading).subscribe(
           {
@@ -82,6 +87,7 @@ export class QuestionsComponent {
   }
 
   handleQuestionUpdate(event : any){
+    this.filteredQuestions = [];
     if(event.type === 'update'){
         const index = this.questions.findIndex(u => u._id === event.data._id);
         this.questions[index] = event.data;
@@ -90,6 +96,6 @@ export class QuestionsComponent {
         this.filteredQuestions = this.questions;
     }
     this.editDialogVisible = false;
+    this.selectedQuestion = null;
 }
-
 }

@@ -32,11 +32,11 @@ export class AddAuditStepperComponent implements OnInit{
     },
     {
         label: 'Infrastructure',
-        routerLink: 'organisation'
+        routerLink: 'infrastructure'
     },
     {
         label: 'Questionnaire',
-        routerLink: 'infrastructure'
+        routerLink: 'questionnaire'
     },
     {
         label: 'Confirmation',

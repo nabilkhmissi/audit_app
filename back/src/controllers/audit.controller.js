@@ -176,6 +176,7 @@ module.exports.updateEquipementFromAudit = async function (req, res, next) {
     equipement.category = req.body.category;
     equipement.ref = req.body.ref;
     equipement.details = req.body.details;
+    equipement.manufacturer = req.body.manufacturer;
     await equipement.save();    
     return res.status(200).send({ message : "Audit equipement updated successfully", data : equipement });
   } catch (error) {

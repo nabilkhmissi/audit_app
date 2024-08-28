@@ -31,7 +31,7 @@ export class AddQuestionDialogComponent {
   categories: any[] = [];
   subCategories: any[] = [];
   selectedCategory : any | null = null;
-  dialogHeader = "Create new question";
+  dialogHeader = "";
 
   constructor(
     private fb : FormBuilder,
@@ -45,7 +45,7 @@ export class AddQuestionDialogComponent {
     this.fetchCategories();
     this.createQuestionForm =  this.fb.group({
       category : ['', [ Validators.required ]],
-      subcategory : ['', [ Validators.required ]],
+      subcategory : [''],
       question : ['', [ Validators.required ]],
     })
     
@@ -123,6 +123,10 @@ export class AddQuestionDialogComponent {
       this.dialogHeader = "Edit Question";
       this.subCategories = this.categories.find(c => c.label === changes.selectedQuestion.categroy); 
       this.createQuestionForm.patchValue({...this.selectedQuestion});
+    }
+    if(!changes.selectedQuestion){
+      this.dialogHeader = "Add Question";
+      this.createQuestionForm.reset();
     }
   }
 }

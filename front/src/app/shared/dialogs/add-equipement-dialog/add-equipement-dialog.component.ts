@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment';
@@ -16,12 +16,12 @@ import { AuditService } from 'src/app/services/audit.service';
   templateUrl: './add-equipement-dialog.component.html',
   styleUrl: './add-equipement-dialog.component.scss'
 })
-export class AddEquipementDialogComponent {
+export class AddEquipementDialogComponent implements OnChanges{
   @Output() callback : any = new EventEmitter();
   @Input() addEquipementDialogVisible = false;
-  @Input() equipement : any | null = null;
+  @Input() selectedEquipement : any | null = null;
   @Output() dismiss = new EventEmitter();
-  @Input() mode = 'add'
+  @Input() mode = ''
 
   title = "Add New Equipement";
 
@@ -48,7 +48,6 @@ export class AddEquipementDialogComponent {
       tap(v => {
         if(v){
           this.mode = 'update';
-          console.log(v)
           this.id = v._id;
           this.createEquipementForm.patchValue(v);
         }
@@ -155,22 +154,23 @@ export class AddEquipementDialogComponent {
     }
     this._stepper.selectedAuditID$.pipe(
       switchMap(id => {
-        if(!id){
+        if(id && this.mode == 'add'){
           return this._audit.addEquipementToAudit(id, this.createEquipementForm.value).pipe(
             tap((res : any) => {
               this.callback.emit({data : res.data, action : 'add'});
+              this.addEquipementDialogVisible = false;
+              this._message.add({ severity : 'success', summary : res.message })
+            })
+          )
+        }else{
+          return this._audit.updateEquipementFromAudit(this.id, this.createEquipementForm.value).pipe(
+            tap((res : any) => {
+              this.callback.emit({data : res.data, action : 'update'});
                this.addEquipementDialogVisible = false;
                this._message.add({ severity : 'success', summary : res.message })
             })
           )
         }
-        return this._audit.updateEquipementFromAudit(this.id, this.createEquipementForm.value).pipe(
-          tap((res : any) => {
-            this.callback.emit({data : res.data, action : 'update'});
-             this.addEquipementDialogVisible = false;
-             this._message.add({ severity : 'success', summary : res.message })
-          })
-        )
       })
     ).subscribe()
   }
@@ -178,5 +178,11 @@ export class AddEquipementDialogComponent {
   onDismiss(){
     this.createEquipementForm.reset()
     this.dismiss.emit(false);
+  }
+
+  ngOnChanges(changes : any){
+    if(changes.mode){
+      this.mode = changes.mode.currentValue;
+    }
   }
 }

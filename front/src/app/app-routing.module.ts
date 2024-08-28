@@ -104,10 +104,13 @@ import { AdminGuard } from './guards/admin.guard';
                                         path : 'contact', loadComponent : ()=>import('./pages/auditor/add-audit-stepper/contact/contact.component').then((c)=>c.ContactComponent)
                                     },
                                     {   
-                                        path : 'organisation', loadComponent : ()=>import('./pages/auditor/add-audit-stepper/organisation/organisation.component').then((c)=>c.OrganisationComponent)
+                                        path : 'infrastructure', loadComponent : ()=>import('./pages/auditor/add-audit-stepper/equipements/equipements.component').then((c)=>c.EquipementComponent)
                                     },
                                     {   
-                                        path : 'infrastructure', loadComponent : ()=>import('./pages/auditor/add-audit-stepper/infrastructure/infrastructure.component').then((c)=>c.InfrastructureComponent)
+                                        path : 'questionnaire', loadComponent : ()=>import('./pages/auditor/add-audit-stepper/questionnaire/questionnaire.component').then((c)=>c.QuestionnaireComponent)
+                                    },
+                                    {   
+                                        path : 'confirmation', loadComponent : ()=>import('./pages/auditor/add-audit-stepper/audit-confirmation/audit-confirmation.component').then((c)=>c.AuditConfirmationComponent)
                                     },
                                 ]
                             },

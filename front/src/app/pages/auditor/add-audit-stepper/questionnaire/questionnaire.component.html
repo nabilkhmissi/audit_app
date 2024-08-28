@@ -1,0 +1,14 @@
+<div class="card">
+    <div class="p-fluid p-formgrid">
+        <div class="grid">
+            <div class="field col-12" *ngFor="let q of questions">
+                <label></label>
+                <input pInputText type="text" [value]="q.question"/>
+            </div>  
+        </div>
+    </div>
+    <div class="grid justify-content-end col">
+        <p-button label="Back"  (onClick)="goBack()"></p-button>
+        <p-button label="Next" disabled  (onClick)="goNext()"></p-button>
+    </div>
+</div>
