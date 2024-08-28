@@ -6,12 +6,12 @@
                 <div class="mt-1 text-400">{{ q.question.category }} - {{ q.question.subcategory }}</div>
             </div>
             <div class="mt-2 md:mt-0 flex align-items-center gap-2">
-                <p-button icon="pi pi-check" severity="info" [rounded]="true" [outlined]="true" (onClick)="handleQuestionCheck(q, true)"></p-button>
-                <p-button icon="pi pi-times" [rounded]="true" severity="danger" [outlined]="true" (onClick)="handleQuestionCheck(q, false)"></p-button>
+                <p-button icon="pi pi-check" severity="info" [rounded]="true" [outlined]="!q.answer" (onClick)="handleQuestionCheck(q, true)"></p-button>
+                <p-button icon="pi pi-times" [rounded]="true" severity="danger" [outlined]="!q.answer" (onClick)="handleQuestionCheck(q, false)"></p-button>
             </div>
         </li>        
     </ul>
-    <div class="grid justify-content-end col">
+    <div class="justify-content-end flex align-items-center gap-2">
         <p-button label="Back"  (onClick)="goBack()"></p-button>
         <p-button label="Next" disabled  (onClick)="goNext()"></p-button>
     </div>

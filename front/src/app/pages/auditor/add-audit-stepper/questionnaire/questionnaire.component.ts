@@ -51,7 +51,6 @@ export class QuestionnaireComponent implements OnInit{
       map((res : any[]) => res.map(e => ({ question : e, response : null }))),
     ).subscribe(
       (res : any) => {
-        console.log(res)
         this.questions = res
       }
     )
@@ -62,9 +61,9 @@ export class QuestionnaireComponent implements OnInit{
   }
 
   handleQuestionCheck(q : any, answer : boolean){
-    console.log(q, answer)
-    const index = this.questions.findIndex(e => e._id == q.question._id);
+    const index = this.questions.findIndex(e => e.question._id == q.question._id);
     this.questions[index].response = answer;
+    this.questions = [...this.questions]
   }
 
 }
