@@ -1,12 +1,16 @@
 <div class="card">
-    <div class="p-fluid p-formgrid">
-        <div class="grid">
-            <div class="field col-12" *ngFor="let q of questions">
-                <label></label>
-                <input pInputText type="text" [value]="q.question"/>
-            </div>  
-        </div>
-    </div>
+    <ul class="list-none p-0 m-0">
+        <li class="flex flex-column md:flex-row md:align-items-center md:justify-content-between mb-4" *ngFor="let q of questions">
+            <div>
+                <span class="text-900 font-medium mr-2 mb-1 md:mb-0">{{ q.question.question }}</span>
+                <div class="mt-1 text-400">{{ q.question.category }} - {{ q.question.subcategory }}</div>
+            </div>
+            <div class="mt-2 md:mt-0 flex align-items-center gap-2">
+                <p-button icon="pi pi-check" severity="info" [rounded]="true" [outlined]="true" (onClick)="handleQuestionCheck(q, true)"></p-button>
+                <p-button icon="pi pi-times" [rounded]="true" severity="danger" [outlined]="true" (onClick)="handleQuestionCheck(q, false)"></p-button>
+            </div>
+        </li>        
+    </ul>
     <div class="grid justify-content-end col">
         <p-button label="Back"  (onClick)="goBack()"></p-button>
         <p-button label="Next" disabled  (onClick)="goNext()"></p-button>

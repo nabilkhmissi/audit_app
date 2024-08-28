@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { of, switchMap } from 'rxjs';
+import { map, of, switchMap } from 'rxjs';
 import { AuditStepperService } from 'src/app/services/audit_stepper.service';
 import { QuestionService } from 'src/app/services/question.service';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -46,15 +46,25 @@ export class QuestionnaireComponent implements OnInit{
   }
 
   fetchQuestions(){
-    this._questionnaire.findAll().subscribe(
+    this._questionnaire.findAll().pipe(
+      map((res : any) => res.data),
+      map((res : any[]) => res.map(e => ({ question : e, response : null }))),
+    ).subscribe(
       (res : any) => {
-        this.questions = res.data
+        console.log(res)
+        this.questions = res
       }
     )
   }
 
   ngOnInit(): void {
     this.fetchQuestions();
+  }
+
+  handleQuestionCheck(q : any, answer : boolean){
+    console.log(q, answer)
+    const index = this.questions.findIndex(e => e._id == q.question._id);
+    this.questions[index].response = answer;
   }
 
 }
