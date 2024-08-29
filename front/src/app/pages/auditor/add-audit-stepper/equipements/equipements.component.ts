@@ -134,6 +134,7 @@ export class EquipementComponent implements OnInit{
   }
 
   goNext(){
+    console.log("go next invoked in equipements")
     this._auditStepper.selectedAuditID$.pipe(
       switchMap((id : string | null) => {
         if(id){

@@ -4,6 +4,7 @@ import { MessageService } from 'primeng/api';
 import { switchMap } from 'rxjs';
 import { Customer } from 'src/app/demo/api/customer';
 import { AuditService } from 'src/app/services/audit.service';
+import { AuditStepperService } from 'src/app/services/audit_stepper.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
 import { AuditInfosDialogComponent } from 'src/app/shared/dialogs/audit-infos-dialog/audit-infos-dialog.component';
@@ -44,10 +45,9 @@ export class MyAuditsComponent {
 
     constructor(
         private _audits : AuditService,
-        private _user : UserService,
-        private _message : MessageService,
         private _auth : AuthService,
-        public router : Router
+        public router : Router,
+        private _stepper : AuditStepperService
     ) { }
 
     ngOnInit() {
@@ -82,5 +82,10 @@ export class MyAuditsComponent {
         this.audits[index] = event;
         this.editDialogVisible = !this.editDialogVisible;
         this.selectedUser = null;
+    }
+
+    goToStepper(id : string){
+      this._stepper.clearForm()
+      this.router.navigate(['/main/auditor/add-audit-stepper', id, 'contact'])
     }
 }

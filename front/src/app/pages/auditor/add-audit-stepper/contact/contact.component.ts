@@ -79,6 +79,7 @@ export class ContactComponent implements OnInit{
   }
 
   goNext(){
+    console.log("go next invoked in contact")
     this._auditStepper.setForm('contact', {
       ...this.createAuditForm.value, 
       auditors : this.selectedAuditors, 
