@@ -19,7 +19,12 @@ const AuditSchema = new Schema({
         progress : { type : Number, default : 0 },
         client : { type: mongoose.Types.ObjectId, ref: "User", required : true},
         equipements : [{ type: mongoose.Types.ObjectId, ref: "Equipement"}],
-        questionnaire : [{ type: mongoose.Types.ObjectId, ref: "Question"}]
+        questionnaire : [
+          {
+            question : { type: mongoose.Types.ObjectId, ref: "Question"},
+            response : { type : String, required : true }
+          }
+        ]
     },
     {
         timestamps: true

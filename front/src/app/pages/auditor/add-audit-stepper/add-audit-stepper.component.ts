@@ -32,11 +32,11 @@ export class AddAuditStepperComponent implements OnInit{
     },
     {
         label: 'Infrastructure',
-        routerLink: 'organisation'
+        routerLink: 'infrastructure'
     },
     {
         label: 'Questionnaire',
-        routerLink: 'infrastructure'
+        routerLink: 'questionnaire'
     },
     {
         label: 'Confirmation',
@@ -52,6 +52,7 @@ export class AddAuditStepperComponent implements OnInit{
           map((res : any) => res.data),
           tap(r => {
             this._auditStepper.setForm('contact', r);
+            this._auditStepper.setForm('questionnaire', r.questionnaire);
             this._auditStepper.setSelectedID(v.params.id);
           })
         )

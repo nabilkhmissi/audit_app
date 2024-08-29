@@ -10,5 +10,10 @@ router.delete("/delete/:id", AuditController.deleteAudit);
 router.get("/findByAuditor/:id", AuditController.findByAuditor);
 router.patch("/updateAudit/:id", AuditController.updateAudit);
 router.get("/findById/:id", AuditController.findById);
+router.patch("/:id/equipements", AuditController.addEquipement);
+router.get("/:id/equipements", AuditController.findAuditEquipements);
+router.delete("/:auditID/equipements/:eqID", AuditController.removeEquipementFromAudit);
+router.patch("/equipements/:eqID", AuditController.updateEquipementFromAudit);
+router.patch("/:id/questionnaire", AuditController.submitQuestionnaire);
 
 module.exports = router;

@@ -1,4 +1,4 @@
-const { Audit, User } = require("../models");
+const { Audit, User, Equipement } = require("../models");
 
 //find all audits
 module.exports.findAll = async function (req, res, next) {
@@ -30,6 +30,10 @@ module.exports.findById = async function (req, res, next) {
         path: "client",
         select: "-password -salt -isEnabled -isDeleted"
       })
+      .populate({
+        path: "questionnaire",
+        populate: "question"
+      })
       .exec();
     return res.status(200).send({ data : audit, message : "Audit retrieved successfully" });
   } catch (error) {
@@ -44,6 +48,10 @@ module.exports.findByAuditor = async function (req, res, next) {
     .populate({
       path: "auditors",
       select: "-password -salt -isEnabled -isDeleted"
+    })
+    .populate({
+      path : 'questionnaire',
+      populate : 'question'
     })
     return res.status(200).send({ data : audits, message : "Audits retrieved successfully" });
   } catch (error) {
@@ -78,6 +86,7 @@ module.exports.createAudit = async function (req, res, next) {
       phoneNumber : req.body.phoneNumber,
       website : req.body.website,
       organisationName : req.body.organisationName,
+      equipements : []
     })
     
     return res.status(200).send({ data : audit, message : "Audit created successfully" });
@@ -86,6 +95,43 @@ module.exports.createAudit = async function (req, res, next) {
     next(Error("Error while creating audit"))
   }
 }
+
+module.exports.addEquipement = async (req, res, next)=>{
+  try {
+      const auditID = req.params.id;
+      //check if an equiepent for this details exists already, suppose we have an id
+      let equipement = null;
+      if(req.body.id){
+        equipement = await Equipement.find({ ref : req.body.ref, manufacturer : req.body.manufacturer });
+      }else{
+        equipement = await Equipement.create({
+          category : req.body.category,
+          details : req.body.details,
+          ref : req.body.ref,
+          manufacturer : req.body.manufacturer,
+          subcategory : req.body.subcategory
+        });
+      }
+      const audit = await Audit.findById(auditID).populate("equipements");
+      audit.equipements.push(equipement);
+      await audit.save();
+      return res.status(200).send({ message : "Equipenemt added successfully", data : equipement })
+  } catch (error) {
+    next(error)
+  }
+}
+
+module.exports.findAuditEquipements = async (req, res, next)=>{
+  try {
+      const auditID = req.params.id;
+      const audit = await Audit.findById(auditID).populate("equipements");
+      return res.status(200).send({ message : "Equipenemts retrieved successfully", data : audit.equipements })
+  } catch (error) {
+    next(error)
+  }
+}
+
+
 
 module.exports.assignAudit = async (req, res, next) => {
   try {
@@ -112,6 +158,61 @@ module.exports.deleteAudit = async function (req, res, next) {
     return res.status(200).send({ message : "Audit deleted successfully", data : deleted });
   } catch (error) {
     next(Error("Error while deleteing audit"))
+  }
+}
+
+//delete equipement from audits 
+module.exports.removeEquipementFromAudit = async function (req, res, next) {
+  try {
+    const auditID = req.params.auditID;
+    const equipementID = req.params.eqID;
+    const audit = await Audit.findById(auditID).populate("equipements");
+    audit.equipements = audit.equipements.filter(e => e._id != equipementID);
+    await audit.save();    
+    return res.status(200).send({ message : "Audit equipement removed successfully", data : { _id : equipementID } });
+  } catch (error) {
+    next(error)
+  }
+}
+//update equipement from audits 
+module.exports.updateEquipementFromAudit = async function (req, res, next) {
+  try {
+    const equipementID = req.params.eqID;
+    const equipement = await Equipement.findById(equipementID);
+    equipement.category = req.body.category;
+    equipement.subcategory = req.body.subcategory;
+    equipement.category = req.body.category;
+    equipement.ref = req.body.ref;
+    equipement.details = req.body.details;
+    equipement.manufacturer = req.body.manufacturer;
+    await equipement.save();    
+    return res.status(200).send({ message : "Audit equipement updated successfully", data : equipement });
+  } catch (error) {
+    next(error)
+  }
+}
+//submit questionnaire
+module.exports.submitQuestionnaire = async function (req, res, next) {
+  try {
+    let { questionnaire } = req.body;
+    const audit = await Audit.findById(req.params.id);
+
+    audit.questionnaire = [];
+
+    for (let i = 0; i < questionnaire.length; i++) {
+      const element = questionnaire[i];
+      audit.questionnaire.push({ question : element.question, response : element.response ?? false })
+    }
+    const updated = await audit.save();
+    const updated_audit = await Audit.findById(updated._id)
+    .populate({
+      path:'questionnaire',
+      populate : 'question'
+    });
+
+    return res.status(200).send({ message : "Audit questionnaire updated successfully", data : updated_audit.questionnaire });
+  } catch (error) {
+    next(error)
   }
 }
 

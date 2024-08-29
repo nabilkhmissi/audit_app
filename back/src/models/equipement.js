@@ -7,7 +7,6 @@ const EquipementSchema = new Schema({
   ref: { type: String, required: true },
   details: { type: String },
   manufacturer: { type: String , required : true},
-  
 },
 {
   timestamps: true

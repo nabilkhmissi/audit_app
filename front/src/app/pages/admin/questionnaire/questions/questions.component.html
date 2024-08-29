@@ -16,7 +16,7 @@
 						</span>
 						<p-button label="Reload" [loading]="loading" (onClick)="getQuestions()" class="mx-2"></p-button>
 						<p-button icon="pi pi-plus" label="Create" severity="success"
-							(onClick)="editDialogVisible = true"></p-button>
+							(onClick)="handleQuestionCreate()"></p-button>
 					</div>
 				</ng-template>
 				<!-- table header -->
