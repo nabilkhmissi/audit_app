@@ -14,5 +14,6 @@ router.patch("/:id/equipements", AuditController.addEquipement);
 router.get("/:id/equipements", AuditController.findAuditEquipements);
 router.delete("/:auditID/equipements/:eqID", AuditController.removeEquipementFromAudit);
 router.patch("/equipements/:eqID", AuditController.updateEquipementFromAudit);
+router.patch("/:id/questionnaire", AuditController.submitQuestionnaire);
 
 module.exports = router;

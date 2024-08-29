@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, of, switchMap } from 'rxjs';
+import { map, of, switchMap, tap } from 'rxjs';
+import { AuditService } from 'src/app/services/audit.service';
 import { AuditStepperService } from 'src/app/services/audit_stepper.service';
 import { QuestionService } from 'src/app/services/question.service';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -22,6 +23,7 @@ export class QuestionnaireComponent implements OnInit{
     public _router : Router, 
     private _auditStepper : AuditStepperService,
     private _questionnaire : QuestionService,
+    private _audit : AuditService,
   ){}
 
   goBack(){
@@ -35,6 +37,8 @@ export class QuestionnaireComponent implements OnInit{
     ).subscribe()
   }
   goNext(){
+    this._auditStepper.setForm('questionnaire', this.questions)
+    this.submitQuestions();
     this._auditStepper.selectedAuditID$.pipe(
       switchMap((id : string | null) => {
         if(id){
@@ -42,28 +46,45 @@ export class QuestionnaireComponent implements OnInit{
         } 
         return of(null)
       })
-    ).subscribe()
+    ).subscribe();
   }
 
   fetchQuestions(){
-    this._questionnaire.findAll().pipe(
-      map((res : any) => res.data),
-      map((res : any[]) => res.map(e => ({ question : e, response : null }))),
-    ).subscribe(
-      (res : any) => {
-        this.questions = res
-      }
+    this._auditStepper.auditForm$.pipe(
+      switchMap(v => {
+        if(v && v.questionnaire){
+          return of(v.questionnaire)
+        }
+        return   this._questionnaire.findAll().pipe(
+          map((res : any) => res.data),
+          map((res : any[]) => res.map(e => ({ question : e, response : null }))),
+        )
+      })      
     )
+    .subscribe(
+      res => {
+        this.questions = res;
+      }
+    );
+  }
+
+  submitQuestions(){
+    this._auditStepper.selectedAuditID$.pipe(
+      switchMap((id : any) => {
+        if(!id) return of(); 
+        return this._audit.submitQuestions(id, this.questions)
+      })
+    ).subscribe()
   }
 
   ngOnInit(): void {
-    this.fetchQuestions();
+    this.fetchQuestions()
   }
 
   handleQuestionCheck(q : any, answer : boolean){
-    const index = this.questions.findIndex(e => e.question._id == q.question._id);
-    this.questions[index].response = answer;
-    this.questions = [...this.questions]
+    const index = this.questions.findIndex(e => e.question._id === q.question._id)
+    if(index == -1) return;
+    this.questions[index].response = `${answer}`;
   }
 
 }

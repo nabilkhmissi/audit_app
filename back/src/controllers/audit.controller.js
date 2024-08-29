@@ -30,6 +30,10 @@ module.exports.findById = async function (req, res, next) {
         path: "client",
         select: "-password -salt -isEnabled -isDeleted"
       })
+      .populate({
+        path: "questionnaire",
+        populate: "question"
+      })
       .exec();
     return res.status(200).send({ data : audit, message : "Audit retrieved successfully" });
   } catch (error) {
@@ -44,6 +48,10 @@ module.exports.findByAuditor = async function (req, res, next) {
     .populate({
       path: "auditors",
       select: "-password -salt -isEnabled -isDeleted"
+    })
+    .populate({
+      path : 'questionnaire',
+      populate : 'question'
     })
     return res.status(200).send({ data : audits, message : "Audits retrieved successfully" });
   } catch (error) {
@@ -179,6 +187,30 @@ module.exports.updateEquipementFromAudit = async function (req, res, next) {
     equipement.manufacturer = req.body.manufacturer;
     await equipement.save();    
     return res.status(200).send({ message : "Audit equipement updated successfully", data : equipement });
+  } catch (error) {
+    next(error)
+  }
+}
+//submit questionnaire
+module.exports.submitQuestionnaire = async function (req, res, next) {
+  try {
+    let { questionnaire } = req.body;
+    const audit = await Audit.findById(req.params.id);
+
+    audit.questionnaire = [];
+
+    for (let i = 0; i < questionnaire.length; i++) {
+      const element = questionnaire[i];
+      audit.questionnaire.push({ question : element.question, response : element.response ?? false })
+    }
+    const updated = await audit.save();
+    const updated_audit = await Audit.findById(updated._id)
+    .populate({
+      path:'questionnaire',
+      populate : 'question'
+    });
+
+    return res.status(200).send({ message : "Audit questionnaire updated successfully", data : updated_audit.questionnaire });
   } catch (error) {
     next(error)
   }

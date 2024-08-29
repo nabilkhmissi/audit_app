@@ -19,6 +19,17 @@ export class AuditStepperService {
 
     private selectedEquipementSubject = new BehaviorSubject<any | null>(null);
     selectedEquipement$ = this.selectedEquipementSubject.asObservable();
+    
+    private questionsSubject = new BehaviorSubject<any[] | null>([]);
+    questions$ = this.questionsSubject.asObservable();
+    
+    setQuestions(qs : any){
+        this.questionsSubject.next(qs);
+    }
+
+    getQuestions(){
+        return this.questionsSubject.value;
+    }
 
     setSelectedEquiepemnt(eq : any){
         this.selectedEquipementSubject.next(eq);
@@ -40,8 +51,6 @@ export class AuditStepperService {
     setForm(title : string, data : any){
         this.auditFormSubject.next({ ...this.auditFormSubject.value, ...{ [title] : data} });
     }
-
-
 
     addEquipement(event : { type : string, data : any }){
         let equipements = this.equipementsFormSubject.value;         

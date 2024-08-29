@@ -3,13 +3,17 @@ import { Injectable } from "@angular/core";
 import { tap } from "rxjs";
 import { environment } from "src/environments/environment";
 import { ToastService } from "./toast.service";
+import { AuditStepperService } from "./audit_stepper.service";
 
 @Injectable({
     providedIn : 'root'
 })
 export class AuditService {
 
-    constructor(private _http : HttpClient, private _toast : ToastService){}
+    constructor(
+        private _http : HttpClient, 
+        private _stepper : AuditStepperService
+    ){}
 
     readonly baseUrl = `${environment.apiUrl}/api/audits`;
 
@@ -25,11 +29,7 @@ export class AuditService {
     }
 
     createAudit(data : any){
-        return this._http.post(`${this.baseUrl}/create`, data).pipe(
-            tap((res : any) => {
-                this._toast.setSuccess(res.message)
-            })
-        );
+        return this._http.post(`${this.baseUrl}/create`, data);
     }
     deleteAudit(id : string){
         return this._http.delete(`${this.baseUrl}/delete/${id}`);
@@ -53,5 +53,14 @@ export class AuditService {
     }
     updateEquipementFromAudit(equipementID : string, data: any ){
         return this._http.patch(`${this.baseUrl}/equipements/${equipementID}`, data);
+    }
+
+    submitQuestions(auditId : string, questionnaire : any){
+        const data = questionnaire.map(e => ({ question : e.question._id, response : e.response }));
+        return this._http.patch<any>(`${this.baseUrl}/${auditId}/questionnaire`, {questionnaire : data}).pipe(
+            tap(res => {
+                this._stepper.setForm('questionnaire', res.data);
+            })
+        )
     }
 }
