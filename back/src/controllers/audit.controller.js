@@ -309,6 +309,11 @@ module.exports.updateAuditProgress = async function (req, res, next){
       throw Error("Audit not found/deleted")
     } 
     audit.progress = req.body.progress;
+    if(audit.progress == 100){
+      audit.status = 'FINISHED'
+    }else{
+      audit.status = 'PENDING'
+    }
     await audit.save();
     return res.status(200).send({ message : 'Progress updated successfully', data : audit })
   } catch (error) {
