@@ -104,7 +104,8 @@ import { BadgeModule } from "primeng/badge";
 		TreeModule,
 		AccordionModule,
 		DividerModule,
-		BadgeModule
+		BadgeModule,
+		KnobModule
 	],
     providers : [
 		ConfirmationService,

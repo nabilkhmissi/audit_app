@@ -6,8 +6,8 @@ import { Customer } from 'src/app/demo/api/customer';
 import { AuditService } from 'src/app/services/audit.service';
 import { AuditStepperService } from 'src/app/services/audit_stepper.service';
 import { AuthService } from 'src/app/services/auth.service';
-import { UserService } from 'src/app/services/user.service';
 import { AuditInfosDialogComponent } from 'src/app/shared/dialogs/audit-infos-dialog/audit-infos-dialog.component';
+import { ChangeAuditProgressDialogComponent } from 'src/app/shared/dialogs/change-audit-progress-dialog/change-audit-progress-dialog.component';
 import { CustomConfirmDialogComponent } from 'src/app/shared/dialogs/custom-confirm-dialog/custom-confirm-dialog.component';
 import { EditAuditDialogComponent } from 'src/app/shared/dialogs/edit-audit-dialog/edit-audit-dialog.component';
 import { SharedModule } from 'src/app/shared/shared.module';
@@ -21,6 +21,7 @@ import { environment } from 'src/environments/environment';
     CustomConfirmDialogComponent,
     AuditInfosDialogComponent,
     EditAuditDialogComponent,
+    ChangeAuditProgressDialogComponent
   ],
   templateUrl: './my-audits.component.html',
   styleUrl: './my-audits.component.scss'
@@ -34,9 +35,11 @@ export class MyAuditsComponent {
     auditors: any[] = [];
     dialogVisible = false;
     selectedAudit : any | null = null;
+    selectedAuditForProgressChange : any | null = null;
 
     selectedUser : any | null = null;
     editDialogVisible = false;
+    progressDialogVisible = false;
     
     rowGroupMetadata: any;
     loading: boolean = true;
@@ -87,5 +90,19 @@ export class MyAuditsComponent {
     goToStepper(id : string){
       this._stepper.clearForm()
       this.router.navigate(['/main/auditor/add-audit-stepper', id, 'contact'])
+    }
+
+    selectAuditToChnageProgress(audit : any){
+      this.progressDialogVisible = true;
+      this.selectedAuditForProgressChange = audit;
+    }
+
+    dismissProgressDialog(audit : any){
+      this.progressDialogVisible = false;
+      this.selectedAuditForProgressChange = null;
+      const index = this.audits.findIndex(e => e._id === audit._id);
+      if(index != -1){
+        this.audits[index] = audit;
+      }
     }
 }

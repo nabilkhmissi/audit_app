@@ -41,6 +41,52 @@ module.exports.findById = async function (req, res, next) {
   }
 }
 
+//find by id and contact only
+module.exports.findAuditContactInfosByID = async function (req, res, next) {
+  try {
+    const audit = await Audit.findOne({ _id : req.params.id, isDeleted : false })
+    .populate({
+      path: "auditors",
+      select: "-password -salt -isEnabled -isDeleted"
+    })
+    .populate({
+      path: "client",
+      select: "-password -salt -isEnabled -isDeleted"
+    })
+    .select('-equipements -questionnaire -isDeleted')
+    return res.status(200).send({ data : audit, message : "Audit contact retrieved successfully" });
+  } catch (error) {
+    console.log(error)
+    next(Error("Error while getting audit contact"))
+  }
+}
+
+//find by id and equipements only
+module.exports.findAuditEquipementsByID = async function (req, res, next) {
+  try {
+    const audit = await Audit.findOne({ _id : req.params.id, isDeleted : false })
+    .populate('equipements')
+    return res.status(200).send({ data : audit.equipements, message : "Audit contact retrieved successfully" });
+  } catch (error) {
+    next(Error("Error while getting audit by id"))
+  }
+}
+
+//find by id and questionnaire only
+module.exports.findAuditQuestionnaireByID = async function (req, res, next) {
+  try {
+    const audit = await Audit.findOne({ _id : req.params.id, isDeleted : false })
+    .populate({
+      path : 'questionnaire',
+      populate : 'question'
+    })
+    return res.status(200).send({ data : audit.questionnaire, message : "Audit questionnaire retrieved successfully" });
+  } catch (error) {
+    console.log(error)
+    next(Error("Error while getting audit questionnaire"))
+  }
+}
+
 //find all audits by auditor
 module.exports.findByAuditor = async function (req, res, next) {
   try {
@@ -253,5 +299,19 @@ module.exports.updateAudit = async function (req, res, next) {
     return res.status(200).send({ data : updated, message : "Audit updated successfully" });
   } catch (error) {
     next(Error("Error while creating audit"))
+  }
+
+}
+module.exports.updateAuditProgress = async function (req, res, next){
+  try { 
+    const audit = await Audit.findOne({_id : req.params.id, isDeleted : false });
+    if(!audit){
+      throw Error("Audit not found/deleted")
+    } 
+    audit.progress = req.body.progress;
+    await audit.save();
+    return res.status(200).send({ message : 'Progress updated successfully', data : audit })
+  } catch (error) {
+    next(error)
   }
 }

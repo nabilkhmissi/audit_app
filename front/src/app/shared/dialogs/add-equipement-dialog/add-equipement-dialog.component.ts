@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 import { SharedModule } from '../../shared.module';
-import { of, switchMap, tap } from 'rxjs';
+import { of, switchMap, take, tap } from 'rxjs';
 import { AuditStepperService } from 'src/app/services/audit_stepper.service';
 import { AuditService } from 'src/app/services/audit.service';
 
@@ -44,6 +44,14 @@ export class AddEquipementDialogComponent implements OnChanges{
   createEquipementForm : FormGroup; 
 
   ngOnInit(): void {
+    this.createEquipementForm =  this.fb.group({
+      category : ['', [ Validators.required, Validators.required ]],
+      subcategory : ['', Validators.required],
+      ref : ['', Validators.required],
+      manufacturer : ['', Validators.required],
+      details : ['', Validators.required],
+    })  
+    
     this._stepper.selectedEquipement$.pipe(
       tap(v => {
         if(v){
@@ -54,13 +62,6 @@ export class AddEquipementDialogComponent implements OnChanges{
       })
     ).subscribe();
     this.fetchCategories();
-    this.createEquipementForm =  this.fb.group({
-      category : ['', [ Validators.required, Validators.required ]],
-      subcategory : ['', Validators.required],
-      ref : ['', Validators.required],
-      manufacturer : ['', Validators.required],
-      details : ['', Validators.required],
-  })  
 
   this.createEquipementForm.valueChanges.pipe(
     tap(value => {
@@ -153,6 +154,7 @@ export class AddEquipementDialogComponent implements OnChanges{
       return;
     }
     this._stepper.selectedAuditID$.pipe(
+      take(1),
       switchMap(id => {
         if(id && this.mode == 'add'){
           return this._audit.addEquipementToAudit(id, this.createEquipementForm.value).pipe(

@@ -23,9 +23,16 @@ export class AuditService {
     findById(id : string){
         return this._http.get(`${this.baseUrl}/findById/${id}`)
     }
+    findAuditContactInfosById(id : string){
+        return this._http.get(`${this.baseUrl}/${id}/contact`)
+    }
   
     findAuditEquipements(id : string){
         return this._http.get(`${this.baseUrl}/${id}/equipements`)
+    }
+ 
+    findAuditQuestionnaire(id : string){
+        return this._http.get(`${this.baseUrl}/${id}/questionnaire`)
     }
 
     createAudit(data : any){
@@ -45,6 +52,10 @@ export class AuditService {
         return this._http.patch(`${this.baseUrl}/updateAudit/${id}`, data);
     }
    
+    updateAuditProgress(id : string, progress : number){
+        return this._http.patch(`${this.baseUrl}/${id}/progress`, { progress });
+    }
+   
     addEquipementToAudit(id : string, data : any){
         return this._http.patch(`${this.baseUrl}/${id}/equipements`, data);
     }
@@ -57,10 +68,6 @@ export class AuditService {
 
     submitQuestions(auditId : string, questionnaire : any){
         const data = questionnaire.map(e => ({ question : e.question._id, response : e.response }));
-        return this._http.patch<any>(`${this.baseUrl}/${auditId}/questionnaire`, {questionnaire : data}).pipe(
-            tap(res => {
-                this._stepper.setForm('questionnaire', res.data);
-            })
-        )
+        return this._http.patch<any>(`${this.baseUrl}/${auditId}/questionnaire`, {questionnaire : data})
     }
 }
