@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { of, switchMap, tap } from 'rxjs';
+import { map, of, switchMap, take, tap } from 'rxjs';
+import { AuditService } from 'src/app/services/audit.service';
 import { AuditStepperService } from 'src/app/services/audit_stepper.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { environment } from 'src/environments/environment';
@@ -32,23 +33,29 @@ export class ContactComponent implements OnInit{
     private _formBuilder : FormBuilder,
     private _router : Router,
     private _auditStepper : AuditStepperService,
+    private _audit : AuditService,
 ) { }
 
   ngOnInit() {
     this.initForm();
-    this._auditStepper.auditForm$.pipe(
-      tap(r => {
-        if(r && r.contact){
-          this.selectedAuditors = r.contact.auditors;
-          this.selectedClient = r.contact.client;
-          this.createAuditForm.patchValue({
-            ...r.contact,
-            auditors : r.contact.auditors.map(e =>`${e.firstName} ${e.lastName}`),
-            client : r.contact.client.firstName
-          });
-        }
+    this._auditStepper.selectedAuditID$.pipe(
+      take(1),
+      switchMap(id => {
+        if(!id) return of()
+          return this._audit.findAuditContactInfosById(id)
       })
-    ).subscribe();
+    ).pipe(
+      map((res : any) => res.data)
+    )
+    .subscribe(
+      (res : any) => {
+        this.createAuditForm.patchValue({
+          ...res,
+          auditors : res.auditors.map(e =>`${e.firstName} ${e.lastName}`),
+          client : res.client.firstName
+        });
+      }
+    )
   }
 
   initForm(){
@@ -79,7 +86,6 @@ export class ContactComponent implements OnInit{
   }
 
   goNext(){
-    console.log("go next invoked in contact")
     this._auditStepper.setForm('contact', {
       ...this.createAuditForm.value, 
       auditors : this.selectedAuditors, 

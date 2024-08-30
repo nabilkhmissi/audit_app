@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
-import { map, of, switchMap, tap } from 'rxjs';
+import { map, of, switchMap, take, tap } from 'rxjs';
 import { AuditService } from 'src/app/services/audit.service';
 import { AuditStepperService } from 'src/app/services/audit_stepper.service';
 import { AddEquipementDialogComponent } from 'src/app/shared/dialogs/add-equipement-dialog/add-equipement-dialog.component';
@@ -72,6 +72,7 @@ export class EquipementComponent implements OnInit{
 
   fetchAuditEquipements(){
     this._auditStepper.selectedAuditID$.pipe(
+      take(1),
       switchMap(id => {
         if(!id){
           return of(null)
@@ -118,6 +119,7 @@ export class EquipementComponent implements OnInit{
     const res = confirm('Dou you want to delete this equipement ?');
     if(!res) return;
     this._auditStepper.selectedAuditID$.pipe(
+      take(1),
       switchMap(id=> {
         if(!id){
           return of()
@@ -134,8 +136,8 @@ export class EquipementComponent implements OnInit{
   }
 
   goNext(){
-    console.log("go next invoked in equipements")
     this._auditStepper.selectedAuditID$.pipe(
+      take(1),
       switchMap((id : string | null) => {
         if(id){
           return this._router.navigateByUrl(`/main/auditor/add-audit-stepper/${id}/questionnaire`);
@@ -147,6 +149,7 @@ export class EquipementComponent implements OnInit{
 
   goBack(){
     this._auditStepper.selectedAuditID$.pipe(
+      take(1),
       switchMap((id : string | null) => {
         if(id){
           return this._router.navigateByUrl(`/main/auditor/add-audit-stepper/${id}/contact`);

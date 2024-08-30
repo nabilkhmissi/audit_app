@@ -131,7 +131,7 @@ import { AdminGuard } from './guards/admin.guard';
             { path: 'auth', loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule) },
             { path: 'notfound', component: NotfoundComponent },
             // { path: '**', redirectTo: '/notfound' },
-        ], { scrollPositionRestoration: 'enabled', anchorScrolling: 'enabled', onSameUrlNavigation: 'reload' })
+        ])
     ],
     exports: [RouterModule]
 })

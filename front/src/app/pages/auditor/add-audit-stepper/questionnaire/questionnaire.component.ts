@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, of, switchMap, tap } from 'rxjs';
+import { MessageService } from 'primeng/api';
+import { map, of, switchMap, take, tap } from 'rxjs';
 import { AuditService } from 'src/app/services/audit.service';
 import { AuditStepperService } from 'src/app/services/audit_stepper.service';
 import { QuestionService } from 'src/app/services/question.service';
@@ -24,10 +25,12 @@ export class QuestionnaireComponent implements OnInit{
     private _auditStepper : AuditStepperService,
     private _questionnaire : QuestionService,
     private _audit : AuditService,
+    private _message : MessageService,
   ){}
 
   goBack(){
     this._auditStepper.selectedAuditID$.pipe(
+      take(1),
       switchMap((id : string | null) => {
         if(id){
           return this._router.navigateByUrl(`/main/auditor/add-audit-stepper/${id}/infrastructure`);
@@ -40,6 +43,7 @@ export class QuestionnaireComponent implements OnInit{
     this._auditStepper.setForm('questionnaire', this.questions)
     this.submitQuestions();
     this._auditStepper.selectedAuditID$.pipe(
+      take(1),
       switchMap((id : string | null) => {
         if(id){
           return this._router.navigateByUrl(`/main/auditor/add-audit-stepper/${id}/confirmation`);
@@ -50,29 +54,37 @@ export class QuestionnaireComponent implements OnInit{
   }
 
   fetchQuestions(){
-    this._auditStepper.auditForm$.pipe(
-      switchMap(v => {
-        if(v && v.questionnaire){
-          return of(v.questionnaire)
-        }
-        return   this._questionnaire.findAll().pipe(
-          map((res : any) => res.data),
-          map((res : any[]) => res.map(e => ({ question : e, response : null }))),
+    return this._auditStepper.selectedAuditID$.pipe(
+      take(1),
+      switchMap(id => {
+        if(!id) return of();
+        return this._audit.findAuditQuestionnaire(id).pipe(
+          switchMap((res : any) => {
+            if(res.data.length != 0) return of(res.data)
+            return this._questionnaire.findAll().pipe(
+              map((res : any) => res.data.map(e => ({ question : e, response : null }))),
+            )
+          })   
         )
-      })      
-    )
-    .subscribe(
+      }),
+             
+    ).subscribe(
       res => {
-        this.questions = res;
+        this.questions = res
       }
-    );
+    )
   }
 
   submitQuestions(){
     this._auditStepper.selectedAuditID$.pipe(
+      take(1),
       switchMap((id : any) => {
         if(!id) return of(); 
-        return this._audit.submitQuestions(id, this.questions)
+        return this._audit.submitQuestions(id, this.questions).pipe(
+          tap(res => {
+            this._message.add({ severity : 'success', summary : res.message })
+          })
+        )
       })
     ).subscribe()
   }
