@@ -34,6 +34,7 @@ module.exports.findById = async function (req, res, next) {
         path: "questionnaire",
         populate: "question"
       })
+      .populate('equipements')
       .exec();
     return res.status(200).send({ data : audit, message : "Audit retrieved successfully" });
   } catch (error) {
