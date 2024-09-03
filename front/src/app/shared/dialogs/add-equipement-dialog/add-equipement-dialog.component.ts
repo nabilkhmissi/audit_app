@@ -6,6 +6,7 @@ import { SharedModule } from '../../shared.module';
 import { of, switchMap, take, tap } from 'rxjs';
 import { AuditStepperService } from 'src/app/services/audit_stepper.service';
 import { AuditService } from 'src/app/services/audit.service';
+import { EquipementService } from 'src/app/services/equipements.service';
 
 @Component({
   selector: 'app-add-equipement-dialog',
@@ -31,6 +32,7 @@ export class AddEquipementDialogComponent implements OnChanges{
   categories = [];
   data_categories = [];
   sub_categories = [];
+  suggestedEquipements = [];
   id = '';
 
   constructor(
@@ -38,6 +40,7 @@ export class AddEquipementDialogComponent implements OnChanges{
     private _message : MessageService,
     private _stepper : AuditStepperService,
     private _audit : AuditService,
+    private _equipement : EquipementService,
 
   ){}
 
@@ -66,9 +69,18 @@ export class AddEquipementDialogComponent implements OnChanges{
   this.createEquipementForm.valueChanges.pipe(
     tap(value => {
       this.sub_categories = this.data_categories.find(e => e.category == value.category)?.subs.map(e => e.label);
+    }),
+    switchMap(value => {
+      return this._equipement.searchEquipement({ manufacturer : value.manufacturer, ref : value.ref })
     })
-  ).subscribe();
+  ).subscribe(
+    (res : any) => {
+      this.suggestedEquipements = res.data;
+    }
+  );
   }
+
+  handleAutoComplete(event : any){}
 
 
   fetchCategories(){

@@ -4,4 +4,5 @@ module.exports = {
     AuditRoute : require("./audit_route"),
     QuestionRoute : require("./question_route"),
     QuestionCategoryRoute : require("./question_category_route"),
+    EquipementsRoute : require("./equipements.route"),
 }
