@@ -23,5 +23,6 @@ router.get("/:id/questionnaire", AuditController.findAuditQuestionnaireByID);
 
 router.post("/:id/files", uploader.uploadAuditFiles.single('file'), AuditController.uploadFile);
 router.patch("/:id/files/:fileId", AuditController.deleteFile);
+router.get("/dashboard", AuditController.dashboardNumbers);
 
 module.exports = router;

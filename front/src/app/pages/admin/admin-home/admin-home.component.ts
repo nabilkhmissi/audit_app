@@ -12,6 +12,7 @@ import { debounceTime, Subscription } from 'rxjs';
 import { Product } from 'src/app/demo/api/product';
 import { ProductService } from 'src/app/demo/service/product.service';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
+import { AuditService } from 'src/app/services/audit.service';
 
 @Component({
   selector: 'app-admin-home',
@@ -31,7 +32,7 @@ import { LayoutService } from 'src/app/layout/service/app.layout.service';
 })
 export class AdminHomeComponent implements OnInit{
 
-  items!: MenuItem[];
+    items!: MenuItem[];
 
     products!: Product[];
 
@@ -41,9 +42,12 @@ export class AdminHomeComponent implements OnInit{
 
     subscription!: Subscription;
 
+    dahsboardItems = null;
+
     constructor(
       private productService: ProductService, 
-      public layoutService: LayoutService
+      public layoutService: LayoutService,
+      private _audit : AuditService
     ) {
         this.subscription = this.layoutService.configUpdate$
         .pipe(debounceTime(25))
@@ -54,12 +58,22 @@ export class AdminHomeComponent implements OnInit{
 
     ngOnInit() {
         this.initChart();
+        this.fetchNumbers();
         this.productService.getProductsSmall().then(data => this.products = data);
 
         this.items = [
             { label: 'Add New', icon: 'pi pi-fw pi-plus' },
             { label: 'Remove', icon: 'pi pi-fw pi-minus' }
         ];
+    }
+
+
+    fetchNumbers(){
+        this._audit.getDashboardItems().subscribe(
+            (res : any) => {
+                this.dahsboardItems = res.data;
+            }
+        )
     }
 
     initChart() {

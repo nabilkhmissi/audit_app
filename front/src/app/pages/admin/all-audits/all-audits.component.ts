@@ -1,5 +1,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { map } from 'rxjs';
 import { Customer } from 'src/app/demo/api/customer';
 import { AuditService } from 'src/app/services/audit.service';
 import { UserService } from 'src/app/services/user.service';
@@ -54,11 +55,15 @@ export class AllAuditsComponent {
     getAudits(){
         this.loading = true;
         this._audits.findAllAudits()
+        .pipe(
+            map((res : any) => res.data.map(e => ({...e, equipements: this.groupEquipementsByCategory(e.equipements)})))
+        )
         .subscribe(
             (res : any) => {
                 this.loading = false;
-                this.audits = res.data; 
-                this.filteredAudits = res.data; 
+                this.audits = res; 
+                this.filteredAudits = res; 
+                console.log(this.filteredAudits)
             }
         )
     }
@@ -106,4 +111,45 @@ export class AllAuditsComponent {
         this.editDialogVisible = !this.editDialogVisible;
         this.selectedUser = null;
     }
+
+    groupEquipementsByCategory(equipements : any[]){
+        let grouped = [];
+        for (let i = 0; i < equipements.length; i++) {
+          const element = equipements[i];
+          const category = element.category;
+          if(!grouped[category]){
+            grouped[category] = [];
+          }
+          grouped[category].push(element);
+        }
+    
+        return Object.keys(grouped).map(key => ({
+          category: key,
+          icon : this.setCatgeoryIcon(key),
+          items: grouped[key]
+        }));
+      }
+    
+      setCatgeoryIcon(key : string){
+        switch (key) {
+          case 'Réseau et sécurité':
+            return 'pi pi-sitemap'
+          case 'Serveurs':
+            return 'pi pi-server'
+          case 'Service d\'annuaires (IAM Identity and Access Management Solutions)':
+            return 'pi pi-lock'
+          case 'Système d\'exploitation':
+            return 'pi pi-microsoft'
+          case 'Systèmes de gestion de cloud':
+            return 'pi pi-cloud'
+          case 'Middleware':
+            return 'pi pi-code'
+          case 'Firmware':
+            return 'pi pi-code'
+          case 'Équipements industriels':
+            return 'pi pi-cog'
+          default:
+            return 'pi-angle-right'
+        }
+      }
 }

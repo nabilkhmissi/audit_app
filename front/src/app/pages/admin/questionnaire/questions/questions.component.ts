@@ -93,8 +93,8 @@ export class QuestionsComponent {
         this.questions[index] = event.data;
     } else{
         this.questions = [...this.questions, event.data];
-        this.filteredQuestions = this.questions;
     }
+    this.filteredQuestions = this.questions;
     this.editDialogVisible = false;
     this.selectedQuestion = null;
 }

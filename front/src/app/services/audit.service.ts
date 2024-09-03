@@ -59,6 +59,9 @@ export class AuditService {
     addEquipementToAudit(id : string, data : any){
         return this._http.patch(`${this.baseUrl}/${id}/equipements`, data);
     }
+    getDashboardItems(){
+        return this._http.get(`${this.baseUrl}/dashboard`);
+    }
     removeEquipementFromAudit(auditId : string, equipementID : string, ){
         return this._http.delete(`${this.baseUrl}/${auditId}/equipements/${equipementID}`);
     }

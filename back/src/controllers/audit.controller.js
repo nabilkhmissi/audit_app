@@ -1,18 +1,24 @@
-const { Audit, User, Equipement, File } = require("../models");
+const { Audit, User, Equipement, File, Question, QuestionCategory } = require("../models");
 
 //find all audits
 module.exports.findAll = async function (req, res, next) {
   try {
     const audits = await Audit.find({ isDeleted : false })
     .populate({
-        path: "auditors",
-        select: "-password -salt -isEnabled -isDeleted"
-      })
-      .populate({
-        path: "client",
-        select: "-password -salt -isEnabled -isDeleted"
-      })
-      .exec();
+      path: "auditors",
+      select: "-password -salt -isEnabled -isDeleted"
+    })
+    .populate({
+      path: "client",
+      select: "-password -salt -isEnabled -isDeleted"
+    })
+    .populate({
+      path: "questionnaire",
+      populate: "question"
+    })
+    .populate('equipements')
+    .populate('files')
+    
     return res.status(200).send({ data : audits, message : "Audits retrieved successfully" });
   } catch (error) {
     next(Error("Error while getting audits"))
@@ -352,6 +358,37 @@ module.exports.updateAuditProgress = async function (req, res, next){
     }
     await audit.save();
     return res.status(200).send({ message : 'Progress updated successfully', data : audit })
+  } catch (error) {
+    next(error)
+  }
+}
+
+
+module.exports.dashboardNumbers = async (req, res, next)=>{
+  try {
+    const clients = await User.find({ role : 'CLIENT' , isDeleted : false});
+    const admins = await User.find({ role : 'ADMIN' , isDeleted : false});
+    const auditors = await User.find({ role : 'AUDITOR' , isDeleted : false});
+    const pending_audits = await Audit.find({ status : 'PENDING' , isDeleted : false});
+    const finished_audits = await Audit.find({ status : 'FINISHED' , isDeleted : false});
+    const questions = await Question.find();
+    const equipements = await Equipement.find();
+    const questionCategory = await QuestionCategory.find();
+    const data = { 
+      users : { 
+        admins : admins.length , 
+        auditors : auditors.length, 
+        clients : clients.length 
+      },
+      audits : { 
+        pending : pending_audits.length, 
+        finished : finished_audits.length 
+      },
+      questions : questions.length,
+      equipements : equipements.length,
+      questionCategory : questionCategory.length
+     };
+     return res.status(200).send({ message : "Dashboard items retrieved successfully", data })
   } catch (error) {
     next(error)
   }
