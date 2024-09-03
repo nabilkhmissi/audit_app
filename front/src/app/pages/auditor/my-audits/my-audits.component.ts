@@ -36,6 +36,7 @@ export class MyAuditsComponent {
     dialogVisible = false;
     selectedAudit : any | null = null;
     selectedAuditForProgressChange : any | null = null;
+    selectedAuditForDataView : any | null = null;
 
     selectedUser : any | null = null;
     editDialogVisible = false;
@@ -104,5 +105,52 @@ export class MyAuditsComponent {
       if(index != -1){
         this.audits[index] = audit;
       }
+    }
+
+    groupEquipementsByCategory(equipements : any[]){
+      let grouped = [];
+      for (let i = 0; i < equipements.length; i++) {
+        const element = equipements[i];
+        const category = element.category;
+        if(!grouped[category]){
+          grouped[category] = [];
+        }
+        grouped[category].push(element);
+      }
+  
+      return Object.keys(grouped).map(key => ({
+        category: key,
+        icon : this.setCatgeoryIcon(key),
+        items: grouped[key]
+      }));
+    }
+  
+    setCatgeoryIcon(key : string){
+      switch (key) {
+        case 'Réseau et sécurité':
+          return 'pi pi-sitemap'
+        case 'Serveurs':
+          return 'pi pi-server'
+        case 'Service d\'annuaires (IAM Identity and Access Management Solutions)':
+          return 'pi pi-lock'
+        case 'Système d\'exploitation':
+          return 'pi pi-microsoft'
+        case 'Systèmes de gestion de cloud':
+          return 'pi pi-cloud'
+        case 'Middleware':
+          return 'pi pi-code'
+        case 'Firmware':
+          return 'pi pi-code'
+        case 'Équipements industriels':
+          return 'pi pi-cog'
+        default:
+          return 'pi-angle-right'
+      }
+    }
+  
+
+    selectAuditForDataShow(audit : any){
+      this.selectedAuditForDataView = {...audit, equipements: this.groupEquipementsByCategory(audit.equipements)};
+      console.log(this.selectedAuditForDataView)
     }
 }

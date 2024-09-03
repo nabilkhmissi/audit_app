@@ -120,7 +120,7 @@
 								type="button" 
 								icon="pi pi-eye" 
 								class="p-button-rounded p-button-outlined" 
-								(click)="showDetails(audit);"
+								(click)="selectAuditForDataShow(audit)"
 							></button>
 							<button 
 								pButton 
@@ -130,16 +130,6 @@
 								class="p-button-rounded p-button-outlined" 
 								(click)="goToStepper(audit._id)">
 							</button>
-							<!-- <p-button 
-								icon="pi pi-trash"
-								severity="danger" 
-								[rounded]="true" 
-								[outlined]="true"  
-								[loading]="audit._id === auditDeleteLoading" 
-								[disabled]="audit._id === auditDeleteLoading" 
-								key="accept" 
-								(click)="deleteDialog.show();selectAuditToDlete(audit._id)"
-							></p-button> -->
 							<p-button 
 								icon="pi pi-hourglass"
 								severity="warning" 
@@ -182,3 +172,10 @@
 	(dismiss)="dismissProgressDialog($event)"
 	[audit]="selectedAuditForProgressChange">
 </app-change-audit-progress-dialog>
+
+<app-audit-infos-dialog
+	[selectedAudit]="selectedAuditForDataView"
+	[visible]="selectedAuditForDataView!=null"
+	(hide)="selectedAuditForDataView = null">
+	
+</app-audit-infos-dialog>

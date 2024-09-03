@@ -118,15 +118,22 @@ module.exports.findAuditQuestionnaireByID = async function (req, res, next) {
 //find all audits by auditor
 module.exports.findByAuditor = async function (req, res, next) {
   try {
-    const audits = await Audit.find({ auditors : { $in : req.params.id } })
+    const audits = await Audit.find({ auditors : { $in : req.params.id }, isDeleted : false })
     .populate({
       path: "auditors",
       select: "-password -salt -isEnabled -isDeleted"
     })
     .populate({
-      path : 'questionnaire',
-      populate : 'question'
+      path: "client",
+      select: "-password -salt -isEnabled -isDeleted"
     })
+    .populate({
+      path: "questionnaire",
+      populate: "question"
+    })
+    .populate('equipements')
+    .populate('files');
+
     return res.status(200).send({ data : audits, message : "Audits retrieved successfully" });
   } catch (error) {
     next(Error("Error while getting audits by auditor"))

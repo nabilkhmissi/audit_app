@@ -15,6 +15,8 @@
                     <p-avatar *ngFor="let a of selectedAudit?.auditors" 
                         [image]="imagesUrl+'/'+ a.image" 
                         size="large" 
+						[pTooltip]="a.firstName + ' ' + a.lastName"
+						tooltipPosition="bottom"
                         shape="circle" />
                 </p-avatarGroup>
 			</li>
@@ -84,13 +86,13 @@
 		    <div class="my-4">
                 <span class="modal-row-title">Audit details:</span>
             </div>
-
+			
 			<li class="flex align-items-center py-2 border-bottom-1 surface-border">
 				<div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
 					<i class="pi pi-chart-line text-xl text-gray-500"></i>
 				</div>
 				<span class="text-900 line-height-3">
-					<span class="modal-row-title">Status :</span> 
+					<span class="modal-row-title">Status : </span> 
 					<span class="customer-badge"  [ngClass]="{
 						'status-qualified': selectedAudit?.status === 'FINISHED', 
 						'status-new': selectedAudit?.status === 'PENDING', 
@@ -98,19 +100,38 @@
 					}">   {{ selectedAudit?.status }} </span>
 				</span>
 			</li>
-		
-			<li class="flex align-items-center py-2 border-bottom-1 surface-border">
-				<div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
-					<i class="pi pi-folder text-xl text-gray-500"></i>
-				</div>
-				<span class="text-900 line-height-3"><span class="modal-row-title">Files :</span> {{ selectedAudit?.files }}</span>
-			</li>
-
+			
 			<li class="flex align-items-center py-2 surface-border">
 				<div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
 					<i class="pi pi-calendar text-xl text-gray-500"></i>
 				</div>
 				<span class="text-900 line-height-3"><span class="modal-row-title">Created at :</span> {{ selectedAudit?.createdAt | date : 'dd/MM/yyyy'}}</span>
+			</li>
+			<li class="flex align-items-center py-2 surface-border" *ngIf="selectedAudit?.closedAt">
+				<div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
+					<i class="pi pi-calendar text-xl text-gray-500"></i>
+				</div>
+				<span class="text-900 line-height-3"><span class="modal-row-title">Closed at :</span> {{ selectedAudit?.closedAt | date : 'dd/MM/yyyy'}}</span>
+			</li>
+			<div class="my-4">
+				<span class="modal-row-title">Files:</span>
+			</div>
+			<li class="flex align-items-center py-2 justify-content-between" *ngFor="let file of selectedAudit?.files">
+				<div class="flex align-items-center justify-content-center">
+					<div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
+						<i class="pi pi-file text-xl text-gray-500"></i>
+					</div>
+					<span class="text-900 line-height-3"><span class="modal-row-title"></span> {{ file?.title }}</span>
+				</div>
+				<p-button icon="pi pi-download" severity="primary" [rounded]="true" [outlined]="true" (click)="downloadFile(file.title)"></p-button>
+			</li>
+			<div class="my-4">
+				<span class="modal-row-title">Equipements:</span>
+			</div>
+			<li>
+				<app-confirm-infrastructure-section
+					[infrastructure]="selectedAudit?.equipements">
+				</app-confirm-infrastructure-section>
 			</li>
 		</ul>
 	</p-dialog>

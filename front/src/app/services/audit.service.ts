@@ -1,7 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "src/environments/environment";
-import { AuditStepperService } from "./audit_stepper.service";
 import { saveAs  } from 'file-saver';
 
 @Injectable({
@@ -11,7 +10,6 @@ export class AuditService {
 
     constructor(
         private _http : HttpClient, 
-        private _stepper : AuditStepperService
     ){}
 
     readonly baseUrl = `${environment.apiUrl}/api/audits`;
@@ -85,7 +83,6 @@ export class AuditService {
         return this._http.get(`${environment.auditFilesUrl}/${file}`, { responseType : 'blob' }).subscribe(
             (response : any) => {
                 let blob: any = new Blob([response], { type: 'file' });
-                const url = window.URL.createObjectURL(blob);
                 saveAs(blob, file);
             }
         );
