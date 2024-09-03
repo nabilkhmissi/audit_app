@@ -44,6 +44,7 @@ import { AccordionModule } from "primeng/accordion";
 import { DividerModule } from "primeng/divider";
 import { BadgeModule } from "primeng/badge";
 import { FileUploadModule } from "primeng/fileupload";
+import { TabViewModule } from "primeng/tabview";
 
 
 
@@ -107,7 +108,8 @@ import { FileUploadModule } from "primeng/fileupload";
 		DividerModule,
 		BadgeModule,
 		KnobModule,
-		FileUploadModule
+		FileUploadModule,
+		TabViewModule
 	],
     providers : [],
 })

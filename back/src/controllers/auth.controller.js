@@ -35,6 +35,34 @@ module.exports.signup = async (req, res, next)=>{
     }
 }
 
+module.exports.updatePassword = async (req, res, next)=>{
+    try {
+        const user = await User.findById(req.params.id);
+
+        const { oldPassword, newPassword, confirmNewPassword } = req.body;
+
+        if(newPassword !== confirmNewPassword){
+            throw Error("New Password missMatch, please try again");
+        }
+        const hashedOld = hashPassword(oldPassword, user.salt);
+        if(hashedOld !== user.password){
+            throw Error("Old password missmatch, please verity your old password");
+        }
+
+        const new_salt = await genSalt();
+        const hashed_pwd = await hashPassword(req.body.password, new_salt);
+
+        user.password = hashed_pwd;
+        user.salt = new_salt;
+
+        await user.save();
+        return res.status(200).send({ message : "Password updated successfully"})
+
+    } catch (error) {
+        next(error)
+    }
+}
+
 module.exports.login = async (req, res, next)=>{
     try {
         const { email, password } = req.body;

@@ -1,7 +1,8 @@
 <div class="grid">
     <div class="col-12 md:col-3">
-        <div class="card">
-            dsfsd
+        <div class="card text-center">
+            <img width=100% [src]="currentUser?.image" alt="currentUser?.firstName + ' ' + currentUser?.lastName" class="mb-3">
+            <span class="font-bold text-300">{{ currentUser?.role }}</span>
         </div>
     </div>
     <div class="col-12 md:col-9">
@@ -9,65 +10,10 @@
             <h5>My account</h5>
             <p-tabView orientation="left">
                 <p-tabPanel header="Général" class="line-height-3 m-0">
-                    <ul class="p-0 mx-0 mt-0 mb-4 list-none">
-                        <li class="flex align-items-center py-2 border-bottom-1 surface-border">
-                            <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
-                                <i class="pi pi-info text-xl text-gray-500"></i>
-                            </div>
-                            <span class="text-900 line-height-3"><span class="modal-row-title">Name :</span>{{ currentUser?.firstName }} {{ currentUser?.lastName }}</span>
-                        </li>
-                        <li class="flex align-items-center py-2 border-bottom-1 surface-border">
-                            <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
-                                <i class="pi pi-envelope text-xl text-gray-500"></i>
-                            </div>
-                            <span class="text-900 line-height-3"><span class="modal-row-title">Email :</span> {{ currentUser?.email }}</span>
-                        </li>
-                        <li class="flex align-items-center py-2 border-bottom-1 surface-border">
-                            <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
-                                <i class="pi pi-shield text-xl text-gray-500"></i>
-                            </div>
-                            <span class="text-900 line-height-3"><span class="modal-row-title">Role :</span> {{ currentUser?.role }}</span>
-                        </li>
-                        <li class="flex align-items-center py-2 border-bottom-1 surface-border">
-                            <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
-                                <i class="pi pi-map-marker	text-xl text-gray-500"></i>
-                            </div>
-                            <span class="text-900 line-height-3"><span class="modal-row-title">Adresse :</span> {{ currentUser?.adresse }}</span>
-                        </li>
-                        <li class="flex align-items-center py-2 border-bottom-1 surface-border">
-                            <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
-                                <i class="pi pi-phone	text-xl text-gray-500"></i>
-                            </div>
-                            <span class="text-900 line-height-3"><span class="modal-row-title">Phone :</span> {{ currentUser?.phone }}</span>
-                        </li>
-                        <li class="flex align-items-center py-2 border-bottom-1 surface-border">
-                            <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
-                                <i class="pi pi-calendar text-xl text-gray-500"></i>
-                            </div>
-                            <span class="text-900 line-height-3"><span class="modal-row-title">Joined at :</span> {{ currentUser?.createdAt | date : 'dd/MM/yyyy'}}</span>
-                        </li>
-                    </ul>
+                    <app-profile-details-section [currentUser]="currentUser"></app-profile-details-section>-section
                 </p-tabPanel>
                 <p-tabPanel header="Sécurity" class="line-height-3 m-0">
-                    <form [formGroup]="passwordForm">
-                        
-                        <div class="p-fluid mb-2">
-                            <label for="">Old password</label>
-                            <p-password formControlName="oldPassword" [toggleMask]="true" [feedback]="false"/>
-                            <small></small>
-                        </div>
-                        <div class="p-fluid mb-2">
-                            <label for="">New password</label>
-                            <p-password formControlName="newPassword" [toggleMask]="true"/>
-                        </div>
-                        <div class="p-fluid mb-2">
-                            <label for="">Confirm new password</label>
-                            <p-password formControlName="confirmNewPassword" [toggleMask]="true"/>
-                        </div>
-                        <div class="p-fluid">
-                            <p-button label="Save" [disabled]="passwordLoading" [loading]="passwordLoading" (onClick)="handlePasswordChange()"></p-button>
-                        </div>
-                    </form>
+                    <app-security-section></app-security-section>
                 </p-tabPanel>
             </p-tabView>
         </div>

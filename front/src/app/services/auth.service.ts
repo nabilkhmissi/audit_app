@@ -45,21 +45,7 @@ export class AuthService {
         this.isAuthenticated.next(true);
         this.authenticatedUser.next(response.data);
         this._loading.hideLoading();
-        this._router.navigate(['/main'])
-        const role = response.data.role;
-        switch (role) {
-          case "ADMIN":
-            break;
-          // case "AUDITOR":
-          //   this._router.navigate(['/auditor'])
-          //   break;
-          // case "CLIENT":
-          //   this._router.navigate(['/client'])
-          //   break;
-          //   default:
-          //   this._router.navigate(['/auth'])
-          //   break;
-        }
+        this._router.navigate(['/main'])        
       })
     )
   }
@@ -118,5 +104,10 @@ export class AuthService {
       this.logout();
       this._toast.setSuccess("Token expired, you're logged out")
     }, expirationDuration);
+  }
+
+
+  updatePasword(userID : string, data : any){
+    return this._http.patch(`${this.baseUrl}/user/${userID}/password`, data);
   }
 }

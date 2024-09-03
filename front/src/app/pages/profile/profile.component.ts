@@ -1,22 +1,24 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormBuilder, ReactiveFormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { PasswordModule } from 'primeng/password';
 import { TabViewModule } from 'primeng/tabview';
-import { switchMap, tap } from 'rxjs';
+import { map, switchMap, tap } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { UserService } from 'src/app/services/user.service';
+import { SecuritySectionComponent } from './security-section/security-section.component';
+import { environment } from 'src/environments/environment';
+import { ProfileDetailsSectionComponent } from './profile-details-section/profile-details-section.component';
+import { SharedModule } from 'src/app/shared/shared.module';
 
 @Component({
   selector: 'app-profile',
   standalone: true,
   imports: [
-    TabViewModule,
-    CommonModule,
-    ReactiveFormsModule,
-    PasswordModule,
-    ButtonModule
+    SharedModule,
+    SecuritySectionComponent,
+    ProfileDetailsSectionComponent,
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
@@ -26,20 +28,12 @@ export class ProfileComponent implements OnInit{
   constructor(
     private _auth : AuthService, 
     private _user : UserService,
-    private fb : FormBuilder
   ){}
   currentUser : any | null = null;
-  passwordForm : FormGroup;
 
-  passwordLoading = false;
   
   ngOnInit(): void {
     this.loadUser();
-    this.passwordForm = this.fb.group({
-      oldPassword : ['', Validators.required],
-      newPassword : ['', Validators.required],
-      confirmNewPassword : ['', Validators.required],
-    })
   }
 
   loadUser(){
@@ -48,19 +42,10 @@ export class ProfileComponent implements OnInit{
         return this._user.findById(user.id)
       })
     ).pipe(
+      map((res : any) => ({ ...res.data, image : `${environment.userImagesUrl}/${res.data.image}` })),
       tap(res => {
-        this.currentUser = res
+        this.currentUser = res;
       })
     ).subscribe()
   }
-
-  handlePasswordChange(){
-    this.passwordLoading = true;
-    setTimeout(() => {
-      this.passwordLoading = false
-    }, 3000);
-  }
-
-  
-
 }

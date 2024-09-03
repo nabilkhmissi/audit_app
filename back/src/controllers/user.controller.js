@@ -63,7 +63,7 @@ module.exports.findAllClients = async function (req, res, next) {
 module.exports.findById = async function (req, res, next) {
   try {
     const user = await User.findById(req.params.id);
-    return res.status(200).send(user);
+    return res.status(200).send({ message : "User retrieved successfully", data : user });
   } catch (error) {
     next(Error("Error while getting user"))
   }
