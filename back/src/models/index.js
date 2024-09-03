@@ -5,5 +5,6 @@ module.exports = {
     AuditStatus : require("./audit_status"),
     Equipement : require("./equipement"),
     Question : require("./question"),
+    File : require("./file"),
     QuestionCategory : require("./question_category"),
 }

@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
             this._auth.autoLogout(expirationDate.getTime() - now.getTime());
           } else {
             this._auth.logout();
-            this._message.add({ severity : "secondary",summary: 'Redirection', detail: "Token expired, you're logged out"  })
+            this._message.add({ severity : "secondary", summary: "Token expired, you're logged out"  })
           }
         }
       }

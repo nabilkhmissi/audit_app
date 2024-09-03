@@ -39,6 +39,10 @@ export class AddAuditStepperComponent implements OnInit{
         routerLink: 'questionnaire'
     },
     {
+        label: 'Files',
+        routerLink: 'files'
+    },
+    {
         label: 'Confirmation',
         routerLink: 'confirmation'
     }

@@ -1,4 +1,4 @@
-const { Audit, User, Equipement } = require("../models");
+const { Audit, User, Equipement, File } = require("../models");
 
 //find all audits
 module.exports.findAll = async function (req, res, next) {
@@ -35,7 +35,8 @@ module.exports.findById = async function (req, res, next) {
         populate: "question"
       })
       .populate('equipements')
-      .exec();
+      .populate('files')
+      
     return res.status(200).send({ data : audit, message : "Audit retrieved successfully" });
   } catch (error) {
     next(Error("Error while getting audit by id"))
@@ -57,7 +58,6 @@ module.exports.findAuditContactInfosByID = async function (req, res, next) {
     .select('-equipements -questionnaire -isDeleted')
     return res.status(200).send({ data : audit, message : "Audit contact retrieved successfully" });
   } catch (error) {
-    console.log(error)
     next(Error("Error while getting audit contact"))
   }
 }
@@ -73,6 +73,34 @@ module.exports.findAuditEquipementsByID = async function (req, res, next) {
   }
 }
 
+//upload audit file
+module.exports.uploadFile = async function (req, res, next) {
+  try {
+    if(req.file && req.file.filename){
+      file = req.file.filename;
+    }else{
+      throw Error("Files cannot be empty")
+    }    
+    const audit = await Audit.findOne({ _id : req.params.id, isDeleted : false });
+    const savedFile = await File.create({ title : file });
+    audit.files.push(savedFile);
+    await audit.save();
+    return res.status(200).send({ data : savedFile, message : "Audit file uploaded successfully" });
+  } catch (error) {
+    next(Error("Error while uploading audit file"))
+  }
+}
+module.exports.deleteFile = async function (req, res, next) {
+  try {  
+    const audit = await Audit.findOne({ _id : req.params.id, isDeleted : false });
+    audit.files = audit.files.filter(f => f._id != req.params.fileId);
+    await audit.save();    
+    return res.status(200).send({ data : req.params.fileId, message : "Audit file deleted successfully" });
+  } catch (error) {
+    next(Error("Error while deleting audit file"))
+  }
+}
+
 //find by id and questionnaire only
 module.exports.findAuditQuestionnaireByID = async function (req, res, next) {
   try {
@@ -83,7 +111,6 @@ module.exports.findAuditQuestionnaireByID = async function (req, res, next) {
     })
     return res.status(200).send({ data : audit.questionnaire, message : "Audit questionnaire retrieved successfully" });
   } catch (error) {
-    console.log(error)
     next(Error("Error while getting audit questionnaire"))
   }
 }
@@ -138,7 +165,6 @@ module.exports.createAudit = async function (req, res, next) {
     
     return res.status(200).send({ data : audit, message : "Audit created successfully" });
   } catch (error) {
-    console.log(error)
     next(Error("Error while creating audit"))
   }
 }
@@ -311,9 +337,11 @@ module.exports.updateAuditProgress = async function (req, res, next){
     } 
     audit.progress = req.body.progress;
     if(audit.progress == 100){
-      audit.status = 'FINISHED'
+      audit.status = 'FINISHED';
+      audit.closedAt = Date.now()
     }else{
-      audit.status = 'PENDING'
+      audit.status = 'PENDING';
+      audit.closedAt = null;
     }
     await audit.save();
     return res.status(200).send({ message : 'Progress updated successfully', data : audit })

@@ -43,6 +43,7 @@ import { TreeModule } from "primeng/tree";
 import { AccordionModule } from "primeng/accordion";
 import { DividerModule } from "primeng/divider";
 import { BadgeModule } from "primeng/badge";
+import { FileUploadModule } from "primeng/fileupload";
 
 
 
@@ -105,11 +106,10 @@ import { BadgeModule } from "primeng/badge";
 		AccordionModule,
 		DividerModule,
 		BadgeModule,
-		KnobModule
+		KnobModule,
+		FileUploadModule
 	],
-    providers : [
-		ConfirmationService,
-	],
+    providers : [],
 })
 export class SharedModule {
 

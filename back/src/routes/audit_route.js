@@ -21,4 +21,7 @@ router.get("/:id/contact", AuditController.findAuditContactInfosByID);
 router.get("/:id/equipements", AuditController.findAuditEquipementsByID);
 router.get("/:id/questionnaire", AuditController.findAuditQuestionnaireByID);
 
+router.post("/:id/files", uploader.uploadAuditFiles.single('file'), AuditController.uploadFile);
+router.patch("/:id/files/:fileId", AuditController.deleteFile);
+
 module.exports = router;

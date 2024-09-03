@@ -1,9 +1,8 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { tap } from "rxjs";
 import { environment } from "src/environments/environment";
-import { ToastService } from "./toast.service";
 import { AuditStepperService } from "./audit_stepper.service";
+import { saveAs  } from 'file-saver';
 
 @Injectable({
     providedIn : 'root'
@@ -33,6 +32,9 @@ export class AuditService {
  
     findAuditQuestionnaire(id : string){
         return this._http.get(`${this.baseUrl}/${id}/questionnaire`)
+    }
+    findAuditFiles(id : string){
+        return this._http.get(`${this.baseUrl}/${id}/files`)
     }
 
     createAudit(data : any){
@@ -69,5 +71,23 @@ export class AuditService {
     submitQuestions(auditId : string, questionnaire : any){
         const data = questionnaire.map(e => ({ question : e.question._id, response : e.response }));
         return this._http.patch<any>(`${this.baseUrl}/${auditId}/questionnaire`, {questionnaire : data})
+    }
+
+    uploadFile(auditId : string, file: File){
+        const formData = new FormData();
+        formData.append('file', file);
+        return this._http.post(`${this.baseUrl}/${auditId}/files`, formData);
+    }
+    deleteFile(auditId : string, fileID: string){
+        return this._http.patch(`${this.baseUrl}/${auditId}/files/${fileID}`, {});
+    }
+    downloadFile(file: string){
+        return this._http.get(`${environment.auditFilesUrl}/${file}`, { responseType : 'blob' }).subscribe(
+            (response : any) => {
+                let blob: any = new Blob([response], { type: 'file' });
+                const url = window.URL.createObjectURL(blob);
+                saveAs(blob, file);
+            }
+        );
     }
 }

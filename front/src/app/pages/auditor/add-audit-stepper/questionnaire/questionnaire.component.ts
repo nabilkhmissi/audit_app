@@ -46,7 +46,7 @@ export class QuestionnaireComponent implements OnInit{
       take(1),
       switchMap((id : string | null) => {
         if(id){
-          return this._router.navigateByUrl(`/main/auditor/add-audit-stepper/${id}/confirmation`);
+          return this._router.navigateByUrl(`/main/auditor/add-audit-stepper/${id}/files`);
         } 
         return of(null)
       })

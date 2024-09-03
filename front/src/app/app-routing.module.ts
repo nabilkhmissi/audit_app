@@ -112,6 +112,9 @@ import { AdminGuard } from './guards/admin.guard';
                                     {   
                                         path : 'confirmation', loadComponent : ()=>import('./pages/auditor/add-audit-stepper/audit-confirmation/audit-confirmation.component').then((c)=>c.AuditConfirmationComponent)
                                     },
+                                    {   
+                                        path : 'files', loadComponent : ()=>import('./pages/auditor/add-audit-stepper/files/files.component').then((c)=>c.FilesComponent)
+                                    },
                                 ]
                             },
                         ]

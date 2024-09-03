@@ -6,6 +6,9 @@ import { AuditStepperService } from 'src/app/services/audit_stepper.service';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ConfirmContactSectionComponent } from './confirm-contact-section/confirm-contact-section.component';
 import { ConfirmInfrastructureSectionComponent } from './confirm-infrastructure-section/confirm-infrastructure-section.component';
+import { ConfirmQuestionnaireSectionComponent } from './confirm-questionnaire-section/confirm-questionnaire-section.component';
+import { ConfirmFilesSectionComponent } from './confirm-files-section/confirm-files-section.component';
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-audit-confirmation',
@@ -13,7 +16,9 @@ import { ConfirmInfrastructureSectionComponent } from './confirm-infrastructure-
   imports: [
     SharedModule,
     ConfirmContactSectionComponent,
-    ConfirmInfrastructureSectionComponent
+    ConfirmInfrastructureSectionComponent,
+    ConfirmQuestionnaireSectionComponent,
+    ConfirmFilesSectionComponent
   ],
   templateUrl: './audit-confirmation.component.html',
   styleUrl: './audit-confirmation.component.scss'
@@ -25,6 +30,7 @@ export class AuditConfirmationComponent implements OnInit{
     private _stepper : AuditStepperService,
     private _router : Router,
     private _audit : AuditService,
+    private _message : MessageService,
   ){}
 
   audit : any | null = null;
@@ -59,7 +65,6 @@ export class AuditConfirmationComponent implements OnInit{
     .subscribe(
       (res : any) => {
         this.audit = res;
-        console.log(res)
       }
     );
   }
@@ -107,6 +112,23 @@ export class AuditConfirmationComponent implements OnInit{
 
   ngOnInit(): void {
     this.getAuditById();
+  }
+
+  confirmAudit(){
+    this._message.add({ severity : "success", summary : 'Audit saved successfully' });
+    this._router.navigateByUrl('/main/auditor/my-audits')
+  }
+
+  goBack(){
+    this._stepper.selectedAuditID$.pipe(
+      take(1),
+      switchMap((id : string | null) => {
+        if(id){
+          return this._router.navigateByUrl(`/main/auditor/add-audit-stepper/${id}/files`);
+        } 
+        return of(null)
+      })
+    ).subscribe()
   }
 
 }

@@ -15,7 +15,7 @@ const AuditSchema = new Schema({
         contactEmail: { type: String, required: true },
         isDeleted : { type : Boolean , default : false },
         status : { type : String , default : AuditStatus.pending },
-        files : [ { type : String  } ],
+        files : [{ type: mongoose.Types.ObjectId, ref: "File"}],
         progress : { type : Number, default : 0 },
         client : { type: mongoose.Types.ObjectId, ref: "User", required : true},
         equipements : [{ type: mongoose.Types.ObjectId, ref: "Equipement"}],
@@ -24,7 +24,8 @@ const AuditSchema = new Schema({
             question : { type: mongoose.Types.ObjectId, ref: "Question"},
             response : { type : String, required : true }
           }
-        ]
+        ],
+        closedAt : { type : Date },
     },
     {
         timestamps: true
