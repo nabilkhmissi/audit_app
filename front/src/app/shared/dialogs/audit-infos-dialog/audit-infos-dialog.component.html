@@ -1,5 +1,5 @@
 <p-dialog 
-	header="Information" 
+	header="Audit details" 
 	[modal]="true"
 	[(visible)]="visible" 
 	[style]="{ width: '50rem' }" 
@@ -10,8 +10,8 @@
 				<div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
 					<i class="pi pi-users text-xl text-gray-500"></i>
 				</div>
-				<span class="text-900 line-height-3"><span class="modal-row-title">Auditors :</span></span>
-                <p-avatarGroup styleClass="mb-3">
+				<span class="text-900 line-height-3"><span class="modal-row-title">Auditors :  </span></span>
+                <p-avatarGroup>
                     <p-avatar *ngFor="let a of selectedAudit?.auditors" 
                         [image]="imagesUrl+'/'+ a.image" 
                         size="large" 

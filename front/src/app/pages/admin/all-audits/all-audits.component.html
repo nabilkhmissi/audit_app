@@ -63,7 +63,7 @@
 				<ng-template pTemplate="body" let-audit>
 					<tr>
 						<td>
-							<p-avatarGroup styleClass="mb-3">
+							<p-avatarGroup>
 								<p-avatar *ngFor="let a of audit?.auditors" 
 									[image]="imagesUrl+'/'+ a.image" 
 									size="large" 
