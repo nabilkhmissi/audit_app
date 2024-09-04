@@ -189,10 +189,8 @@ module.exports.addEquipement = async (req, res, next)=>{
       let equipement;
       const exist_equipement = await Equipement.findOne({ ref : req.body.ref, manufacturer : req.body.manufacturer });
       if(exist_equipement){
-        console.log("equipement exist")
         equipement = exist_equipement;
       }else{
-        console.log("new equipement")
         equipement = await Equipement.create({
           category : req.body.category,
           details : req.body.details,
@@ -203,6 +201,7 @@ module.exports.addEquipement = async (req, res, next)=>{
       }
       const audit = await Audit.findById(auditID).populate("equipements");
       audit.equipements.push(equipement);
+      audit.status = audit.equipements.length != 0 ? 'IN PROGRESS' : 'PENDING';
       await audit.save();
       return res.status(200).send({ message : "Equipenemt added successfully", data : equipement })
   } catch (error) {
@@ -347,7 +346,7 @@ module.exports.updateAudit = async function (req, res, next) {
 }
 module.exports.updateAuditProgress = async function (req, res, next){
   try { 
-    const audit = await Audit.findOne({_id : req.params.id, isDeleted : false });
+    const audit = await Audit.findOne({_id : req.params.id, isDeleted : false }).populate('auditors');
     if(!audit){
       throw Error("Audit not found/deleted")
     } 
@@ -356,7 +355,7 @@ module.exports.updateAuditProgress = async function (req, res, next){
       audit.status = 'FINISHED';
       audit.closedAt = Date.now()
     }else{
-      audit.status = 'PENDING';
+      audit.status = audit.equipements.length == 0 ? 'PENDING' : 'IN PROGRESS';
       audit.closedAt = null;
     }
     await audit.save();
