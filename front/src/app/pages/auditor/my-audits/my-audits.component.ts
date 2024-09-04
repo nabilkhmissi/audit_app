@@ -103,7 +103,7 @@ export class MyAuditsComponent {
       this.selectedAuditForProgressChange = null;
       const index = this.audits.findIndex(e => e._id === audit._id);
       if(index != -1){
-        this.audits[index] = audit;
+        this.audits[index].progress = audit.progress;
       }
     }
 

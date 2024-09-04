@@ -346,7 +346,7 @@ module.exports.updateAudit = async function (req, res, next) {
 }
 module.exports.updateAuditProgress = async function (req, res, next){
   try { 
-    const audit = await Audit.findOne({_id : req.params.id, isDeleted : false }).populate('auditors');
+    const audit = await Audit.findOne({_id : req.params.id, isDeleted : false });
     if(!audit){
       throw Error("Audit not found/deleted")
     } 
