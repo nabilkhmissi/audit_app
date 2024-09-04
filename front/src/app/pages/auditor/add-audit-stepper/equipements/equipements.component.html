@@ -19,13 +19,15 @@
                             </span>
                         </ng-template>
                         <div class="flex flex-column" *ngFor="let item of groupedEquipements[key]; let i = index">
-                            <div class="flex gap-3 justifiy-content-center" >
+                            <div class="flex gap-1 justify-content-between">
                                 <p-button [text]="true" icon="pi pi-eye"  [label]="item.category + ' ' + item.ref" severity="secondary"
                                 (click)="handleEquipementShow(item)" />
-                                <p-button [text]="true" icon="pi pi-pencil" severity="info"
-                                (click)="handleEquipementEdit(item)" />
-                                <p-button [text]="true" icon="pi pi-trash" severity="danger"
-                                (click)="handleEquipementRemove(item)" />
+                               <div class="flex">
+                                    <p-button [text]="true" icon="pi pi-pencil" severity="info"
+                                    (click)="handleEquipementEdit(item)" />
+                                    <p-button [text]="true" icon="pi pi-trash" severity="danger"
+                                    (click)="handleEquipementRemove(item)" />
+                                </div>
                             </div>
                         </div>
                     </p-accordionTab>

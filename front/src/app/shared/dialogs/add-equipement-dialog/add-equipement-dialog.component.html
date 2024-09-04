@@ -44,7 +44,23 @@ header="Add New Equipement"
             <div class="flex align-items-center gap-3 mb-5 ">
                 <label class="font-semibold w-10rem">Référence</label>
                 <div class="flex flex-column justify-contant-start flex-auto">
-                    <input pInputText type="text" formControlName="ref" class="flex-auto"/>
+                    <p-autoComplete 
+                        formControlName="ref" 
+                        [suggestions]="suggestedEquipements" 
+                        [group]="true"
+                        field="ref">
+                        <ng-template let-group pTemplate="group">
+                            <div class="flex flex-column gap-2">
+                                <div class="flex gap-1 align-items-center">
+                                    <div
+                                        class="w-2rem h-2rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
+                                        <i class="pi text-xl text-gray-500" [class]="group?.icon"></i>
+                                    </div>
+                                    <span>{{ group?.category }}</span>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </p-autoComplete>
                     <small
                         *ngIf="createEquipementForm.get('ref').touched && createEquipementForm.get('ref').errors?.['required']"
                         class="p-error">Référence field is required

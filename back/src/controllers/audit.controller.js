@@ -186,10 +186,13 @@ module.exports.addEquipement = async (req, res, next)=>{
   try {
       const auditID = req.params.id;
       //check if an equiepent for this details exists already, suppose we have an id
-      let equipement = null;
-      if(req.body.id){
-        equipement = await Equipement.find({ ref : req.body.ref, manufacturer : req.body.manufacturer });
+      let equipement;
+      const exist_equipement = await Equipement.findOne({ ref : req.body.ref, manufacturer : req.body.manufacturer });
+      if(exist_equipement){
+        console.log("equipement exist")
+        equipement = exist_equipement;
       }else{
+        console.log("new equipement")
         equipement = await Equipement.create({
           category : req.body.category,
           details : req.body.details,
@@ -272,7 +275,7 @@ module.exports.updateEquipementFromAudit = async function (req, res, next) {
     equipement.details = req.body.details;
     equipement.manufacturer = req.body.manufacturer;
     await equipement.save();    
-    return res.status(200).send({ message : "Audit equipement updated successfully", data : equipement });
+    return res.status(200).send({ message : "Equipement updated successfully", data : equipement });
   } catch (error) {
     next(error)
   }

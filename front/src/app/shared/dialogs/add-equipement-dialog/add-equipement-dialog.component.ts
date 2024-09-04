@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 import { SharedModule } from '../../shared.module';
-import { of, switchMap, take, tap } from 'rxjs';
+import { debounceTime, map, of, switchMap, take, tap } from 'rxjs';
 import { AuditStepperService } from 'src/app/services/audit_stepper.service';
 import { AuditService } from 'src/app/services/audit.service';
 import { EquipementService } from 'src/app/services/equipements.service';
@@ -67,20 +67,34 @@ export class AddEquipementDialogComponent implements OnChanges{
     this.fetchCategories();
 
   this.createEquipementForm.valueChanges.pipe(
-    tap(value => {
-      this.sub_categories = this.data_categories.find(e => e.category == value.category)?.subs.map(e => e.label);
+    debounceTime(500),
+    map(value => {
+      if(value.ref && value.ref._id){
+        const formValue = {
+          ref : value.ref.ref, 
+          manufacturer : value.ref.manufacturer, 
+          category : value.ref.category, 
+          subcategory : value.ref.subcategory, 
+          details : value.ref.details
+        };
+        this.createEquipementForm.patchValue(formValue)
+        return formValue;
+      }
+      return value;
+    }),
+    tap((value : any) => {
+      console.log(value);
+      this.sub_categories = this.data_categories.find(e => e.category == value.category)?.subs.map(e => e.label)
     }),
     switchMap(value => {
       return this._equipement.searchEquipement({ manufacturer : value.manufacturer, ref : value.ref })
     })
   ).subscribe(
     (res : any) => {
-      this.suggestedEquipements = res.data;
+      this.suggestedEquipements = this.groupEquipementsByCategory(res.data);
     }
   );
   }
-
-  handleAutoComplete(event : any){}
 
 
   fetchCategories(){
@@ -197,6 +211,47 @@ export class AddEquipementDialogComponent implements OnChanges{
   ngOnChanges(changes : any){
     if(changes.mode){
       this.mode = changes.mode.currentValue;
+    }
+  }
+
+  groupEquipementsByCategory(equipements : any[]){
+    let grouped = [];
+    for (let i = 0; i < equipements.length; i++) {
+      const element = equipements[i];
+      const category = element.category;
+      if(!grouped[category]){
+        grouped[category] = [];
+      }
+      grouped[category].push(element);
+    }
+
+    return Object.keys(grouped).map(key => ({
+      category: key,
+      icon : this.setCatgeoryIcon(key),
+      items: grouped[key]
+    }));
+  }
+
+  setCatgeoryIcon(key : string){
+    switch (key) {
+      case 'Réseau et sécurité':
+        return 'pi pi-sitemap'
+      case 'Serveurs':
+        return 'pi pi-server'
+      case 'Service d\'annuaires (IAM Identity and Access Management Solutions)':
+        return 'pi pi-lock'
+      case 'Système d\'exploitation':
+        return 'pi pi-microsoft'
+      case 'Systèmes de gestion de cloud':
+        return 'pi pi-cloud'
+      case 'Middleware':
+        return 'pi pi-code'
+      case 'Firmware':
+        return 'pi pi-code'
+      case 'Équipements industriels':
+        return 'pi pi-cog'
+      default:
+        return 'pi-angle-right'
     }
   }
 }

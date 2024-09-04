@@ -5,12 +5,12 @@ module.exports.searchEquipements = async (req, res, next)=>{
         const { manufacturer, ref } = req.body;
         let filter = {};
         if(manufacturer){
-            filter.manufacturer = manufacturer;
+            filter.manufacturer = { $regex : manufacturer, $options : 'i'};
         }
         if(ref){
-            filter.ref = ref;
+            filter.ref = { $regex : ref, $options : 'i'};
         }
-        const equippements = await Equipement.findOne(filter)
+        const equippements = await Equipement.find(filter)
         return res.status(200).send({ message : "Equipements retrieved successfully", data : equippements })
     } catch (error) {
         next(error)
