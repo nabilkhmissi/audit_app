@@ -112,7 +112,7 @@ module.exports.UpdateUserImage = async function (req, res, next) {
       new_image = req.file.filename;
     }
     await User.findByIdAndUpdate(req.params.id, { $set: { image : new_image } });
-    return res.status(200).json({ message: "Image updated successfully", image : new_image });
+    return res.status(200).json({ message: "Image updated successfully", data : new_image });
   } catch (error) {
     next(new Error("Error while updating user"))
   } 

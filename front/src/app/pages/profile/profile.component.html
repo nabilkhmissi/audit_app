@@ -1,8 +1,19 @@
 <div class="grid">
     <div class="col-12 md:col-3">
         <div class="card text-center">
-            <img width=100% [src]="currentUser?.image" alt="currentUser?.firstName + ' ' + currentUser?.lastName" class="mb-3">
-            <span class="font-bold text-300">{{ currentUser?.role }}</span>
+            <div class="image-card">
+                <div class="image-btn bg-blue-500 text-white border-circle h-3rem w-3rem flex justify-content-center align-items-center"
+                    (click)="imageDialogVisible = true">
+                    <i class="pi pi-pencil"></i>
+                </div>
+                <img style="background-size: cover;aspect-ratio: 1 / 1; " width=100% [src]="currentUser?.image"
+                    alt="currentUser?.firstName + ' ' + currentUser?.lastName" class="mb-3 border-circle">
+            </div>
+            <span class="font-bold text-400" class="customer-badge" [ngClass]="{
+                'status-qualified': currentUser?.role === 'ADMIN', 
+                'status-new': currentUser?.role === 'CLIENT', 
+                'status-renewal': currentUser?.role === 'AUDITOR'
+            }">{{ currentUser?.role }}</span>
         </div>
     </div>
     <div class="col-12 md:col-9">
@@ -19,3 +30,6 @@
         </div>
     </div>
 </div>
+
+<app-user-image-upload-dialog [visible]="imageDialogVisible"
+    (dismiss)="imageDialogVisible=false"></app-user-image-upload-dialog>

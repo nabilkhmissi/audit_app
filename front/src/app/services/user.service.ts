@@ -39,8 +39,10 @@ export class UserService {
     changePassword(id : string, data : any){
         return this._http.patch(`${this.baseUrl}/changePassword/${id}`, data);
     }
-    updateImage(id : string, data : any){
-        return this._http.patch(`${this.baseUrl}/updateImage/${id}`, data);
+    updateImage(id : string, image : File){
+        const formData = new FormData();
+        formData.append('image', image);
+        return this._http.patch(`${this.baseUrl}/${id}/image`, formData);
     }
     createUser(data : any){
         return this._http.post(`${this.baseUrl}/createUser`, data);

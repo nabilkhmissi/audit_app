@@ -151,6 +151,9 @@ export class MyAuditsComponent {
 
     selectAuditForDataShow(audit : any){
       this.selectedAuditForDataView = {...audit, equipements: this.groupEquipementsByCategory(audit.equipements)};
-      console.log(this.selectedAuditForDataView)
+    }
+
+    startAudit(audit : any){
+      
     }
 }

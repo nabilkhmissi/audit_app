@@ -11,6 +11,7 @@ import { SecuritySectionComponent } from './security-section/security-section.co
 import { environment } from 'src/environments/environment';
 import { ProfileDetailsSectionComponent } from './profile-details-section/profile-details-section.component';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { UserImageUploadDialogComponent } from 'src/app/shared/dialogs/user-image-upload-dialog/user-image-upload-dialog.component';
 
 @Component({
   selector: 'app-profile',
@@ -19,6 +20,7 @@ import { SharedModule } from 'src/app/shared/shared.module';
     SharedModule,
     SecuritySectionComponent,
     ProfileDetailsSectionComponent,
+    UserImageUploadDialogComponent
   ],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
@@ -30,6 +32,8 @@ export class ProfileComponent implements OnInit{
     private _user : UserService,
   ){}
   currentUser : any | null = null;
+
+  imageDialogVisible = false; 
 
   
   ngOnInit(): void {

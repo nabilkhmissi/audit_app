@@ -113,30 +113,38 @@
 							{{audit.createdAt | date: 'dd/MM/yyyy'}}
 						</td>
 						<td>
-							<div style="display: flex;gap: 5px;">
-								<button 
-								pButton 
-								pRipple 
-								type="button" 
+							<div class="flex gap-1">
+							<p-button 
 								icon="pi pi-eye" 
+								severity="primary"
+								[rounded]="true"
 								class="p-button-rounded p-button-outlined" 
+								[text]="true"
 								(click)="selectAuditForDataShow(audit)"
-							></button>
-							<button 
-								pButton 
-								pRipple 
-								type="button" 
+								></p-button>
+								<p-button 
 								icon="pi pi-cog" 
+								severity="primary" 
+								[rounded]="true"
 								class="p-button-rounded p-button-outlined" 
+								[text]="true"
 								(click)="goToStepper(audit._id)">
-							</button>
+							</p-button>
 							<p-button 
 								icon="pi pi-hourglass"
 								severity="warning" 
 								[rounded]="true" 
-								[outlined]="true"  
+								[text]="true"
 								key="progress" 
 								(click)="selectAuditToChnageProgress(audit)"
+							></p-button>
+							<p-button 
+								icon="pi pi-play"
+								severity="warning" 
+								[text]="true" 
+								severity="success" 
+								[rounded]="true"  
+								(click)="startAudit(audit)"
 							></p-button>
 							
 							</div>

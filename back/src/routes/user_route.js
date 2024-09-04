@@ -13,7 +13,7 @@ router.patch('/enable/:id', UserController.enableUser);
 router.get('/findByEmail', UserController.findByEmail);
 router.patch('/updateDetails/:id', UserController.UpdateUserDetails);
 router.patch('/changePassword/:id', UserController.changePassword);
-router.patch('/updateImage/:id', uploader.uploadUserImage.single("image"), UserController.UpdateUserImage);
+router.patch('/:id/image', uploader.uploadUserImage.single("image"), UserController.UpdateUserImage);
 router.post('/createUser', uploader.uploadUserImage.single("image"), UserController.createUser);
 router.delete('/delete/:id', UserController.deleteUser);
 
