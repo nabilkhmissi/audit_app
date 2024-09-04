@@ -7,7 +7,7 @@
     </div>
     <div *ngIf="rawEquipements.length != 0">
         <div class="grid p-fluid">
-            <div class="col-12 md:col-5">
+            <div class="col-12" [ngClass]="{'md:col-12' : !selectedEquipement,'md:col-5' : selectedEquipement }">
                 <p-accordion>
                     <p-accordionTab *ngFor="let key of getKeys(groupedEquipements)">
                         <ng-template pTemplate="header">

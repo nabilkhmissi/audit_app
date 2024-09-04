@@ -126,6 +126,7 @@ export class EquipementComponent implements OnInit{
         }
         return this._audit.removeEquipementFromAudit(id, item._id).pipe(
           tap((res : any) => {
+            if(item._id === this.selectedEquipement._id) this.selectedEquipement = null;
             this.rawEquipements = this.rawEquipements.filter(e => e._id != res.data._id);
             this.groupEquipementsByCategory();
             this._message.add({ severity : 'success', summary : res.message })
