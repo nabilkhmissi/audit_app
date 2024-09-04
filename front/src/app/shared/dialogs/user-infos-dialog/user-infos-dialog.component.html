@@ -1,8 +1,8 @@
-<p-dialog header="Information" [modal]="true" [(visible)]="visible" [style]="{ width: '50rem' }" (onHide)="handleHide()"
+<p-dialog header="User information" [modal]="true" [(visible)]="visible" [style]="{ width: '50rem' }" (onHide)="handleHide()"
 	[breakpoints]="{ '1199px': '75vw', '575px': '90vw' }">
 	<div style="display: flex;justify-content: center;">
 		<img [alt]="selectedUser?.firstName +' ' + selectedUser?.lastName" [src]="imagesUrl+'/'+selectedUser?.image"
-			width="120" style="vertical-align: middle;border-radius: 100px;" />
+			width="120" style="vertical-align: middle;border-radius: 100px;aspect-ratio: 1/1;object-fit: cover;" />
 	</div>
 	<ul class="p-0 mx-0 mt-0 mb-4 list-none">
 		<li class="flex align-items-center py-2 border-bottom-1 surface-border">
@@ -48,7 +48,7 @@
 			<span class="text-900 line-height-3"><span class="modal-row-title">Phone :</span> {{ selectedUser?.phone
 				}}</span>
 		</li>
-		<li class="flex align-items-center py-2 border-bottom-1 surface-border">
+		<li class="flex align-items-center py-2 surface-border">
 			<div
 				class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
 				<i class="pi pi-calendar text-xl text-gray-500"></i>
