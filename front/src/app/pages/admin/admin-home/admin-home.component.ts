@@ -8,7 +8,7 @@ import { MenuModule } from 'primeng/menu';
 import { PanelMenuModule } from 'primeng/panelmenu';
 import { StyleClassModule } from 'primeng/styleclass';
 import { TableModule } from 'primeng/table';
-import { debounceTime, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { Product } from 'src/app/demo/api/product';
 import { ProductService } from 'src/app/demo/service/product.service';
 import { LayoutService } from 'src/app/layout/service/app.layout.service';
@@ -44,20 +44,17 @@ export class AdminHomeComponent implements OnInit{
 
     dahsboardItems = null;
 
+    auditPieData: any;
+    auditPieOptions : any;
+
+
     constructor(
       private productService: ProductService, 
       public layoutService: LayoutService,
       private _audit : AuditService
-    ) {
-        this.subscription = this.layoutService.configUpdate$
-        .pipe(debounceTime(25))
-        .subscribe((config) => {
-            this.initChart();
-        });
-    }
+    ) {}
 
     ngOnInit() {
-        this.initChart();
         this.fetchNumbers();
         this.productService.getProductsSmall().then(data => this.products = data);
 
@@ -72,67 +69,48 @@ export class AdminHomeComponent implements OnInit{
         this._audit.getDashboardItems().subscribe(
             (res : any) => {
                 this.dahsboardItems = res.data;
+                const auditLabels = ['PENDING', 'IN PROGRESS', 'FINISHED'];
+                console.log(res.data.audits)
+                const data = [res.data.audits.pending, res.data.audits.inProgress, res.data.audits.finished];
+                this.initChart(auditLabels, data);
             }
         )
     }
 
-    initChart() {
+    initChart(labels : any, data : any) {
         const documentStyle = getComputedStyle(document.documentElement);
         const textColor = documentStyle.getPropertyValue('--text-color');
-        const textColorSecondary = documentStyle.getPropertyValue('--text-color-secondary');
-        const surfaceBorder = documentStyle.getPropertyValue('--surface-border');
-
-        this.chartData = {
-            labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+        this.auditPieData = {
+            labels: labels,
             datasets: [
                 {
-                    label: 'First Dataset',
-                    data: [65, 59, 80, 81, 56, 55, 40],
-                    fill: false,
-                    backgroundColor: documentStyle.getPropertyValue('--bluegray-700'),
-                    borderColor: documentStyle.getPropertyValue('--bluegray-700'),
-                    tension: .4
-                },
-                {
-                    label: 'Second Dataset',
-                    data: [28, 48, 40, 19, 86, 27, 90],
-                    fill: false,
-                    backgroundColor: documentStyle.getPropertyValue('--green-600'),
-                    borderColor: documentStyle.getPropertyValue('--green-600'),
-                    tension: .4
-                }
-            ]
+                    data: data,
+                    backgroundColor: [
+                        documentStyle.getPropertyValue('--indigo-500'),
+                        documentStyle.getPropertyValue('--purple-500'),
+                        documentStyle.getPropertyValue('--teal-500')
+                    ],
+                    hoverBackgroundColor: [
+                        documentStyle.getPropertyValue('--indigo-400'),
+                        documentStyle.getPropertyValue('--purple-400'),
+                        documentStyle.getPropertyValue('--teal-400')
+                    ]
+                }]
         };
-
-        this.chartOptions = {
+        this.auditPieOptions = {
+            cutout: '60%',
+            responsive: true,
+            maintainAspectRatio: false,
             plugins: {
                 legend: {
                     labels: {
+                        usePointStyle: true,
                         color: textColor
-                    }
-                }
-            },
-            scales: {
-                x: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: surfaceBorder,
-                        drawBorder: false
-                    }
-                },
-                y: {
-                    ticks: {
-                        color: textColorSecondary
-                    },
-                    grid: {
-                        color: surfaceBorder,
-                        drawBorder: false
                     }
                 }
             }
         };
+
     }
 
     ngOnDestroy() {

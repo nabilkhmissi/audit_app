@@ -373,6 +373,8 @@ module.exports.dashboardNumbers = async (req, res, next)=>{
     const auditors = await User.find({ role : 'AUDITOR' , isDeleted : false});
     const pending_audits = await Audit.find({ status : 'PENDING' , isDeleted : false});
     const finished_audits = await Audit.find({ status : 'FINISHED' , isDeleted : false});
+    const in_progress_audits = await Audit.find({ status : 'IN PROGRESS' , isDeleted : false});
+    const all_audits = await Audit.find({ isDeleted : false});
     const questions = await Question.find();
     const equipements = await Equipement.find();
     const questionCategory = await QuestionCategory.find();
@@ -384,7 +386,9 @@ module.exports.dashboardNumbers = async (req, res, next)=>{
       },
       audits : { 
         pending : pending_audits.length, 
-        finished : finished_audits.length 
+        finished : finished_audits.length,
+        inProgress : in_progress_audits.length,
+        all : all_audits.length
       },
       questions : questions.length,
       equipements : equipements.length,
