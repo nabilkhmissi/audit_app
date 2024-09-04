@@ -83,7 +83,6 @@ export class AddEquipementDialogComponent implements OnChanges{
       return value;
     }),
     tap((value : any) => {
-      console.log(value);
       this.sub_categories = this.data_categories.find(e => e.category == value.category)?.subs.map(e => e.label)
     }),
     switchMap(value => {
