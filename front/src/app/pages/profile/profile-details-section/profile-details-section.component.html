@@ -15,7 +15,11 @@
         <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
             <i class="pi pi-shield text-xl text-gray-500"></i>
         </div>
-        <span class="text-900 line-height-3"><span class="modal-row-title">Role :</span> {{ currentUser?.role }}</span>
+        <span class="text-900 line-height-3"><span class="modal-row-title">Role :   </span> <span class="font-bold text-400" class="customer-badge" [ngClass]="{
+            'status-qualified': currentUser?.role === 'ADMIN', 
+            'status-new': currentUser?.role === 'CLIENT', 
+            'status-renewal': currentUser?.role === 'AUDITOR'
+        }">{{ currentUser?.role }}</span></span>
     </li>
     <li class="flex align-items-center py-2 border-bottom-1 surface-border">
         <div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">

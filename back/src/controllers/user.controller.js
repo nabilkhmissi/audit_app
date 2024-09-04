@@ -126,8 +126,9 @@ module.exports.UpdateUserDetails = async function (req, res, next) {
     if(lastName) user.lastName = lastName;  
     if(phone) user.phone = phone;  
     if(adresse) user.adresse = adresse;  
-    const updated  =  await user.save();
-    return res.status(200).json({ message: "Details updated successfully", data : updated });
+    await user.save();
+    const payload = await User.findById(req.params.id).select('-salt -password');
+    return res.status(200).json({ message: "Details updated successfully", data : payload });
   } catch (error) {
     console.log(error)
     next(new Error("Error while updating user details"))

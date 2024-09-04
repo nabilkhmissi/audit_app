@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MessageService } from 'primeng/api';
 import { environment } from 'src/environments/environment';
 import { SharedModule } from '../../shared.module';
-import { debounceTime, map, of, switchMap, take, tap } from 'rxjs';
+import { debounceTime, map, switchMap, take, tap } from 'rxjs';
 import { AuditStepperService } from 'src/app/services/audit_stepper.service';
 import { AuditService } from 'src/app/services/audit.service';
 import { EquipementService } from 'src/app/services/equipements.service';

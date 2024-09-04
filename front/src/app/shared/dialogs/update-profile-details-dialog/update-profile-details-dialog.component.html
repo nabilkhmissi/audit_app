@@ -1,0 +1,28 @@
+<p-dialog 
+    header="Update details" 
+    [modal]="true" 
+    [(visible)]="visible"
+    [style]="{ width: '50rem' }" (onHide)="dismiss.emit()">
+    <form [formGroup]="form">
+        <div class="flex align-items-center gap-3 mb-5">
+            <label class="font-semibold w-6rem">First name</label>
+            <input formControlName="firstName" class="flex-auto"/>
+        </div>
+        <div class="flex align-items-center gap-3 mb-5">
+            <label class="font-semibold w-6rem">Last name</label>
+            <input formControlName="lastName" class="flex-auto"/>
+        </div>
+        <div class="flex align-items-center gap-3 mb-5">
+            <label class="font-semibold w-6rem">Adresse</label>
+            <input formControlName="adresse" class="flex-auto"/>
+        </div>
+        <div class="flex align-items-center gap-3 mb-5">
+            <label class="font-semibold w-6rem">Phone</label>
+            <input formControlName="phone" class="flex-auto"/>
+        </div>
+        <div class="p-fluid">
+            <p-button label="Save" [disabled]="loading || !form.valid" [loading]="loading"
+                (onClick)="handleUpdate()"></p-button>
+        </div>
+    </form>
+</p-dialog>

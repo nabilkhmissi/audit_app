@@ -18,9 +18,14 @@
     </div>
     <div class="col-12 md:col-9">
         <div class="card">
-            <h5>My account</h5>
+            <div class="flex justify-content-between align-items-center mb-2">
+                <h5>My account</h5>
+                <p-button (click)="detailsDialogVisible=true" icon="pi pi-pencil" severity="primary" [rounded]="true"
+                    [outlined]="true">
+                </p-button>
+            </div>
             <p-tabView orientation="left">
-                <p-tabPanel header="Général" class="line-height-3 m-0">
+                <p-tabPanel header="General" class="line-height-3 m-0">
                     <app-profile-details-section [currentUser]="currentUser"></app-profile-details-section>
                 </p-tabPanel>
                 <p-tabPanel header="Sécurity" class="line-height-3 m-0">
@@ -31,5 +36,13 @@
     </div>
 </div>
 
-<app-user-image-upload-dialog [visible]="imageDialogVisible"
-    (dismiss)="imageDialogVisible=false"></app-user-image-upload-dialog>
+<app-user-image-upload-dialog 
+    [visible]="imageDialogVisible" 
+    (dismiss)="imageDialogVisible=false">
+</app-user-image-upload-dialog>
+
+
+<app-update-profile-details-dialog 
+    [visible]="detailsDialogVisible"
+    [user]="currentUser" 
+    (dismiss)="handleUpdateCallback($event)"></app-update-profile-details-dialog>
