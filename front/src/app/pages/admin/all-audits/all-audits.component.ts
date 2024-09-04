@@ -63,7 +63,6 @@ export class AllAuditsComponent {
                 this.loading = false;
                 this.audits = res; 
                 this.filteredAudits = res; 
-                console.log(this.filteredAudits)
             }
         )
     }
