@@ -1,4 +1,5 @@
 const { Audit, User, Equipement, File, Question, QuestionCategory } = require("../models");
+const AuditStatus = require("../models/audit_status");
 
 //find all audits
 module.exports.findAll = async function (req, res, next) {
@@ -291,6 +292,11 @@ module.exports.submitQuestionnaire = async function (req, res, next) {
       const element = questionnaire[i];
       audit.questionnaire.push({ question : element.question, response : element.response ?? false })
     }
+    if(audit.questionnaire.length != 0){
+      audit.progress = 25;
+    }
+    audit.status = AuditStatus.inProgress;
+
     const updated = await audit.save();
     const updated_audit = await Audit.findById(updated._id)
     .populate({
@@ -344,26 +350,26 @@ module.exports.updateAudit = async function (req, res, next) {
   }
 
 }
-module.exports.updateAuditProgress = async function (req, res, next){
-  try { 
-    const audit = await Audit.findOne({_id : req.params.id, isDeleted : false });
-    if(!audit){
-      throw Error("Audit not found/deleted")
-    } 
-    audit.progress = req.body.progress;
-    if(audit.progress == 100){
-      audit.status = 'FINISHED';
-      audit.closedAt = Date.now()
-    }else{
-      audit.status = audit.equipements.length == 0 ? 'PENDING' : 'IN PROGRESS';
-      audit.closedAt = null;
-    }
-    await audit.save();
-    return res.status(200).send({ message : 'Progress updated successfully', data : audit })
-  } catch (error) {
-    next(error)
-  }
-}
+// module.exports.updateAuditProgress = async function (req, res, next){
+//   try { 
+//     const audit = await Audit.findOne({_id : req.params.id, isDeleted : false });
+//     if(!audit){
+//       throw Error("Audit not found/deleted")
+//     } 
+//     audit.progress = req.body.progress;
+//     if(audit.progress == 100){
+//       audit.status = 'FINISHED';
+//       audit.closedAt = Date.now()
+//     }else{
+//       audit.status = audit.equipements.length == 0 ? 'PENDING' : 'IN PROGRESS';
+//       audit.closedAt = null;
+//     }
+//     await audit.save();
+//     return res.status(200).send({ message : 'Progress updated successfully', data : audit })
+//   } catch (error) {
+//     next(error)
+//   }
+// }
 
 
 module.exports.dashboardNumbers = async (req, res, next)=>{

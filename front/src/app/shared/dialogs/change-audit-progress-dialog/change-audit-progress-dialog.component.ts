@@ -34,16 +34,16 @@ export class ChangeAuditProgressDialogComponent implements OnChanges {
         return;
       }
       this.submitted = true;
-      this._audit.updateAuditProgress(this.audit._id, this.audit.progress).subscribe({
-        next : (res : any) => {
-          this.submitted = false;
-          this._message.add({ severity : 'success', summary : res.message });
-          this.dismiss.next(res.data);
-        },
-        error : (err)=>{
-          this.submitted = false;
-        }
-      })
+      // this._audit.updateAuditProgress(this.audit._id, this.audit.progress).subscribe({
+      //   next : (res : any) => {
+      //     this.submitted = false;
+      //     this._message.add({ severity : 'success', summary : res.message });
+      //     this.dismiss.next(res.data);
+      //   },
+      //   error : (err)=>{
+      //     this.submitted = false;
+      //   }
+      // })
     }
 
     ngOnChanges(changes: any): void {

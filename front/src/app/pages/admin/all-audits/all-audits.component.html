@@ -62,7 +62,7 @@
 				<!-- table body -->
 				<ng-template pTemplate="body" let-audit>
 					<tr>
-						<td class="flex justify-content-center">
+						<td>
 							<p-avatarGroup>
 								<p-avatar *ngFor="let a of audit?.auditors" 
 									[image]="imagesUrl+'/'+ a.image" 
@@ -128,7 +128,7 @@
 								type="button" 
 								icon="pi pi-pencil" 
 								class="p-button-rounded p-button-outlined" 
-								(click)="handleAuditEdit(audit)">
+								(click)="selectedAudit=audit;editDialogVisible=true">
 							</button>
 							<p-button 
 								icon="pi pi-trash"
@@ -174,5 +174,5 @@
 	[selectedAudit]="selectedAudit" 
 	(callback)="handleAuditUpdate($event)"
 	[editDialogVisible]="editDialogVisible"
-	(dismiss)="handleEditDismiss()"
+	(dismiss)="editDialogVisible = false"
 ></app-edit-audit-dialog>

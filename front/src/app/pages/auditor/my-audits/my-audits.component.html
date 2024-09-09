@@ -130,14 +130,14 @@
 								[text]="true"
 								(click)="goToStepper(audit._id)">
 							</p-button>
-							<p-button 
+							<!-- <p-button 
 								icon="pi pi-hourglass"
 								severity="warning" 
 								[rounded]="true" 
 								[text]="true"
 								key="progress" 
 								(click)="selectAuditToChnageProgress(audit)"
-							></p-button>
+							></p-button> -->
 							<p-button 
 								icon="pi pi-play"
 								severity="warning" 
@@ -174,12 +174,12 @@
 	(dismiss)="editDialogVisible = false"
 ></app-edit-audit-dialog>
 
-<app-change-audit-progress-dialog
+<!-- <app-change-audit-progress-dialog
 	*ngIf="selectedAuditForProgressChange"
 	[visible]="progressDialogVisible"
 	(dismiss)="dismissProgressDialog($event)"
 	[audit]="selectedAuditForProgressChange">
-</app-change-audit-progress-dialog>
+</app-change-audit-progress-dialog> -->
 
 <app-audit-infos-dialog
 	[selectedAudit]="selectedAuditForDataView"

@@ -15,7 +15,7 @@ router.get("/:id/equipements", AuditController.findAuditEquipements);
 router.delete("/:auditID/equipements/:eqID", AuditController.removeEquipementFromAudit);
 router.patch("/equipements/:eqID", AuditController.updateEquipementFromAudit);
 router.patch("/:id/questionnaire", AuditController.submitQuestionnaire);
-router.patch("/:id/progress", AuditController.updateAuditProgress);
+// router.patch("/:id/progress", AuditController.updateAuditProgress);
 //get audit data
 router.get("/:id/contact", AuditController.findAuditContactInfosByID);
 router.get("/:id/equipements", AuditController.findAuditEquipementsByID);

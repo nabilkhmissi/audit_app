@@ -52,9 +52,9 @@ export class AuditService {
         return this._http.patch(`${this.baseUrl}/updateAudit/${id}`, data);
     }
    
-    updateAuditProgress(id : string, progress : number){
-        return this._http.patch(`${this.baseUrl}/${id}/progress`, { progress });
-    }
+    // updateAuditProgress(id : string, progress : number){
+    //     return this._http.patch(`${this.baseUrl}/${id}/progress`, { progress });
+    // }
    
     addEquipementToAudit(id : string, data : any){
         return this._http.patch(`${this.baseUrl}/${id}/equipements`, data);
