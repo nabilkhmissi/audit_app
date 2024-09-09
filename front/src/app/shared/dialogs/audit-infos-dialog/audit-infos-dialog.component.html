@@ -116,6 +116,9 @@
 			<div class="my-4">
 				<span class="modal-row-title">Files:</span>
 			</div>
+			<div class="col-12 bg-gray-100 flex align items-center justify-content-center" *ngIf="selectedAudit?.files.length==0">
+				<span class="m-0">No file found</span>
+			</div>
 			<li class="flex align-items-center py-2 justify-content-between" *ngFor="let file of selectedAudit?.files">
 				<div class="flex align-items-center justify-content-center">
 					<div class="w-3rem h-3rem flex align-items-center justify-content-center bg-gray-100 border-circle mr-3 flex-shrink-0">
@@ -127,6 +130,9 @@
 			</li>
 			<div class="my-4">
 				<span class="modal-row-title">Equipements:</span>
+			</div>
+			<div class="col-12 bg-gray-100 flex align items-center justify-content-center" *ngIf="selectedAudit?.equipements.length==0">
+				<span class="m-0">No Equipement added</span>
 			</div>
 			<li>
 				<app-confirm-infrastructure-section

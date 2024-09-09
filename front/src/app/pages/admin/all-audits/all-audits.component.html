@@ -62,7 +62,7 @@
 				<!-- table body -->
 				<ng-template pTemplate="body" let-audit>
 					<tr>
-						<td>
+						<td class="flex justify-content-center">
 							<p-avatarGroup>
 								<p-avatar *ngFor="let a of audit?.auditors" 
 									[image]="imagesUrl+'/'+ a.image" 
