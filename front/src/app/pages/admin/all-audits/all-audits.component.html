@@ -128,7 +128,7 @@
 								type="button" 
 								icon="pi pi-pencil" 
 								class="p-button-rounded p-button-outlined" 
-								(click)="selectedAudit=audit;editDialogVisible=true">
+								(click)="handleAuditEdit(audit)">
 							</button>
 							<p-button 
 								icon="pi pi-trash"
@@ -174,5 +174,5 @@
 	[selectedAudit]="selectedAudit" 
 	(callback)="handleAuditUpdate($event)"
 	[editDialogVisible]="editDialogVisible"
-	(dismiss)="editDialogVisible = false"
+	(dismiss)="handleEditDismiss()"
 ></app-edit-audit-dialog>

@@ -94,6 +94,7 @@ export class EditAuditDialogComponent implements OnInit, OnChanges{
 
   onDismiss(){
     this.dismiss.emit(false);
+    this.createAuditForm.reset();
   }
 
   ngOnChanges(changes: any) {

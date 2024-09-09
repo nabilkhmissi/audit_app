@@ -104,6 +104,16 @@ export class AllAuditsComponent {
         this.filteredAudits = this.audits.filter(u => u.organisationName.toLowerCase().includes(e.target.value.toLowerCase()))
     }
 
+    handleAuditEdit(audit : any){
+      this.selectedAudit=audit;
+      this.editDialogVisible=true;
+    }
+
+    handleEditDismiss(){
+      this.selectedAudit = null;
+      this.editDialogVisible = false;
+    }
+
     handleAuditUpdate(event : any){
         const index = this.audits.findIndex(u => u._id === event._id);
         this.audits[index] = event;

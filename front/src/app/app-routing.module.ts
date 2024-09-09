@@ -1,6 +1,5 @@
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
-import { NotfoundComponent } from './demo/components/notfound/notfound.component';
 import { AppLayoutComponent } from "./layout/app.layout.component";
 import { AuthGuard } from './guards/auth.guard';
 import { AuditorGuard } from './guards/auditor.guard';
@@ -120,11 +119,6 @@ import { AdminGuard } from './guards/admin.guard';
                         ]
                     },
                     { path : 'unauthorized', loadComponent : ()=>import('./pages/other/not-authorized/not-authorized.component').then((c)=>c.NotAuthorizedComponent) },
-                    { path: '', loadChildren: () => import('./demo/components/dashboard/dashboard.module').then(m => m.DashboardModule) },
-                    { path: 'uikit', loadChildren: () => import('./demo/components/uikit/uikit.module').then(m => m.UIkitModule) },
-                    { path: 'utilities', loadChildren: () => import('./demo/components/utilities/utilities.module').then(m => m.UtilitiesModule) },
-                    { path: 'documentation', loadChildren: () => import('./demo/components/documentation/documentation.module').then(m => m.DocumentationModule) },
-                    { path: 'pages', loadChildren: () => import('./demo/components/pages/pages.module').then(m => m.PagesModule) },
                     {
                         path : 'profile',
                         loadComponent : ()=>import('./pages/profile/profile.component').then((c)=> c.ProfileComponent)
@@ -132,8 +126,6 @@ import { AdminGuard } from './guards/admin.guard';
                 ]
             },
             { path: 'auth', loadChildren: () => import('./pages/auth/auth.module').then(m => m.AuthModule) },
-            { path: 'notfound', component: NotfoundComponent },
-            // { path: '**', redirectTo: '/notfound' },
         ])
     ],
     exports: [RouterModule]
