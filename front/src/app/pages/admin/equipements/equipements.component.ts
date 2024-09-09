@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { AuditStepperService } from 'src/app/services/audit_stepper.service';
 import { EquipementService } from 'src/app/services/equipements.service';
+import { AddEquipementDialogComponent } from 'src/app/shared/dialogs/add-equipement-dialog/add-equipement-dialog.component';
 import { CustomConfirmDialogComponent } from 'src/app/shared/dialogs/custom-confirm-dialog/custom-confirm-dialog.component';
 import { SharedModule } from 'src/app/shared/shared.module';
 
@@ -9,7 +11,8 @@ import { SharedModule } from 'src/app/shared/shared.module';
   standalone: true,
   imports: [
     SharedModule,
-    CustomConfirmDialogComponent
+    CustomConfirmDialogComponent,
+    AddEquipementDialogComponent
   ],
   templateUrl: './equipements.component.html',
   styleUrl: './equipements.component.scss'
@@ -18,12 +21,15 @@ export class EquipementsComponent implements OnInit{
 
   constructor(
     private _equipements : EquipementService,
-    private _message : MessageService
+    private _message : MessageService,
+    private _stepper : AuditStepperService
   ){}
   
   rawEquipements = [];
   filteredEquipements = [];
   loading = false;
+
+  updateEquipement : any | null = null;
 
   deleteEquipementLoading = null;
 
@@ -67,5 +73,21 @@ export class EquipementsComponent implements OnInit{
         
       }
     )
+  }
+
+  handleEditSelect(eq : any){
+    this._stepper.setSelectedEquiepemnt(eq);
+    this.updateEquipement=eq
+  }
+
+  handleEditDismiss(){
+    this.updateEquipement=null;
+    this._stepper.setSelectedEquiepemnt(null);
+  }
+
+  updateEquipementCallback(edited : any){
+    const index = this.rawEquipements.findIndex(e => e._id === edited.data._id);
+    this.rawEquipements[index] = edited.data;
+    this.filteredEquipements = this.rawEquipements;
   }
 }

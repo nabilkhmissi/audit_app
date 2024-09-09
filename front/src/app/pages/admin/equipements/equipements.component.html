@@ -74,12 +74,18 @@
                         <td>
                             <div style="display: flex;gap: 5px;">
                                 <p-button 
+                                    [text]="true" 
+                                    icon="pi pi-pencil" 
+                                    severity="info"
+                                    [rounded]="true"
+                                    (click)="handleEditSelect(eq)" />
+                                <p-button 
                                     icon="pi pi-trash" 
                                     severity="danger" 
-                                    [rounded]="true" 
+                                    [text]="true"  
                                     [loading]="eq._id === deleteEquipementLoading?._id" 
-                                    [outlined]="true"
-                                    [disabled]="eq._id === auditDeleteLoading" key="accept"
+                                    [rounded]="true"
+                                    [disabled]="eq._id === deleteEquipementLoading?._id" key="accept"
                                     (click)="deleteDialog.show();deleteEquipementLoading = eq">
                                 </p-button>
                             </div>
@@ -108,3 +114,11 @@
 	(onAccept)="handleEquipementDelete()"
 	(onReject)="deleteEquipementLoading = null"
 ></app-custom-confirm-dialog>
+
+<app-add-equipement-dialog 
+    (dismiss)="handleEditDismiss()" 
+    (callback)="updateEquipementCallback($event)"
+    [selectedEquipement]="updateEquipement"
+    [mode]="'update'"
+    [addEquipementDialogVisible]="updateEquipement">
+</app-add-equipement-dialog>
