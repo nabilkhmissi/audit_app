@@ -17,6 +17,13 @@ import { environment } from "src/environments/environment";
     searchEquipement(data : { manufacturer  : string, ref : string }){
         return this._http.post(`${this.baseUrl}/search`, data)
     }
-
-
+    findAll(){
+        return this._http.get(`${this.baseUrl}`);
+    }
+    deleteEquipements(id : string){
+        return this._http.delete(`${this.baseUrl}/${id}`);
+    }
+    updateEquipements(id : string, data : any){
+        return this._http.patch(`${this.baseUrl}/${id}`, data);
+    }
   }

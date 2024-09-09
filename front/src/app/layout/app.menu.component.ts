@@ -54,7 +54,7 @@ export class AppMenuComponent implements OnInit {
                         items : [
                             { label: 'All audits', icon: 'pi pi-users', routerLink: ['admin/all-audits'] },
                             { label: 'Add audit', icon: 'pi pi-user-plus', routerLink: ['admin/add-audit'] },
-                             { 
+                            { 
                                 label: 'Questionnaire', 
                                 icon: 'pi pi-question-circle', 
                                 items : [
@@ -62,6 +62,7 @@ export class AppMenuComponent implements OnInit {
                                     { label: 'Question categories', icon: 'pi pi-question', routerLink: ['admin/questionnaire/question-categories'] },
                                 ]
                             },
+                            { label: 'Equipements', icon: 'pi pi-cog', routerLink: ['admin/equipements'] },
                         ]
                     },
                 ],
